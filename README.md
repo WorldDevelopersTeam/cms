@@ -18,7 +18,7 @@
     <a href="https://www.youtube.com/@primocms">YouTube</a>
 </p>
 
-## Deploy Status
+## ⚡ Deploy Status
 
 master
 :------------:
