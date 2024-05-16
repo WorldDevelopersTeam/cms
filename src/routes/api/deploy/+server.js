@@ -99,7 +99,7 @@ const github = {
       },
     ] = await Promise.all([
       axios.get(`https://api.github.com/repos/${repo_name}`, { headers }),
-      axios.get(`https://api.github.com/repos/${repo_name}/commits?sha=main`, {
+      axios.get(`https://api.github.com/repos/${repo_name}/commits?sha=master`, {
         headers,
       }),
     ])
@@ -146,7 +146,7 @@ const github = {
 
     async function push_commit(commitSha) {
       const { data } = await axios.patch(
-        `https://api.github.com/repos/${repo_name}/git/refs/heads/main`,
+        `https://api.github.com/repos/${repo_name}/git/refs/heads/master`,
         {
           sha: commitSha,
           // force: true,
@@ -189,7 +189,7 @@ const gitlab = {
 
     const { data } = await axios.post(
       `https://gitlab.com/api/v4/projects/${project_id}/repository/commits`,
-      { branch: 'main', commit_message: message, actions },
+      { branch: 'master', commit_message: message, actions },
       { headers }
     )
 
