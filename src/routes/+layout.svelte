@@ -63,8 +63,8 @@
 		/* height: 100vh; */
 		/* overflow: hidden; */
 
-		--primo-color-brand: #35d994;
-		--primo-color-brand-dark: #097548;
+		--primo-color-brand: #dbdbdb;
+		--primo-color-brand-dark: #717171;
 		--primo-color-white: white;
 		--primo-color-codeblack: rgb(30, 30, 30);
 		--primo-color-codeblack-opaque: rgba(30, 30, 30, 0.9);

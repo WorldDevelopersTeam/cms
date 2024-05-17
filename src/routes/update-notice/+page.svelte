@@ -97,11 +97,11 @@
   }
   pre {
     padding: 0.25rem 0.5rem;
-    border: 1px solid #35d994;
+    border: 1px solid #dbdbdb;
     display: inline-block;
   }
   a {
-    color: #35d994;
+    color: #dbdbdb;
   }
   footer {
     font-size: 1rem;

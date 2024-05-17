@@ -142,7 +142,7 @@
       justify-content: center;
       align-items: center;
       padding: 0.65rem;
-      border: 1.5px solid #35d994;
+      border: 1.5px solid #dbdbdb;
       border-radius: 0.25rem;
 
       &:disabled {
@@ -151,7 +151,7 @@
       }
 
       &:hover {
-        background-color: #35d994;
+        background-color: #dbdbdb;
         transition: 0.2s;
         color: #121212;
       }
