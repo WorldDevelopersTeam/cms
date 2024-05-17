@@ -1,5 +1,5 @@
 <script>
-  import logo from '$lib/assets/server-logo.svg'
+  import logo from '$lib/assets/logo.svg'
   import { browser } from '$app/environment'
   import { page } from '$app/stores'
 
@@ -9,7 +9,7 @@
   if (browser && supabase) {
     supabase.storage
       .from('images')
-      .download(`server-logo.svg`)
+      .download(`logo.svg`)
       .then(({ data, error }) => {
         if (data) {
           var reader = new FileReader()
