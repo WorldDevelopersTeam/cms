@@ -126,7 +126,7 @@
 			Site Blocks
 		</button>
 		<button on:click={() => (active_tab = 'wdt')} class:active={active_tab === 'wdt'}>
-			Primo Blocks
+			Wdt Blocks
 		</button>
 	</div>
 	{#if active_tab === 'site'}
@@ -177,7 +177,7 @@
 		{:else}
 			<div class="empty">
 				<p>You don't have any Blocks in your site yet</p>
-				<p>Create a Block from scratch, upload an existing Block, or use the Primo Blocks.</p>
+				<p>Create a Block from scratch, upload an existing Block, or use the Wdt Blocks.</p>
 			</div>
 			<div class="wdt-buttons">
 				<button class="wdt-button" on:click={create_symbol}>

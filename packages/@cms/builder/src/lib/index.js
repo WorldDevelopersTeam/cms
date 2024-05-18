@@ -1,4 +1,4 @@
-import Primo from './Primo.svelte'
+import Wdt from './Wdt.svelte'
 
 import TextInput from './ui/TextInput.svelte'
 import { saved, onMobile, userRole } from './stores/app/misc'
@@ -11,9 +11,9 @@ import { processCode } from './utils'
 import { buildStaticPage, getPageData, get_content_with_static } from './stores/helpers'
 import { registerProcessors } from './component'
 import { Page, Site, languages } from './const'
-import PrimoFieldTypes from './field-types'
+import WdtFieldTypes from './field-types'
 import { validate_site_structure_v2 } from './converter'
-import PrimoPage from './views/editor/Page.svelte'
+import WdtPage from './views/editor/Page.svelte'
 import { database_subscribe, storage_subscribe, realtime_subscribe } from './database'
 import { deploy, deploy_subscribe } from './deploy'
 
@@ -47,15 +47,15 @@ export {
 	Page,
 	Site,
 	fieldTypes,
-	PrimoFieldTypes,
+	WdtFieldTypes,
 	stores,
 	registerProcessors,
 	processCode,
 	buildStaticPage,
 	validate_site_structure_v2,
-	PrimoPage,
+	WdtPage,
 	languages,
 	getPageData,
 	get_content_with_static
 }
-export default Primo
+export default Wdt

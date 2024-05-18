@@ -4,7 +4,7 @@
 
 <p>
 	The <strong>{field.type}</strong>
-	field doesn't exist. Consider updating Primo.
+	field doesn't exist. Consider updating Wdt.
 </p>
 
 <style>

@@ -1,6 +1,6 @@
 <script>
 	import _ from 'lodash'
-	import Primo, { database_subscribe, storage_subscribe, deploy_subscribe } from '@cms/builder'
+	import Wdt, { database_subscribe, storage_subscribe, deploy_subscribe } from '@cms/builder'
 	import axios from 'axios'
 
 	export let data
@@ -131,7 +131,7 @@
 	})
 </script>
 
-<Primo
+<Wdt
 	role={data.user.role}
 	data={{
 		site: data.site,
@@ -140,4 +140,4 @@
 	}}
 >
 	<slot />
-</Primo>
+</Wdt>

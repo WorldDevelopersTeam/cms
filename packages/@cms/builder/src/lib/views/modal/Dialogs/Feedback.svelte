@@ -14,7 +14,7 @@
   } else if (getContext('ENVIRONMENT') === 'SERVER') {
     version = `Server: ${__SERVER_VERSION__}`
   } else if (getContext('ENVIRONMENT') === 'TRY') {
-    version = `Try Primo: ${__TRY_VERSION__}`
+    version = `Try Wdt: ${__TRY_VERSION__}`
   }
 
 </script>
@@ -45,7 +45,7 @@
       </label>
       <div class="hidden">
         <input type="platform" class="wdt-input" name="platform" value="{window.navigator}">
-        <input type="version" class="wdt-input" name="version" value="{version}  Primo: ___">
+        <input type="version" class="wdt-input" name="version" value="{version}  Wdt: ___">
       </div>
       <PrimaryButton type="submit">Submit</PrimaryButton>
     </form>

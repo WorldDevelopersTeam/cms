@@ -31,7 +31,7 @@
 					<h1>{signing_in ? 'Sign in' : 'Create your account'}</h1>
 					{#if !signing_in}
 						<p>
-							Welcome to your new Primo server! Enter an email address and password you'll use to
+							Welcome to your new Wdt server! Enter an email address and password you'll use to
 							administrate this server.
 						</p>
 					{/if}

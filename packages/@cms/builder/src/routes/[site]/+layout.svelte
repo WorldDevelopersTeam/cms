@@ -1,9 +1,9 @@
 <script>
-	import Primo from '$lib/Primo.svelte'
+	import Wdt from '$lib/Wdt.svelte'
 
 	export let data
 </script>
 
-<Primo {data}>
+<Wdt {data}>
 	<slot />
-</Primo>
+</Wdt>

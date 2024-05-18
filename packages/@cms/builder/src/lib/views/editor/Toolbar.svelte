@@ -8,7 +8,7 @@
 	import sections from '../../stores/data/sections'
 	import { fields as site_fields } from '../../stores/data/site'
 	import { undo_change, redo_change } from '../../stores/actions'
-	import { PrimoButton } from '../../components/buttons'
+	import { WdtButton } from '../../components/buttons'
 	import site from '../../stores/data/site'
 	import { userRole } from '../../stores/app'
 	import {
@@ -73,7 +73,7 @@
 <nav aria-label="toolbar" id="wdt-toolbar" class="wdt-reset">
 	<div class="menu-container">
 		<div class="left">
-			<PrimoButton on:signOut />
+			<WdtButton on:signOut />
 			<div class="buttons">
 				{#each buttons as button}
 					{#if Array.isArray(button)}

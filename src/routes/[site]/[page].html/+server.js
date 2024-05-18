@@ -103,7 +103,7 @@ export const GET = async (event) => {
   <!DOCTYPE html>
   <html lang="${locale}">
     <head>
-      <meta name="generator" content="Primo" />
+      <meta name="generator" content="Wdt" />
       ${res.head}
       <style>${res.css}</style>
     </head>

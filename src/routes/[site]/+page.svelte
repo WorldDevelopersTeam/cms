@@ -1,6 +1,6 @@
 <script>
   import {
-    PrimoPage,
+    WdtPage,
     realtime_subscribe,
     locked_blocks,
   } from '@cms/builder'
@@ -65,7 +65,7 @@
   }
 </script>
 
-<PrimoPage
+<WdtPage
   page={{
     ...data.page,
     sections: data.sections,

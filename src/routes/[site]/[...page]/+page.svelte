@@ -1,10 +1,10 @@
 <script>
-  import { PrimoPage } from '@cms/builder'
+  import { WdtPage } from '@cms/builder'
 
   export let data
 </script>
 
-<PrimoPage
+<WdtPage
   page={{
     ...data.page,
     sections: data.sections,

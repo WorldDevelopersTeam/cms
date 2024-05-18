@@ -15,7 +15,7 @@
       <div class="headings">
         <h1>Your database needs a quick change</h1>
         <h2>
-          A recent update to Primo added the ability to rearrance Blocks in the
+          A recent update to Wdt added the ability to rearrance Blocks in the
           sidebar, but it requires a small change to your database to work
           correctly. This is a one-time change and will not affect your existing
           data.
@@ -49,7 +49,7 @@
           <span>
             Once the query has been successfully executed, refresh this page to
             apply the changes. If all went well, you'll be redirected to your
-            Primo dashboard.
+            Wdt dashboard.
           </span>
         </li>
       </ol>
@@ -59,7 +59,7 @@
         release notes
       </a>
       for more info or get help in the
-      <a target="blank" href="https://discord.gg/RmjYqDq">Primo Discord</a>
+      <a target="blank" href="https://discord.gg/RmjYqDq">Wdt Discord</a>
     </footer>
   </div>
 </div>

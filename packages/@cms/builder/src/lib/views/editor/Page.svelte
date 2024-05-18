@@ -147,7 +147,7 @@
 			console.log('Site symbol')
 			draggable_sections = detail.items
 		} else {
-			console.log('Primo symbol')
+			console.log('Wdt symbol')
 			dragged_symbol.is_wdt_block = true
 			draggable_sections = detail.items.map((item) => {
 				if (item[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {

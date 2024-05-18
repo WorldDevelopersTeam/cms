@@ -1,14 +1,14 @@
 <script>
 	import { loadingSite } from '../../stores/app/misc'
 	import Spinner from '../../components/misc/Spinner.svelte'
-	import PrimoLogo from '../svg/PrimoLogo.svelte'
+	import WdtLogo from '../svg/WdtLogo.svelte'
 </script>
 
 <a class="wdt-button" aria-label="See all sites" href="/" data-sveltekit-reload>
 	{#if $loadingSite}
 		<Spinner />
 	{:else}
-		<PrimoLogo />
+		<WdtLogo />
 	{/if}
 </a>
 

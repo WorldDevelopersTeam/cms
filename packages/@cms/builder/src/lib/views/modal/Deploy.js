@@ -206,7 +206,7 @@ export async function build_site_bundle({ pages, symbols }) {
             <title>Edit site</title>
           </head>
           <body style="margin:0">
-            <h1 style="font-family:sans-serif;text-align:center;">redirecting to Primo server</h1>
+            <h1 style="font-family:sans-serif;text-align:center;">redirecting to Wdt server</h1>
           </body>
         </html>
         `

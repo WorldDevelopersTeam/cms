@@ -131,7 +131,7 @@
 				</div>
 			{:else if duplicatingSite && !wdt_json_valid}
 				<div class="error">
-					<p>Invalid Primo site file</p>
+					<p>Invalid Wdt site file</p>
 				</div>
 			{:else}
 				<Themes on:select={({ detail }) => (selected_theme = detail)} />
