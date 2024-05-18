@@ -14,7 +14,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "workspaces": [
-    "packages/@cms/builder:build"
+    "packages/@cms/builder"
   ],
   "dependencies": {
     "@fontsource/fira-code": "^5.0.5",
