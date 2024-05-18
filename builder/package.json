@@ -23,9 +23,9 @@
 		}
 	},
 	"files": [
-		"dist",
-		"!dist/**/*.test.*",
-		"!dist/**/*.spec.*"
+		"./dist",
+		"!./dist/**/*.test.*",
+		"!./dist/**/*.spec.*"
 	],
 	"peerDependencies": {
 		"@codemirror/autocomplete": "^6.1.0",
