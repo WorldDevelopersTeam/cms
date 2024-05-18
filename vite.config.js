@@ -26,8 +26,7 @@ const config = {
     include: ["@cms/builder"]
   },
   build: {
-    sourcemap: true,
-    outDir: './dist'
+    sourcemap: true
   },
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']
