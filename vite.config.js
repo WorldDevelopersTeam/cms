@@ -19,10 +19,14 @@ const config = {
         c.plugins.splice(ssrManifestPlugin, 1);
       },
       apply: 'build', // or 'serve'
-    }
+    },
+
   ],
   build: {
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      external: ["@cms/builder"]
+    }
   },
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']

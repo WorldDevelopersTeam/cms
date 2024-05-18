@@ -1,5 +1,5 @@
 {
-  "name": "primo-server",
+  "name": "@cms/server",
   "version": "2.0.0--beta.48",
   "scripts": {
     "dev": "vite dev",
@@ -13,10 +13,13 @@
     "lint": "prettier --plugin-search-dir . --check . && eslint .",
     "format": "prettier --plugin-search-dir . --write ."
   },
+  "workspaces": [
+    "packages/cms@builder"
+  ],
   "dependencies": {
+    "@cms/builder": "^0.1.67",
     "@fontsource/fira-code": "^5.0.5",
     "@iconify/svelte": "^2.2.1",
-    "@cms/builder": "file:./deps/builder",
     "@rollup/browser": "^3.28.0",
     "@supabase/auth-helpers-sveltekit": "^0.10.2",
     "@supabase/supabase-js": "^2.31.0",
