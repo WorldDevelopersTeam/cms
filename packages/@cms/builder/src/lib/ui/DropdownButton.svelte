@@ -54,7 +54,7 @@
 
 		.primary-button {
 			width: 100%;
-			/* border: 1.5px solid #35d994; */
+			/* border: 1.5px solid #efefef; */
 			margin-top: var(--PrimaryButton-mt, 0);
 			margin-bottom: var(--PrimaryButton-mb, 0);
 			margin-left: var(--PrimaryButton-ml, 0);
@@ -91,7 +91,7 @@
 
 			&[disabled] {
 				color: #cecece;
-				border: 1px solid #35d994;
+				border: 1px solid #efefef;
 				opacity: 0.2;
 				cursor: not-allowed;
 			}

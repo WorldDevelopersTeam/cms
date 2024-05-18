@@ -530,7 +530,7 @@
 		height: 100%;
 	}
 	.wdt-button.primary {
-		border: 1px solid #35d994;
+		border: 1px solid #efefef;
 		background: transparent;
 	}
 	form {

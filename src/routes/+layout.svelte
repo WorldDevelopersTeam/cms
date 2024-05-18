@@ -63,8 +63,8 @@
 		/* height: 100vh; */
 		/* overflow: hidden; */
 
-		--wdt-color-brand: #dbdbdb;
-		--wdt-color-brand-dark: #717171;
+		--wdt-color-brand: #efefef;
+		--wdt-color-brand-dark: #656565;
 		--wdt-color-white: white;
 		--wdt-color-codeblack: rgb(30, 30, 30);
 		--wdt-color-codeblack-opaque: rgba(30, 30, 30, 0.9);

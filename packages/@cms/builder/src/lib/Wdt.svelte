@@ -149,8 +149,8 @@
 		display: flex;
 	}
 	:global(html) {
-		--wdt-color-brand: #35d994;
-		--wdt-color-brand-dark: #097548;
+		--wdt-color-brand: #efefef;
+		--wdt-color-brand-dark: #656565;
 		--wdt-color-white: white;
 		--wdt-color-codeblack: rgb(30, 30, 30);
 		--wdt-color-codeblack-opaque: rgba(30, 30, 30, 0.9);
@@ -200,8 +200,8 @@
 		--max-width-container: 1900px;
 
 		--ring: 0px 0px 0px 2px var(--wdt-color-brand);
-		--wdt-ring-wdtgreen: 0px 0px 0px 2px var(--wdt-color-brand, #35d994);
-		--wdt-ring-wdtgreen-thin: 0px 0px 0px 1px var(--wdt-color-brand, #35d994);
-		--wdt-ring-wdtgreen-thick: 0px 0px 0px 3px var(--wdt-color-brand, #35d994);
+		--wdt-ring-wdtgreen: 0px 0px 0px 2px var(--wdt-color-brand, #efefef);
+		--wdt-ring-wdtgreen-thin: 0px 0px 0px 1px var(--wdt-color-brand, #efefef);
+		--wdt-ring-wdtgreen-thick: 0px 0px 0px 3px var(--wdt-color-brand, #efefef);
 	}
 </style>
