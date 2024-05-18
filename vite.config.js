@@ -27,6 +27,7 @@ const config = {
   },
   build: {
     sourcemap: true,
+    outDir: './dist'
   },
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']
