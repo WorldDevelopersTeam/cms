@@ -22,8 +22,14 @@ const config = {
     },
 
   ],
+  optimizeDeps: {
+    include: ["@cms/builder"]
+  },
   build: {
     sourcemap: true,
+    commonjsOptions: {
+      include: ["@cms/builder"],
+    },
     rollupOptions: {
       external: ["@cms/builder"]
     }

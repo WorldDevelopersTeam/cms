@@ -14,16 +14,15 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "workspaces": [
-    "packages/*"
+    "packages/@cms/builder"
   ],
   "dependencies": {
-    "@cms/builder": "^0.1.67",
     "@fontsource/fira-code": "^5.0.5",
     "@iconify/svelte": "^2.2.1",
     "@rollup/browser": "^3.28.0",
     "@supabase/auth-helpers-sveltekit": "^0.10.2",
     "@supabase/supabase-js": "^2.31.0",
-    "axios": "^0.26.0",
+    "axios": "^1.6.8",
     "estree-walker": "^3.0.3",
     "lodash-es": "^4.17.21",
     "memfs": "^4.7.7",
@@ -46,8 +45,8 @@
     "js-beautify": "^1.14.9",
     "jszip": "^3.10.1",
     "mousetrap": "^1.6.5",
-    "postcss-nested": "^5.0.6",
     "postcss-atroot": "^0.2.4",
+    "postcss-nested": "^5.0.6",
     "randomstring": "^1.2.3",
     "showdown-highlight": "^3.1.0",
     "svelte": "^3.59.2",
