@@ -7,7 +7,7 @@
   </a>
 </p>
 
-<h3 align="center">World Debuggers Team CMS</h3>
+<h3 align="center">World Developers Team CMS</h3>
 <p align="center">Content management system with static site generation.</p>
 
 <p align="center">
