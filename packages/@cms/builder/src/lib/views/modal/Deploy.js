@@ -218,6 +218,10 @@ export async function build_site_bundle({ pages, symbols }) {
 			{
 				path: 'CNAME',
 				content: site.url
+			},
+			{
+				path: '.nojekyll',
+				content: ''
 			}
 		]
 	}
