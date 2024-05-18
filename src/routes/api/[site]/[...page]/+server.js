@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
-import { languages } from '@primocms/builder'
+import { languages } from '@cms/builder'
 
 export async function GET({ url, params }) {
   const pages = params.page?.split('/') || []

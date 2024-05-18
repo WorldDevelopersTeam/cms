@@ -1,5 +1,5 @@
 <script>
-  import { PrimoPage } from '@primocms/builder'
+  import { PrimoPage } from '@cms/builder'
 
   export let data
 </script>

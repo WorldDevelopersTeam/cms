@@ -84,7 +84,7 @@ const github = {
   },
   /**
    * @param {PushSiteParams} params
-   * @returns {Promise<import('@primocms/builder/src/lib/deploy.js').DeploymentResponse>}
+   * @returns {Promise<import('@cms/builder/src/lib/deploy.js').DeploymentResponse>}
    */
   push_site: async function ({ repo_name, files, message, token }) {
     const headers = {
@@ -174,7 +174,7 @@ const gitlab = {
   },
   /**
    * @param {PushSiteParams} params
-   * @returns {Promise<import('@primocms/builder/src/lib/deploy.js').DeploymentResponse>}
+   * @returns {Promise<import('@cms/builder/src/lib/deploy.js').DeploymentResponse>}
    */
   push_site: async function ({ repo_name, files, message, token }) {
     const project_id = encodeURIComponent(repo_name)
@@ -247,7 +247,7 @@ const git_providers = {
 /**
  * @typedef {Object} PushSiteParams
  * @property {string} repo_name - The name of the repository where the files will be stored.
- * @property {Array<import('@primocms/builder/src/lib/deploy.js').File>} files - The files to be uploaded to the repo
+ * @property {Array<import('@cms/builder/src/lib/deploy.js').File>} files - The files to be uploaded to the repo
  * @property {string} message - The commit message
  * @property {string} token - The user's Public Access Token
  */

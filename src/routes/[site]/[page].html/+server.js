@@ -2,7 +2,7 @@ import { redirect, text } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import { html_server } from '../../../compiler/cloud-workers/server-compiler.js'
 import postcss from '../../../compiler/cloud-workers/server-postcss.js'
-import { getPageData, get_content_with_static } from '@primocms/builder'
+import { getPageData, get_content_with_static } from '@cms/builder'
 
 export const GET = async (event) => {
   const { url } = event
