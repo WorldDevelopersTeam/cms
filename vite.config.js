@@ -27,12 +27,6 @@ const config = {
   },
   build: {
     sourcemap: true,
-    commonjsOptions: {
-      include: ["@cms/builder"],
-    },
-    rollupOptions: {
-      external: ["@cms/builder"]
-    }
   },
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']
