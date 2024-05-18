@@ -1,5 +1,5 @@
 Todo: 
 
-- Allowlist (e.g. 'primo-toolbar')
+- Allowlist (e.g. 'wdt-toolbar')
 - Set prefix (e.g. `__` or `__mangled__`)
 - Handle IDs

@@ -73,18 +73,18 @@
       align-items: center;
       max-width: 28rem;
       padding: 0.5rem 0.75rem;
-      border-radius: var(--primo-border-radius);
-      box-shadow: var(--primo-ring-brand);
+      border-radius: var(--wdt-border-radius);
+      box-shadow: var(--wdt-ring-brand);
 
       &:hover {
-        background: var(--primo-color-brand);
+        background: var(--wdt-color-brand);
       }
 
       &.selected {
-        outline-color: var(--primo-color-brand);
+        outline-color: var(--wdt-color-brand);
         pointer-events: none;
         cursor: default;
-        background: var(--primo-color-gray-7);
+        background: var(--wdt-color-gray-7);
       }
 
       svg {

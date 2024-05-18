@@ -101,7 +101,7 @@
 		z-index: 50;
 	}
 	.iframe-container {
-		/* background: var(--primo-color-white); */
+		/* background: var(--wdt-color-white); */
 		/* position: absolute; */
 		inset: 0;
 		/* height: 100%; */

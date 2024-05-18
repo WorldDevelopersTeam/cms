@@ -43,11 +43,11 @@
       select {
         border: 1px solid var(--color-gray-8);
         background: transparent;
-        border-radius: var(--primo-border-radius);
+        border-radius: var(--wdt-border-radius);
         padding: 0.25rem 0.5rem;
 
         &:focus {
-          outline: 1px solid var(--primo-color-brand);
+          outline: 1px solid var(--wdt-color-brand);
         }
       }
     }

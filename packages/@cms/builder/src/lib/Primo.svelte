@@ -103,7 +103,7 @@
 		{#if showing_sidebar}
 			<Sidebar />
 		{:else}
-			<div class="expand primo-reset">
+			<div class="expand wdt-reset">
 				<IconButton on:click={reset} icon="tabler:layout-sidebar-left-expand" />
 			</div>
 		{/if}
@@ -149,16 +149,16 @@
 		display: flex;
 	}
 	:global(html) {
-		--primo-color-brand: #35d994;
-		--primo-color-brand-dark: #097548;
-		--primo-color-white: white;
-		--primo-color-codeblack: rgb(30, 30, 30);
-		--primo-color-codeblack-opaque: rgba(30, 30, 30, 0.9);
+		--wdt-color-brand: #35d994;
+		--wdt-color-brand-dark: #097548;
+		--wdt-color-white: white;
+		--wdt-color-codeblack: rgb(30, 30, 30);
+		--wdt-color-codeblack-opaque: rgba(30, 30, 30, 0.9);
 
-		--primo-border-radius: 4px;
+		--wdt-border-radius: 4px;
 
-		--primo-color-black: rgb(17, 17, 17);
-		--primo-color-black-opaque: rgba(17, 17, 17, 0.95);
+		--wdt-color-black: rgb(17, 17, 17);
+		--wdt-color-black-opaque: rgba(17, 17, 17, 0.95);
 
 		--color-gray-1: rgb(245, 245, 245);
 		--color-gray-2: rgb(229, 229, 229);
@@ -186,7 +186,7 @@
 		--title-font-weight: 700;
 
 		--button-color: #fafafa;
-		--primo-button-background: #37383a;
+		--wdt-button-background: #37383a;
 		--button-hover-color: #7d8082;
 
 		box-shadow: 0 0 #0000 0 0 #0000, 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -199,9 +199,9 @@
 		--padding-container: 15px;
 		--max-width-container: 1900px;
 
-		--ring: 0px 0px 0px 2px var(--primo-color-brand);
-		--primo-ring-primogreen: 0px 0px 0px 2px var(--primo-color-brand, #35d994);
-		--primo-ring-primogreen-thin: 0px 0px 0px 1px var(--primo-color-brand, #35d994);
-		--primo-ring-primogreen-thick: 0px 0px 0px 3px var(--primo-color-brand, #35d994);
+		--ring: 0px 0px 0px 2px var(--wdt-color-brand);
+		--wdt-ring-wdtgreen: 0px 0px 0px 2px var(--wdt-color-brand, #35d994);
+		--wdt-ring-wdtgreen-thin: 0px 0px 0px 1px var(--wdt-color-brand, #35d994);
+		--wdt-ring-wdtgreen-thick: 0px 0px 0px 3px var(--wdt-color-brand, #35d994);
 	}
 </style>

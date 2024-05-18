@@ -16,7 +16,7 @@
         <li class="xyz-in" class:is-active={activeTab === tab}>
           <button
             on:click={() => (activeTab = tab)}
-            class:text-primored={tab.highlighted}
+            class:text-wdtred={tab.highlighted}
             id={tab.id ? `tab-${tab.id}` : null}
           >
             {#if tab.icon}<i class="fas fa-{tab.icon}" />{/if}
@@ -55,9 +55,9 @@
           border-bottom: 2px solid transparent;
 
           &.is-active {
-            background: var(--primo-color-codeblack);
-            color: var(--primo-color-white);
-            border-color: var(--primo-color-codeblack);
+            background: var(--wdt-color-codeblack);
+            color: var(--wdt-color-white);
+            border-color: var(--wdt-color-codeblack);
           }
 
           button {
@@ -85,7 +85,7 @@
           flex: 1;
           border-bottom: 2px solid transparent;
           &.is-active {
-            border-color: var(--primo-color-brand);
+            border-color: var(--wdt-color-brand);
           }
 
           button {

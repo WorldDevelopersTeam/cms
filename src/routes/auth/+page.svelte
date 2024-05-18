@@ -18,7 +18,7 @@
 </script>
 
 {#key signing_in}
-	<main in:fade class="primo-reset">
+	<main in:fade class="wdt-reset">
 		<div class="left">
 			<div class="logo">
 				<div class="logo-container">

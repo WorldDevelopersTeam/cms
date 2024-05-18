@@ -70,7 +70,7 @@
 	if (browser) DEBUGGING = getContext('DEBUGGING')
 </script>
 
-<nav aria-label="toolbar" id="primo-toolbar" class="primo-reset">
+<nav aria-label="toolbar" id="wdt-toolbar" class="wdt-reset">
 	<div class="menu-container">
 		<div class="left">
 			<PrimoButton on:signOut />
@@ -112,7 +112,7 @@
 			<slot />
 			<LocaleSelector />
 			<ToolbarButton
-				type="primo"
+				type="wdt"
 				label="Deploy"
 				active={false}
 				on:click={() => modal.show('DEPLOY', {}, { maxWidth: '450px', hideLocaleSelector: true })}
@@ -123,7 +123,7 @@
 </nav>
 
 <style lang="postcss">
-	#primo-toolbar {
+	#wdt-toolbar {
 		position: fixed;
 		left: 0;
 		right: 0;

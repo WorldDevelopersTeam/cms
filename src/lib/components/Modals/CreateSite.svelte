@@ -66,7 +66,7 @@
 	}
 
 	let duplicatingSite = false
-	let primo_json_valid = true
+	let wdt_json_valid = true
 	function readJsonFile({ target }) {
 		loading = true
 		duplicatingSite = true
@@ -95,21 +95,21 @@
 
 					preview = page.html
 				} else {
-					primo_json_valid = false
+					wdt_json_valid = false
 				}
 				loading = false
 			} catch (e) {
 				console.error({ e })
-				primo_json_valid = false
+				wdt_json_valid = false
 			}
 		}
 		reader.readAsText(target.files[0])
 	}
 </script>
 
-<main class="primo-reset primo-modal">
+<main class="wdt-reset wdt-modal">
 	{#if !finishing}
-		<h1 class="primo-heading-xl">Create a site</h1>
+		<h1 class="wdt-heading-xl">Create a site</h1>
 		<form on:submit|preventDefault={createSite}>
 			<div class="name-url">
 				<TextField
@@ -125,11 +125,11 @@
 					on:focus={() => (siteIDFocused = true)}
 				/>
 			</div>
-			{#if duplicatingSite && primo_json_valid}
+			{#if duplicatingSite && wdt_json_valid}
 				<div class="site-thumbnail">
 					<SiteThumbnail {preview} />
 				</div>
-			{:else if duplicatingSite && !primo_json_valid}
+			{:else if duplicatingSite && !wdt_json_valid}
 				<div class="error">
 					<p>Invalid Primo site file</p>
 				</div>
@@ -139,9 +139,9 @@
 			<footer>
 				<div id="upload-json">
 					<label class="container">
-						<input on:change={readJsonFile} type="file" id="primo-json" accept=".json" />
+						<input on:change={readJsonFile} type="file" id="wdt-json" accept=".json" />
 						<Icon icon="carbon:upload" />
-						<span>Duplicate from primo.json</span>
+						<span>Duplicate from wdt.json</span>
 					</label>
 				</div>
 			</footer>
@@ -149,7 +149,7 @@
 				<PrimaryButton
 					type="submit"
 					label={duplicatingSite ? 'Duplicate Site' : 'Create Site'}
-					disabled={!canCreateSite && primo_json_valid}
+					disabled={!canCreateSite && wdt_json_valid}
 					{loading}
 				/>
 			</div>
@@ -166,8 +166,8 @@
 </main>
 
 <style lang="postcss">
-	.primo-modal {
-		max-width: var(--primo-max-width-1);
+	.wdt-modal {
+		max-width: var(--wdt-max-width-1);
 
 		form {
 			.name-url {
@@ -176,7 +176,7 @@
 			}
 
 			.submit {
-				--color-link: var(--color-primored);
+				--color-link: var(--color-wdtred);
 			}
 		}
 	}

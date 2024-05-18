@@ -227,7 +227,7 @@
 		padding-right: 0.5rem;
 		padding-bottom: 1rem; */
 		color: var(--color-gray-2);
-		background: var(--primo-color-black);
+		background: var(--wdt-color-black);
 		min-width: 23rem;
 		height: 100%;
 		overflow-y: auto;

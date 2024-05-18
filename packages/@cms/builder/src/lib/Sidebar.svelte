@@ -87,7 +87,7 @@
 		fileSaver.saveAs(blob, `${symbol.name || symbol.id}.json`)
 	}
 
-	async function get_primo_blocks() {
+	async function get_wdt_blocks() {
 		const { data } = await axios.get(
 			'https://raw.githubusercontent.com/mateomorris/primo-library/main/primo.json'
 		)
@@ -120,25 +120,25 @@
 	let dragging = null
 </script>
 
-<div class="sidebar primo-reset">
+<div class="sidebar wdt-reset">
 	<div class="tabs">
 		<button on:click={() => (active_tab = 'site')} class:active={active_tab === 'site'}>
 			Site Blocks
 		</button>
-		<button on:click={() => (active_tab = 'primo')} class:active={active_tab === 'primo'}>
+		<button on:click={() => (active_tab = 'wdt')} class:active={active_tab === 'wdt'}>
 			Primo Blocks
 		</button>
 	</div>
 	{#if active_tab === 'site'}
 		{#if $symbols.length > 0}
-			<div class="primo-buttons">
+			<div class="wdt-buttons">
 				{#if $userRole === 'DEV'}
-					<button class="primo-button" on:click={create_symbol}>
+					<button class="wdt-button" on:click={create_symbol}>
 						<Icon icon="mdi:plus" />
 						<span>Create</span>
 					</button>
 				{/if}
-				<label class="primo-button">
+				<label class="wdt-button">
 					<input on:change={upload_symbol} type="file" accept=".json" />
 					<Icon icon="mdi:upload" />
 					<span>Upload</span>
@@ -179,12 +179,12 @@
 				<p>You don't have any Blocks in your site yet</p>
 				<p>Create a Block from scratch, upload an existing Block, or use the Primo Blocks.</p>
 			</div>
-			<div class="primo-buttons">
-				<button class="primo-button" on:click={create_symbol}>
+			<div class="wdt-buttons">
+				<button class="wdt-button" on:click={create_symbol}>
 					<Icon icon="mdi:plus" />
 					<span>Create</span>
 				</button>
-				<label class="primo-button">
+				<label class="wdt-button">
 					<input on:change={upload_symbol} type="file" accept=".json" />
 					<Icon icon="mdi:upload" />
 					<span>Upload</span>
@@ -192,11 +192,11 @@
 			</div>
 		{/if}
 	{:else}
-		{#await get_primo_blocks() then primo_blocks}
+		{#await get_wdt_blocks() then wdt_blocks}
 			<div
 				class="symbols"
 				use:dndzone={{
-					items: primo_blocks,
+					items: wdt_blocks,
 					flipDurationMs,
 					dropTargetStyle: '',
 					centreDraggedOnCursor: true,
@@ -205,7 +205,7 @@
 				on:consider={consider_dnd}
 				on:finalize={finalize_dnd}
 			>
-				{#each primo_blocks as symbol, i}
+				{#each wdt_blocks as symbol, i}
 					<Sidebar_Symbol
 						{symbol}
 						controls_enabled={false}
@@ -253,7 +253,7 @@
 
 			&.active {
 				color: #dadada;
-				border-bottom: 2px solid var(--primo-color-brand);
+				border-bottom: 2px solid var(--wdt-color-brand);
 			}
 		}
 	}
@@ -269,12 +269,12 @@
 		}
 	}
 
-	.primo-buttons {
+	.wdt-buttons {
 		display: flex;
 		gap: 0.5rem;
 		padding-inline: 1.5rem;
 
-		.primo-button {
+		.wdt-button {
 			padding: 0.25rem 0.5rem;
 			color: #b6b6b6;
 			background: #292929;

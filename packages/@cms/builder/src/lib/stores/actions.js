@@ -225,7 +225,7 @@ export const active_page = {
 		})
 		update_page_preview()
 	},
-	add_primo_block: async (symbol, position) => {
+	add_wdt_block: async (symbol, position) => {
 		const original_sections = _.cloneDeep(get(stores.sections))
 
 		const new_symbol = {

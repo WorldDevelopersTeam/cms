@@ -82,7 +82,7 @@
 
 				&:focus {
 					outline: 0;
-					border-color: var(--primo-color-brand);
+					border-color: var(--wdt-color-brand);
 				}
 
 				&::placeholder {

@@ -43,7 +43,7 @@
 			transition: 0.1s;
 
 			&.active {
-				border-bottom-color: var(--primo-color-brand);
+				border-bottom-color: var(--wdt-color-brand);
 			}
 		}
 	}

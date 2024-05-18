@@ -22,7 +22,7 @@
 {#if !submitted}
   <main>
     <h1>Feedback</h1>
-    <p>Let us know if something broke, if there's something you want to do that you can't do (yet), or even if you're just enjoying primo.</p>
+    <p>Let us know if something broke, if there's something you want to do that you can't do (yet), or even if you're just enjoying wdt.</p>
     <form bind:this={form} on:submit|preventDefault={() => {
       var data = new window.FormData(form);
       axios.post('https://formspree.io/f/xknywogb', data).then(res => {
@@ -41,11 +41,11 @@
       </label>
       <label>
         <span>Email address (if you'd like us to follow up)</span>
-        <input type="email" class="primo-input" name="email">
+        <input type="email" class="wdt-input" name="email">
       </label>
       <div class="hidden">
-        <input type="platform" class="primo-input" name="platform" value="{window.navigator}">
-        <input type="version" class="primo-input" name="version" value="{version}  Primo: ___">
+        <input type="platform" class="wdt-input" name="platform" value="{window.navigator}">
+        <input type="version" class="wdt-input" name="version" value="{version}  Primo: ___">
       </div>
       <PrimaryButton type="submit">Submit</PrimaryButton>
     </form>
@@ -58,7 +58,7 @@
 {:else if submitted && !successful}
   <main>
     <h1>Unsuccessful</h1>
-    <p>For some reason we weren't able to submit your feedback. Please let us know by emailing contact@primo.af</p>
+    <p>For some reason we weren't able to submit your feedback. Please let us know by emailing contact@wdt.af</p>
   </main>
 {/if}
 

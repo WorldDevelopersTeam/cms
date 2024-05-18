@@ -58,7 +58,7 @@
 </script>
 
 {#if $visible}
-  <div class="modal mousetrap primo-reset" transition:fade={{ duration: 100 }}>
+  <div class="modal mousetrap wdt-reset" transition:fade={{ duration: 100 }}>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
       class="modal-background"
@@ -88,7 +88,7 @@
   .modal-background {
     inset: 0;
     position: absolute;
-    background: var(--primo-color-black);
+    background: var(--wdt-color-black);
     opacity: 0.95;
     cursor: pointer;
     transition: opacity 0.1s;
@@ -112,7 +112,7 @@
     align-items: center;
     margin: 0 auto;
     position: relative;
-    border-radius: var(--primo-border-radius);
+    border-radius: var(--wdt-border-radius);
     max-height: calc(100vh - 2rem);
     background: var(--color-gray-9);
   }

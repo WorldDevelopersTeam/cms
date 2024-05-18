@@ -276,7 +276,7 @@
 		flex-direction: column;
 
 		.error-container {
-			color: var(--primo-color-white);
+			color: var(--wdt-color-white);
 			background: red;
 			padding: 5px;
 		}
@@ -305,14 +305,14 @@
 	iframe {
 		border: 0;
 		transition: opacity 0.4s;
-		background: var(--primo-color-white);
+		background: var(--wdt-color-white);
 		height: 100%;
 		width: 100%;
 		opacity: 1;
 		transform-origin: top left;
 	}
 	.preview-container {
-		background: var(--primo-color-white);
+		background: var(--wdt-color-white);
 		border: 2px solid var(--color-gray-8);
 		overflow: hidden;
 		transition: border-color 0.2s;
@@ -328,7 +328,7 @@
 		flex-wrap: wrap;
 
 		.preview-width {
-			background: var(--primo-color-black);
+			background: var(--wdt-color-black);
 			font-weight: 500;
 			z-index: 10;
 			display: flex;

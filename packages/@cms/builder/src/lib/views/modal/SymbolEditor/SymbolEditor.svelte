@@ -351,7 +351,7 @@
 <style lang="postcss">
 	main {
 		display: flex; /* to help w/ positioning child items in code view */
-		background: var(--primo-color-black);
+		background: var(--wdt-color-black);
 		color: var(--color-gray-2);
 		padding: 0 0.5rem;
 		flex: 1;

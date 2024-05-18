@@ -15,7 +15,7 @@
 <style lang="postcss">
   main {
     padding: 0.5rem 1rem;
-    background: var(--primo-color-black);
+    background: var(--wdt-color-black);
     overflow-y: scroll;
   }
 </style>

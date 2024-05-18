@@ -176,7 +176,7 @@
 
 				div.name,
 				div.url {
-					color: var(--primo-color-brand);
+					color: var(--wdt-color-brand);
 
 					span {
 						color: var(--color-gray-5);
@@ -208,7 +208,7 @@
 			gap: 0.5rem;
 
 			.edit.active {
-				color: var(--primo-color-brand);
+				color: var(--wdt-color-brand);
 			}
 		}
 	}
@@ -221,7 +221,7 @@
 	ul.page-list {
 		margin: 0 1rem 1rem 1rem;
 		background: #323334;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 
 		li:not(:last-child) {
 			/* border-bottom: 1px solid #222; */

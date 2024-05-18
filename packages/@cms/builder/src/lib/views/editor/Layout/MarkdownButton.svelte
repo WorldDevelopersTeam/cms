@@ -23,13 +23,13 @@
     }
 
     &:hover {
-      background: var(--primo-color-brand);
+      background: var(--wdt-color-brand);
       color: var(--color-gray-1);
     }
 
     &.active {
-      background: var(--primo-color-brand);
-      color: var(--primo-color-white);
+      background: var(--wdt-color-brand);
+      color: var(--wdt-color-white);
     }
   }
 

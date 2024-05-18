@@ -148,12 +148,12 @@
 			draggable_sections = detail.items
 		} else {
 			console.log('Primo symbol')
-			dragged_symbol.is_primo_block = true
+			dragged_symbol.is_wdt_block = true
 			draggable_sections = detail.items.map((item) => {
 				if (item[SHADOW_ITEM_MARKER_PROPERTY_NAME]) {
 					// currently dragged item
-					console.log('adding primo symbol', item)
-					return { ...item, primo_symbol: item }
+					console.log('adding wdt symbol', item)
+					return { ...item, wdt_symbol: item }
 				} else return item
 			})
 		}
@@ -161,8 +161,8 @@
 
 	async function finalize_dnd() {
 		moving = true
-		if (dragged_symbol.is_primo_block) {
-			active_page.add_primo_block(dragged_symbol, dragged_symbol.index)
+		if (dragged_symbol.is_wdt_block) {
+			active_page.add_wdt_block(dragged_symbol, dragged_symbol.index)
 		} else {
 			active_page.add_block(dragged_symbol, dragged_symbol.index)
 		}
@@ -354,7 +354,7 @@
 			{#if block[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
 				<div class="block-placeholder">
 					<ComponentNode
-						primo_symbol={block.primo_symbol}
+						wdt_symbol={block.wdt_symbol}
 						block={{
 							...block,
 							symbol: block.id
@@ -400,7 +400,7 @@
 		z-index: 5;
 		pointer-events: none;
 
-		--Spinner-color: var(--primo-color-brand);
+		--Spinner-color: var(--wdt-color-brand);
 		--Spinner-color-opaque: rgba(248, 68, 73, 0.2);
 	}
 	#page {

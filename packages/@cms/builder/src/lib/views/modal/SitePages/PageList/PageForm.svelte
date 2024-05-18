@@ -85,7 +85,7 @@
     }
 
     button {
-      border: 1px solid var(--primo-color-brand);
+      border: 1px solid var(--wdt-color-brand);
       border-radius: 0.25rem;
       padding: 9px 0.75rem;
       margin-top: 23px;

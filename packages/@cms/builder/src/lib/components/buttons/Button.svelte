@@ -35,15 +35,15 @@
     font-weight: 400;
     font-size: 0.875rem;
 
-    color: var(--primo-color-white);
+    color: var(--wdt-color-white);
     transition: background 0.1s, color 0.1s, box-shadow 0.1s;
     margin: var(--space-y, 0) var(--space-x, 0);
 
     &.primary {
-      box-shadow: var(--primo-ring-primogreen-thin);
+      box-shadow: var(--wdt-ring-wdtgreen-thin);
 
       &:hover {
-        box-shadow: var(--primo-ring-primogreen-thick);
+        box-shadow: var(--wdt-ring-wdtgreen-thick);
       }
     }
 
@@ -51,7 +51,7 @@
       background: var(--color-gray-8);
 
       &:hover {
-        box-shadow: var(--primo-ring-primogreen);
+        box-shadow: var(--wdt-ring-wdtgreen);
       }
     }
   }

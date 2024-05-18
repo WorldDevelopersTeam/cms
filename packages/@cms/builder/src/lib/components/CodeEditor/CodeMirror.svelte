@@ -45,7 +45,7 @@
 	export let style = ''
 	export let debounce = false
 	export let selection = 0
-	export let docs = 'https://docs.primo.so/development'
+	export let docs = 'https://docs.wdt.so/development'
 
 	const dispatch = createEventDispatcher()
 
@@ -293,7 +293,7 @@
 
 	:global(.ͼo .cm-tooltip-autocomplete > ul > li .cm-completionLabel) {
 		padding: 3px 8px;
-		border-right: 1px solid var(--primo-color-brand);
+		border-right: 1px solid var(--wdt-color-brand);
 		color: white;
 		font-size: 0.75rem;
 		font-family: 'Fira Code';

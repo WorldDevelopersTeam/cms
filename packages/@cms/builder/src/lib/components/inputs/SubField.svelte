@@ -69,7 +69,7 @@
     transition: border-color 0.2s;
   }
   :global(.input-group > div input:focus) {
-    border-color: var(----primo-color-brand);
+    border-color: var(----wdt-color-brand);
   }
 
 </style>

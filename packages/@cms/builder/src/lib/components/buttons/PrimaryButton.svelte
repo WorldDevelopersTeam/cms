@@ -53,12 +53,12 @@
     font-weight: 500;
 
     &:hover {
-      box-shadow: var(--primo-ring-primogreen-thick);
+      box-shadow: var(--wdt-ring-wdtgreen-thick);
       /* background: var(
         --PrimaryButton-bg-hover,
-        var(--primo-color-brand-dark)
+        var(--wdt-color-brand-dark)
       );
-      color: var(--PrimaryButton-color-hover, var(--primo-color-white)); */
+      color: var(--PrimaryButton-color-hover, var(--wdt-color-white)); */
     }
 
     &[disabled] {

@@ -27,13 +27,13 @@
 
 <style lang="postcss">
   .theme-thumbnail {
-    border-radius: var(--primo-border-radius);
+    border-radius: var(--wdt-border-radius);
     background: var(--color-gray-8);
     overflow: hidden;
     transition: 0.1s box-shadow;
 
     &.selected {
-      box-shadow: 0px 0px 0px 2px var(--primo-color-brand);
+      box-shadow: 0px 0px 0px 2px var(--wdt-color-brand);
     }
 
     &:hover {

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Tell us about something broken in primo
+about: Tell us about something broken in wdt
 title: ''
 labels: ''
 assignees: ''

@@ -22,8 +22,8 @@ export const iframePreview = (locale = 'en') => `
           } else if (source) {
             const withLogs = \`
               const channel = new BroadcastChannel('component_preview');
-              const primoLog = console ? console.log.bind(console) : null;
-              const primoError = console ? console.error.bind(console) : null;
+              const wdtLog = console ? console.log.bind(console) : null;
+              const wdtError = console ? console.error.bind(console) : null;
               function postMessage(logs) {
                 channel.postMessage({
                   event: 'SET_CONSOLE_LOGS',
@@ -31,8 +31,8 @@ export const iframePreview = (locale = 'en') => `
                 });
               }
               channel.postMessage({ event: 'BEGIN' });
-              if (primoLog) console.log = (...args) => { try {postMessage(...args)}catch(e){postMessage('Could not print ' + typeof(args) + '. See in console.')}; primoLog(...args); };
-              if (primoLog) console.error = (...args) => { try {postMessage(...args)}catch(e){postMessage('Could not print ' + typeof(args) + '. See in console.')}; primoError(...args); };
+              if (wdtLog) console.log = (...args) => { try {postMessage(...args)}catch(e){postMessage('Could not print ' + typeof(args) + '. See in console.')}; wdtLog(...args); };
+              if (wdtLog) console.error = (...args) => { try {postMessage(...args)}catch(e){postMessage('Could not print ' + typeof(args) + '. See in console.')}; wdtError(...args); };
               \` + source;
             const blob = new Blob([withLogs], { type: 'text/javascript' });
             const url = URL.createObjectURL(blob);

@@ -32,9 +32,9 @@
 	const dispatch = createEventDispatcher()
 
 	export let block
-	export let primo_symbol = null
+	export let wdt_symbol = null
 
-	$: symbol = primo_symbol || $symbols.find((symbol) => symbol.id === block.symbol)
+	$: symbol = wdt_symbol || $symbols.find((symbol) => symbol.id === block.symbol)
 
 	let node
 
@@ -507,13 +507,13 @@
 </script>
 
 {#if image_editor_is_visible}
-	<button in:fade={{ duration: 100 }} class="primo-reset image-editor" bind:this={image_editor}>
+	<button in:fade={{ duration: 100 }} class="wdt-reset image-editor" bind:this={image_editor}>
 		<Icon icon="uil:image-upload" />
 	</button>
 {/if}
 
 {#if link_editor_is_visible}
-	<div in:fade={{ duration: 100 }} class="primo-reset link-editor" bind:this={link_editor}>
+	<div in:fade={{ duration: 100 }} class="wdt-reset link-editor" bind:this={link_editor}>
 		<button on:click={() => (link_editor_is_visible = false)}>
 			<Icon icon="ic:round-close" />
 		</button>
@@ -533,7 +533,7 @@
   </pre>
 {/if}
 
-<div class="menu floating-menu primo-reset" bind:this={floatingMenu}>
+<div class="menu floating-menu wdt-reset" bind:this={floatingMenu}>
 	{#if active_editor}
 		<MarkdownButton
 			icon="heading"
@@ -568,7 +568,7 @@
 		/>
 	{/if}
 </div>
-<div class="menu bubble-menu primo-reset" bind:this={bubbleMenu}>
+<div class="menu bubble-menu wdt-reset" bind:this={bubbleMenu}>
 	{#if active_editor}
 		<MarkdownButton
 			icon="link"
@@ -609,7 +609,7 @@
 	pre {
 		margin: 0;
 		padding: 1rem;
-		background: var(--primo-color-black);
+		background: var(--wdt-color-black);
 		color: var(--color-gray-3);
 		border: 1px solid var(--color-gray-6);
 	}
@@ -625,15 +625,15 @@
 	.bubble-menu {
 		overflow: hidden;
 		background-color: var(--color-gray-9);
-		color: var(--primo-color-white);
+		color: var(--wdt-color-white);
 		/* border-bottom-width: 2px; */
-		border-color: var(--primo-color-brand);
+		border-color: var(--wdt-color-brand);
 	}
 	.floating-menu {
 		overflow: hidden;
 		transform: translateY(-0.5rem);
 		color: var(--color-gray-8);
-		background-color: var(--primo-color-white);
+		background-color: var(--wdt-color-white);
 	}
 	.image-editor {
 		position: fixed;

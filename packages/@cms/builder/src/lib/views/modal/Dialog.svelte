@@ -12,7 +12,7 @@
   let value = ''
 </script>
 
-<main class="primo-reset">
+<main class="wdt-reset">
   {#if !options.disableClose}
     <header>
       <button on:click={() => modal.hide()}>
@@ -55,9 +55,9 @@
 
 <style lang="postcss">
   main {
-    color: var(--primo-color-white);
-    background: var(--primo-color-black);
-    border-radius: var(--primo-border-radius);
+    color: var(--wdt-color-white);
+    background: var(--wdt-color-black);
+    border-radius: var(--wdt-border-radius);
     display: flex;
     flex-direction: column;
     margin: 0 auto;

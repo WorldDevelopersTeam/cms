@@ -19,8 +19,8 @@
 
 <style lang="postcss">
   input {
-    outline-color: var(--primo-color-brand);
-    background: var(--primo-color-black);
+    outline-color: var(--wdt-color-brand);
+    background: var(--wdt-color-black);
     padding: 0.5rem;
     border-bottom: 2px solid rgb(245, 245, 245);
   }

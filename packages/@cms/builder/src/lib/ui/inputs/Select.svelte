@@ -48,12 +48,12 @@
 
     select {
       height: 100%;
-      /* outline-color: var(--primo-color-brand); */
+      /* outline-color: var(--wdt-color-brand); */
       background: #1f1f1f;
       padding: 0.5rem;
       /* border: 2px solid var(--color-gray-2); */
       border: 1px solid #404040;
-      border-radius: var(--primo-border-radius);
+      border-radius: var(--wdt-border-radius);
       font-size: 1rem;
       color: #cecece;
     }

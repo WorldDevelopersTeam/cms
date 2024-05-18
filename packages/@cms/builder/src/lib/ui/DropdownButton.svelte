@@ -75,18 +75,18 @@
 				border-bottom-right-radius: var(--PrimaryButton-round-br, 0.25rem);
 
 				&:hover {
-					/* box-shadow: var(--primo-ring-primogreen-thin); */
-					color: var(--primo-color-brand);
+					/* box-shadow: var(--wdt-ring-wdtgreen-thin); */
+					color: var(--wdt-color-brand);
 				}
 			}
 
 			&:hover {
-				/* box-shadow: var(--primo-ring-primogreen-thick); */
+				/* box-shadow: var(--wdt-ring-wdtgreen-thick); */
 				/* background: var(
         --PrimaryButton-bg-hover,
-        var(--primo-color-brand-dark)
+        var(--wdt-color-brand-dark)
       );
-      color: var(--PrimaryButton-color-hover, var(--primo-color-white)); */
+      color: var(--PrimaryButton-color-hover, var(--wdt-color-white)); */
 			}
 
 			&[disabled] {
@@ -111,7 +111,7 @@
 			&:hover {
 				position: relative;
 				z-index: 1;
-				box-shadow: var(--primo-ring-primogreen-thin);
+				box-shadow: var(--wdt-ring-wdtgreen-thin);
 			}
 		}
 
@@ -119,7 +119,7 @@
 			position: absolute;
 			top: 100%;
 			width: 100%;
-			background: var(--primo-color-black);
+			background: var(--wdt-color-black);
 			opacity: 0;
 
 			.child-button {

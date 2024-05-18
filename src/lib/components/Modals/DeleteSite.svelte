@@ -19,7 +19,7 @@
   }
 </script>
 
-<main class="primo-reset primo-modal">
+<main class="wdt-reset wdt-modal">
   {#if !finishing}
     <h2>Delete {site.name}</h2>
     <p>
@@ -67,8 +67,8 @@
 </main>
 
 <style lang="postcss">
-  .primo-modal {
-    max-width: var(--primo-max-width-1);
+  .wdt-modal {
+    max-width: var(--wdt-max-width-1);
     display: grid;
     gap: 1.5rem;
 
@@ -84,7 +84,7 @@
       }
 
       .submit {
-        --color-link: var(--color-primored);
+        --color-link: var(--color-wdtred);
       }
     }
   }

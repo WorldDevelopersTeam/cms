@@ -10,7 +10,7 @@
 	import { createEventDispatcher, onDestroy, tick } from 'svelte'
 	import NonExistantField from './EmptyField.svelte'
 
-	// idb crashes chrome (try primo, server)
+	// idb crashes chrome (try wdt, server)
 	import * as idb from 'idb-keyval'
 	const dispatch = createEventDispatcher()
 
@@ -164,7 +164,7 @@
 						{/if}
 						<Icon icon={visibleRepeaters[subfieldID] ? 'ph:caret-up-bold' : 'ph:caret-down-bold'} />
 					</button>
-					<div class="primo-buttons">
+					<div class="wdt-buttons">
 						{#if i !== 0}
 							<button title="Move {singularLabel} up" on:click={() => moveRepeaterItem(i, 'up')}>
 								<Icon icon="mdi:arrow-up" />
@@ -278,7 +278,7 @@
 			align-items: center;
 			color: var(--color-gray-2);
 
-			.primo-buttons {
+			.wdt-buttons {
 				white-space: nowrap;
 			}
 
@@ -300,19 +300,19 @@
 				}
 			}
 
-			.primo-buttons button {
+			.wdt-buttons button {
 				&:focus {
 					/* outline: 0; */
 				}
 				&:hover {
-					color: var(--primo-color-brand);
+					color: var(--wdt-color-brand);
 				}
 				&:last-child {
 					margin-left: 0.5rem;
 					color: var(--color-gray-5);
 
 					&:hover {
-						color: var(--primo-color-brand);
+						color: var(--wdt-color-brand);
 					}
 				}
 			}
@@ -342,7 +342,7 @@
 		justify-content: center;
 		gap: 0.5rem;
 		width: 100%;
-		background: var(--primo-button-background);
+		background: var(--wdt-button-background);
 		color: var(--button-color);
 		padding: 0.5rem 0;
 		border-radius: 1px;

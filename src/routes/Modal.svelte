@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher();
 </script>
 
-<div id="modal" class="primo-reset" role="dialog" transition:fade={{ duration: 100 }}>
+<div id="modal" class="wdt-reset" role="dialog" transition:fade={{ duration: 100 }}>
 	<button class="background" aria-label="close dialog" on:click={() => dispatch('close')} />
 	<div class="container">
 		<slot />

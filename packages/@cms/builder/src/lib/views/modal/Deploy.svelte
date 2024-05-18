@@ -166,7 +166,7 @@
 	let loading = false
 </script>
 
-<div class="Deploy primo-reset">
+<div class="Deploy wdt-reset">
 	<header>
 		<h2>
 			<Icon icon="ic:sharp-publish" />
@@ -188,7 +188,7 @@
 				<a href="https://docs.primocms.org/publishing">deploy it from a Github repo.</a>
 			</p>
 			<div class="buttons">
-				<button class="primo-button" on:click={download_site}>
+				<button class="wdt-button" on:click={download_site}>
 					<Icon icon={loading ? 'eos-icons:loading' : 'ic:baseline-download'} />
 					<span>Download</span>
 				</button>
@@ -270,12 +270,12 @@
 			<div>
 				<div style="display: flex; justify-content: space-between">
 					<p>Enter API Token</p>
-					<button class="primo-link" on:click={() => (stage = 'INITIAL')}>change provider</button>
+					<button class="wdt-link" on:click={() => (stage = 'INITIAL')}>change provider</button>
 				</div>
 				<form on:submit|preventDefault={(e) => connect_git(e, provider)}>
 					<div>
 						<TextInput placeholder="Token" />
-						<button class="primo-button">Connect</button>
+						<button class="wdt-button">Connect</button>
 					</div>
 				</form>
 			</div>
@@ -298,19 +298,19 @@
 					<img src={provider_user?.avatar} alt="{provider} avatar" />
 					<span>{provider_user?.username}</span>
 				</div>
-				<button class="primo-link" on:click={() => (stage = `AUTHENTICATE--${provider}`)}>
+				<button class="wdt-link" on:click={() => (stage = `AUTHENTICATE--${provider}`)}>
 					change
 				</button>
 			</div>
 			{#if stage === `DEPLOY--${provider}`}
 				<div class="buttons">
-					<!-- <button class="primo-button" on:click={download_site}>
+					<!-- <button class="wdt-button" on:click={download_site}>
 						<Icon icon="ic:baseline-download" />
 					</button> -->
-					<button class="primo-button" on:click={() => (stage = stage += '--USE_EXISTING')}>
+					<button class="wdt-button" on:click={() => (stage = stage += '--USE_EXISTING')}>
 						Use existing repo
 					</button>
-					<button class="primo-button primary" on:click={() => (stage = stage += '--CREATE_REPO')}>
+					<button class="wdt-button primary" on:click={() => (stage = stage += '--CREATE_REPO')}>
 						Create new repo
 					</button>
 				</div>
@@ -362,7 +362,7 @@
 						<p class="form-label">Enter repo name</p>
 						<div>
 							<TextInput placeholder="Site" />
-							<button class="primo-button primary" disabled={loading}>
+							<button class="wdt-button primary" disabled={loading}>
 								{#if loading}
 									<Icon icon="eos-icons:loading" />
 								{:else}
@@ -391,7 +391,7 @@
 					{format($active_deployment.created)}
 				</span>
 			</div>
-			<button class="primo-link" on:click={() => (stage = `DEPLOY--${provider}`)}>edit</button>
+			<button class="wdt-link" on:click={() => (stage = `DEPLOY--${provider}`)}>edit</button>
 		</div>
 		{#if stage !== 'ACTIVE__DEPLOYED'}
 			<div class="buttons">
@@ -410,8 +410,8 @@
 </div>
 
 <style lang="postcss">
-	.Deploy.primo-reset {
-		background: var(--primo-color-black);
+	.Deploy.wdt-reset {
+		background: var(--wdt-color-black);
 		padding: 1.125rem 1.25rem;
 		display: grid;
 		gap: 1rem;
@@ -466,7 +466,7 @@
 		}
 	}
 
-	.primo-link {
+	.wdt-link {
 		text-align: left;
 		font-size: 0.875rem;
 		color: var(--color-gray-3);
@@ -520,7 +520,7 @@
 		align-items: center;
 		gap: 1rem;
 	}
-	.primo-button {
+	.wdt-button {
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
@@ -529,7 +529,7 @@
 		border-radius: 0.25rem;
 		height: 100%;
 	}
-	.primo-button.primary {
+	.wdt-button.primary {
 		border: 1px solid #35d994;
 		background: transparent;
 	}

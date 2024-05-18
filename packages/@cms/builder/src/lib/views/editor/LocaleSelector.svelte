@@ -134,7 +134,7 @@
 <style lang="postcss">
 	#language-selector {
 		display: grid;
-		color: var(--primo-color-white);
+		color: var(--wdt-color-white);
 		position: relative;
 		font-size: 14px;
 		font-weight: 400;
@@ -171,7 +171,7 @@
 		top: 100%;
 		margin-top: 0.5rem;
 		background: #171717;
-		/* border-radius: var(--primo-border-radius); */
+		/* border-radius: var(--wdt-border-radius); */
 		overflow: hidden;
 		z-index: 999999999;
 		border-bottom-right-radius: 0.25rem;

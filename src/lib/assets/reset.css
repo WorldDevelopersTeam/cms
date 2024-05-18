@@ -1,4 +1,4 @@
-.primo-reset {
+.wdt-reset {
   @tailwind base;
   direction: ltr;
   color-scheme: dark;
@@ -13,7 +13,7 @@ body {
   margin: 0;
 }
 
-.primo-input {
+.wdt-input {
 appearance: none;
 border: 0;
 background-color: transparent;
@@ -23,7 +23,7 @@ padding: 0.5rem 0.75rem;
 width: 100%;
 
 /* &:focus {
-  box-shadow: 0 0 0 1px var(--color-primored);
+  box-shadow: 0 0 0 1px var(--color-wdtred);
   border: 0;
 }
 
@@ -32,23 +32,23 @@ width: 100%;
 } */
 }
 
-.primo-modal {
+.wdt-modal {
   color: var(--color-gray-1);
   /* background: var(--color-gray-9); */
   padding: 1rem;
-  border-radius: var(--primo-border-radius);
+  border-radius: var(--wdt-border-radius);
   margin: 0 auto;
   width: 100vw;
 }
 
-.primo-heading-xl {
+.wdt-heading-xl {
 margin-bottom: 0.5rem;
 font-size: 1.25rem;
 line-height: 1.75rem;
 font-weight: 700;
 }
 
-.primo-heading-lg {
+.wdt-heading-lg {
 margin-bottom: 0.25rem;
 font-size: 1.1rem;
 line-height: 1.5rem;

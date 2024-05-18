@@ -91,7 +91,7 @@
 		font-size: 3rem;
 		border: 1px solid var(--color-gray-6);
 		padding: 0.25rem;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 	}
 
 	form {
@@ -103,14 +103,14 @@
 		grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
 		border: 1px solid var(--color-gray-7);
 		margin-top: 0.25rem;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 	}
 
 	button {
 		transition: 0.1s;
 
 		&.active {
-			color: var(--primo-color-brand);
+			color: var(--wdt-color-brand);
 		}
 	}
 </style>

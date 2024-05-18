@@ -59,7 +59,7 @@
 						}}
 					/>
 				</label>
-				<div class="primo-buttons" id="repeater-{field.key}-{i}">
+				<div class="wdt-buttons" id="repeater-{field.key}-{i}">
 					<div class="item-options">
 						{#if i !== 0}
 							<button title="Move {field.label} up" on:click={() => moveOption(i, 'up')}>
@@ -148,7 +148,7 @@
 		margin-top: 8px;
 		margin-bottom: 8px;
 		font-size: var(--font-size-2);
-		background: var(--primo-color-codeblack);
+		background: var(--wdt-color-codeblack);
 		color: var(--color-gray-2);
 		transition: var(--transition-colors);
 		outline: 0;
@@ -159,7 +159,7 @@
 	.field-button.subfield-button:focus {
 		background: var(--color-gray-8);
 	}
-	.primo-buttons {
+	.wdt-buttons {
 		display: flex;
 		align-items: center;
 

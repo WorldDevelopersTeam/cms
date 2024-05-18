@@ -40,11 +40,11 @@
     background: transparent;
 
     &.outlined {
-      border: 2px solid var(--primo-color-brand);
+      border: 2px solid var(--wdt-color-brand);
     }
 
     &:hover {
-      background: var(--primo-color-brand);
+      background: var(--wdt-color-brand);
     }
   }
 </style>

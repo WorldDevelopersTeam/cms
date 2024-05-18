@@ -55,7 +55,7 @@
 <style global lang="postcss">
 	@import url(https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800);
 
-	.primo-reset {
+	.wdt-reset {
 		@tailwind base;
 		font-family: 'Inter', serif !important;
 		direction: ltr;
@@ -63,14 +63,14 @@
 		/* height: 100vh; */
 		/* overflow: hidden; */
 
-		--primo-color-brand: #dbdbdb;
-		--primo-color-brand-dark: #717171;
-		--primo-color-white: white;
-		--primo-color-codeblack: rgb(30, 30, 30);
-		--primo-color-codeblack-opaque: rgba(30, 30, 30, 0.9);
+		--wdt-color-brand: #dbdbdb;
+		--wdt-color-brand-dark: #717171;
+		--wdt-color-white: white;
+		--wdt-color-codeblack: rgb(30, 30, 30);
+		--wdt-color-codeblack-opaque: rgba(30, 30, 30, 0.9);
 
-		--primo-color-black: rgb(17, 17, 17);
-		--primo-color-black-opaque: rgba(17, 17, 17, 0.95);
+		--wdt-color-black: rgb(17, 17, 17);
+		--wdt-color-black-opaque: rgba(17, 17, 17, 0.95);
 
 		--color-gray-1: rgb(245, 245, 245);
 		--color-gray-2: rgb(229, 229, 229);
@@ -96,16 +96,16 @@
 		--padding-container: 15px;
 		--max-width-container: 1900px;
 
-		--ring: 0px 0px 0px 2px var(--primo-color-brand);
+		--ring: 0px 0px 0px 2px var(--wdt-color-brand);
 
-		--primo-max-width-1: 30rem;
-		--primo-max-width-2: 1200px;
-		--primo-max-width-max: 1200px;
+		--wdt-max-width-1: 30rem;
+		--wdt-max-width-2: 1200px;
+		--wdt-max-width-max: 1200px;
 
-		--primo-border-radius: 5px;
-		--primo-ring-brand: 0px 0px 0px 1px var(--primo-color-brand);
-		--primo-ring-brand-thin: 0px 0px 0px 1px var(--primo-color-brand);
-		--primo-ring-brand-thick: 0px 0px 0px 3px var(--primo-color-brand);
+		--wdt-border-radius: 5px;
+		--wdt-ring-brand: 0px 0px 0px 1px var(--wdt-color-brand);
+		--wdt-ring-brand-thin: 0px 0px 0px 1px var(--wdt-color-brand);
+		--wdt-ring-brand-thick: 0px 0px 0px 3px var(--wdt-color-brand);
 	}
 
 	button,
@@ -117,7 +117,7 @@
 		margin: 0;
 	}
 
-	.primo-input {
+	.wdt-input {
 		appearance: none;
 		border: 0;
 		background-color: transparent;
@@ -127,7 +127,7 @@
 		width: 100%;
 
 		/* &:focus {
-  box-shadow: 0 0 0 1px var(--color-primored);
+  box-shadow: 0 0 0 1px var(--color-wdtred);
   border: 0;
 }
 
@@ -136,23 +136,23 @@
 } */
 	}
 
-	.primo-modal {
+	.wdt-modal {
 		color: var(--color-gray-1);
 		/* background: var(--color-gray-9); */
 		padding: 1.5rem;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		margin: 0 auto;
 		/* width: 100vw; */
 	}
 
-	.primo-heading-xl {
+	.wdt-heading-xl {
 		margin-bottom: 0.5rem;
 		font-size: 1.25rem;
 		line-height: 1.75rem;
 		font-weight: 700;
 	}
 
-	.primo-heading-lg {
+	.wdt-heading-lg {
 		margin-bottom: 0.25rem;
 		font-size: 1.1rem;
 		line-height: 1.5rem;

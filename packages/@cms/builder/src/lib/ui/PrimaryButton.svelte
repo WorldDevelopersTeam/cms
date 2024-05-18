@@ -12,7 +12,7 @@
 </script>
 
 {#if type === 'input'}
-  <label for="primo-json" class={variants}>
+  <label for="wdt-json" class={variants}>
     {#if loading}
       <Spinner />
     {/if}
@@ -28,7 +28,7 @@
     <input
       on:change
       type="file"
-      id="primo-json"
+      id="wdt-json"
       accept=".json"
       disabled={disabled || loading}
     />
@@ -67,18 +67,18 @@
     border-radius: 0.25rem;
     font-weight: 400;
     font-size: 14px;
-    box-shadow: var(--primo-ring-brand);
-    color: var(--primo-color-white);
+    box-shadow: var(--wdt-ring-brand);
+    color: var(--wdt-color-white);
     transition: box-shadow 0.1s, background 0.1s, color 0.1s;
     margin: var(--space-y, 0) var(--space-x, 0);
 
     &:hover {
-      box-shadow: var(--primo-ring-brand-thick);
+      box-shadow: var(--wdt-ring-brand-thick);
     }
 
     &:active {
-      background: var(--primo-color-brand);
-      color: var(--primo-color-black);
+      background: var(--wdt-color-brand);
+      color: var(--wdt-color-black);
     }
 
     &[type='submit'] {

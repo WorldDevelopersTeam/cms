@@ -13,7 +13,7 @@
   const error = form?.error
 </script>
 
-<main in:fade class="primo-reset">
+<main in:fade class="wdt-reset">
   <div class="logo">
     <div class="logo-container">
       <ServerLogo />

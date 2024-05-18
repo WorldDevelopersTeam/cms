@@ -179,11 +179,11 @@
 		gap: 0.75rem;
 		overflow: hidden;
 		align-items: flex-start;
-		/* border: 1px solid var(--primo-color-brand); */
+		/* border: 1px solid var(--wdt-color-brand); */
 		/* padding: 0.5rem; */
 
 		.spinner-container {
-			background: var(--primo-color-brand);
+			background: var(--wdt-color-brand);
 			height: 100%;
 			width: 100%;
 			display: flex;
@@ -225,7 +225,7 @@
 
 			&:hover {
 				opacity: 0.95;
-				background: var(--primo-color-brand);
+				background: var(--wdt-color-brand);
 			}
 
 			span {
@@ -273,7 +273,7 @@
 		margin-top: 3px;
 		font-size: 0.75rem;
 		display: flex;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		border: 1px solid var(--color-gray-8);
 		justify-self: flex-start;
 
@@ -282,7 +282,7 @@
 
 			&.active {
 				cursor: unset;
-				color: var(--primo-color-brand);
+				color: var(--wdt-color-brand);
 			}
 
 			&:last-child {

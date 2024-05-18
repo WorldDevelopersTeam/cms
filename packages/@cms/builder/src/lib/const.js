@@ -81,7 +81,7 @@ export const Site = ({ url, name } = { url: 'default', name: 'Default' }) => ({
 			below: ''
 		},
 		css: `
-@import url("https://unpkg.com/@primo-app/primo@1.3.64/reset.css");
+@import url("https://unpkg.com/@wdt-app/primo@1.3.64/reset.css");
 
 #page {
   font-family: system-ui, sans-serif;

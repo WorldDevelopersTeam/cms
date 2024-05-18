@@ -29,8 +29,8 @@
 <button
 	{id}
 	aria-label={title}
-	class="primo-button"
-	class:primo={type === 'primo'}
+	class="wdt-button"
+	class:wdt={type === 'wdt'}
 	class:active
 	class:has-subbuttons={buttons}
 	class:has-icon-button={!label && icon}
@@ -75,7 +75,7 @@
 <style lang="postcss">
 	@tailwind base;
 
-	.primo-button {
+	.wdt-button {
 		font-size: 0.85rem;
 		user-select: none;
 		border-radius: 0;
@@ -83,13 +83,13 @@
 		--Spinner-size: 0.75rem;
 
 		/* &:first-child {
-      border-top-left-radius: var(--primo-border-radius);
-      border-bottom-left-radius: var(--primo-border-radius);
+      border-top-left-radius: var(--wdt-border-radius);
+      border-bottom-left-radius: var(--wdt-border-radius);
     }
 
     &:last-child {
-      border-top-right-radius: var(--primo-border-radius);
-      border-bottom-right-radius: var(--primo-border-radius);
+      border-top-right-radius: var(--wdt-border-radius);
+      border-bottom-right-radius: var(--wdt-border-radius);
     } */
 
 		&[disabled] {
@@ -99,16 +99,16 @@
 		}
 	}
 
-	.primo-button.primo {
+	.wdt-button.wdt {
 		padding: 7px 14px;
-		color: var(--primo-color-white);
-		border: 1.5px solid var(--primo-color-brand);
+		color: var(--wdt-color-white);
+		border: 1.5px solid var(--wdt-color-brand);
 		border-radius: 0.25rem;
 	}
 
-	.primo-button {
+	.wdt-button {
 		height: 100%;
-		color: var(--primo-color-white);
+		color: var(--wdt-color-white);
 		font-weight: 400;
 		font-size: 13px;
 		padding: 10px 12px;
@@ -129,31 +129,31 @@
 			}
 		}
 		&:first-child {
-			border-top-left-radius: var(--primo-border-radius);
-			border-bottom-left-radius: var(--primo-border-radius);
+			border-top-left-radius: var(--wdt-border-radius);
+			border-bottom-left-radius: var(--wdt-border-radius);
 		}
 
 		&:last-child {
-			border-top-right-radius: var(--primo-border-radius);
-			border-bottom-right-radius: var(--primo-border-radius);
+			border-top-right-radius: var(--wdt-border-radius);
+			border-bottom-right-radius: var(--wdt-border-radius);
 		}
 
 		&:hover,
 		&:focus {
-			/* background: var(--primo-color-codeblack); */
+			/* background: var(--wdt-color-codeblack); */
 			background: #1f1f1f;
 			/* z-index: 2; */
 		}
 
 		&:active {
 			background: #404040;
-			/* box-shadow: var(--primo-ring-primogreen); */
-			/* background: var(--primo-color-brand); */
+			/* box-shadow: var(--wdt-ring-wdtgreen); */
+			/* background: var(--wdt-color-brand); */
 			/* color: var(--color-gray-8); */
 		}
 	}
 
-	.primo-button[disabled] {
+	.wdt-button[disabled] {
 		opacity: 0.1;
 		cursor: default;
 		transition: var(--transition-colors);

@@ -22,8 +22,8 @@
 
 {#if visible}
 	<div
-		id="primo-modal"
-		class="primo-modal modal mousetrap primo-reset"
+		id="wdt-modal"
+		class="wdt-modal modal mousetrap wdt-reset"
 		transition:fade={{ duration: 100 }}
 	>
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -60,7 +60,7 @@
 	.modal-background {
 		position: absolute;
 		inset: 0;
-		background: var(--primo-color-black);
+		background: var(--wdt-color-black);
 
 		&.hovered {
 			opacity: 0.95;
@@ -75,7 +75,7 @@
 		width: 100%;
 		overflow: hidden;
 		position: relative;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		/* flex: 1; */
 		max-height: 100vh;
 		justify-content: center;
@@ -90,7 +90,7 @@
 		/* flex: 1; */
 		display: flex;
 		flex-direction: column;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		justify-content: center;
 		height: 100%;
 		pointer-events: all;

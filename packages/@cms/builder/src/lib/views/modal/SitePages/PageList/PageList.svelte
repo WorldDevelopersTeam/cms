@@ -52,9 +52,9 @@
 <style lang="postcss">
 	ul.page-list {
 		display: grid;
-		color: var(--primo-color-white);
+		color: var(--wdt-color-white);
 		background: #1a1a1a;
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		margin-bottom: 1rem;
 
 		&.root > li:not(:first-child) {

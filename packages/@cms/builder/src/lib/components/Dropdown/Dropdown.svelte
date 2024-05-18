@@ -38,7 +38,7 @@
 <style lang="postcss">
   #dropdown {
     display: grid;
-    color: var(--primo-color-white);
+    color: var(--wdt-color-white);
     position: relative;
 
     &.left {
@@ -73,7 +73,7 @@
     top: 100%;
     margin-top: 0.5rem;
     background: var(--color-gray-8);
-    border-radius: var(--primo-border-radius);
+    border-radius: var(--wdt-border-radius);
     overflow: hidden;
     z-index: 999999999;
 

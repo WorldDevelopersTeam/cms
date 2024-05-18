@@ -135,7 +135,7 @@ export async function build_site_bundle({ pages, symbols }) {
 			path = `${language}/${path}`
 			full_url = `${language}/${full_url}`
 		} else {
-			// only add en sections and pages to primo.json
+			// only add en sections and pages to wdt.json
 			all_sections = [...all_sections, ...sections]
 			all_pages = [...all_pages, page]
 		}
@@ -194,10 +194,6 @@ export async function build_site_bundle({ pages, symbols }) {
 		return [
 			..._.flattenDeep(pages),
 			{
-				path: `primo.json`,
-				content: json
-			},
-			{
 				path: 'edit/index.html',
 				content: `<!DOCTYPE html>
         <html lang="en">
@@ -218,6 +214,10 @@ export async function build_site_bundle({ pages, symbols }) {
 			{
 				path: 'robots.txt',
 				content: `User-agent: *`
+			},
+			{
+				path: 'CNAME',
+				content: site.url
 			}
 		]
 	}

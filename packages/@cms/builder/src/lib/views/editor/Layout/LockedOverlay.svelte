@@ -5,7 +5,7 @@
 	export let locked
 </script>
 
-<div class="locked-overlay primo-reset" transition:fade={{ duration: 200 }}>
+<div class="locked-overlay wdt-reset" transition:fade={{ duration: 200 }}>
 	<Icon icon="carbon:locked" />
 	<span>Being edited by {locked.user}</span>
 </div>

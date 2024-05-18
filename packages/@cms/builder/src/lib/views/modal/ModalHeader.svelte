@@ -55,7 +55,7 @@
 		{/if}
 		{#if button && button.onclick}
 			<button
-				class="primo-button primary"
+				class="wdt-button primary"
 				disabled={button.loading || button.disabled}
 				on:click={button.onclick}
 			>
@@ -66,7 +66,7 @@
 			</button>
 		{:else if button && button.href}
 			<a
-				class="primo-button primary"
+				class="wdt-button primary"
 				disabled={button.loading || button.disabled}
 				href={button.href}
 				target="blank"
@@ -86,7 +86,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		position: relative;
-		background: var(--primo-color-black);
+		background: var(--wdt-color-black);
 		color: var(--color-gray-1);
 		font-size: var(--font-size-3);
 		font-weight: 600;
@@ -102,17 +102,17 @@
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				border-radius: var(--primo-border-radius);
+				border-radius: var(--wdt-border-radius);
 				color: var(--color-gray-4);
 				padding-right: 0.5rem;
 				transition: var(--transition-colors);
 
 				&:hover {
-					color: var(--primo-color-brand);
+					color: var(--wdt-color-brand);
 				}
 
 				&:focus {
-					color: var(--primo-color-brand);
+					color: var(--wdt-color-brand);
 					outline: 0;
 				}
 
@@ -155,17 +155,17 @@
 		}
 	}
 
-	.primo-button {
+	.wdt-button {
 		display: flex;
 		align-items: center;
 		padding: 0.5rem 0.75rem;
 		font-size: var(--font-size-2);
-		border-radius: var(--primo-border-radius);
+		border-radius: var(--wdt-border-radius);
 		transition: var(--transition-colors), 0.1s box-shadow;
 
 		&.primary {
-			border: 2px solid var(--primo-color-brand);
-			color: var(--primo-color-white);
+			border: 2px solid var(--wdt-color-brand);
+			color: var(--wdt-color-white);
 			margin-left: 0.5rem;
 
 			span {
@@ -178,24 +178,24 @@
 			}
 
 			&:hover {
-				box-shadow: var(--primo-ring-primogreen);
+				box-shadow: var(--wdt-ring-wdtgreen);
 			}
 
 			&:active {
-				color: var(--primo-color-black);
-				background: var(--primo-color-brand);
+				color: var(--wdt-color-black);
+				background: var(--wdt-color-brand);
 			}
 		}
 
 		&.switch {
-			border: 2px solid var(--primo-color-brand);
-			color: var(--primo-color-brand);
-			outline-color: var(--primo-color-brand);
+			border: 2px solid var(--wdt-color-brand);
+			color: var(--wdt-color-brand);
+			outline-color: var(--wdt-color-brand);
 
 			&:hover {
-				background: var(--primo-color-brand-dark);
-				color: var(--primo-color-white);
-				border-color: var(--primo-color-brand-dark);
+				background: var(--wdt-color-brand-dark);
+				color: var(--wdt-color-white);
+				border-color: var(--wdt-color-brand-dark);
 			}
 		}
 	}

@@ -68,7 +68,7 @@
 <style lang="postcss">
   a,
   button {
-    border-radius: var(--primo-border-radius);
+    border-radius: var(--wdt-border-radius);
     font-size: var(--font-size-2);
     color: var(--color-gray-6);
     background: var(--color-gray-1);

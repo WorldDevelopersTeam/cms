@@ -22,7 +22,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-<div in:fade={{ duration: 100 }} class="block-buttons primo-reset" bind:this={node}>
+<div in:fade={{ duration: 100 }} class="block-buttons wdt-reset" bind:this={node}>
 	<div class="top">
 		<div class="component-button">
 			<button on:click={() => dispatch('edit-content')}>
@@ -108,8 +108,8 @@
 		justify-content: center;
 		align-items: center;
 		height: 2rem;
-		/* color: var(--primo-color-white); */
-		/* background-color: var(--primo-color-black-opaque); */
+		/* color: var(--wdt-color-white); */
+		/* background-color: var(--wdt-color-black-opaque); */
 		background: #1f1f1f;
 		color: #cecece;
 
@@ -121,8 +121,8 @@
 
 		&:hover {
 			z-index: 1; /* show full shadow */
-			/* box-shadow: var(--primo-ring-primogreen); */
-			/* background: var(--primo-color-brand); */
+			/* box-shadow: var(--wdt-ring-wdtgreen); */
+			/* background: var(--wdt-color-brand); */
 			/* color: var(--colr-gray-9); */
 			background: #292929;
 			color: #E7E7E7l;

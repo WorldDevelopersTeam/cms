@@ -55,7 +55,7 @@
   let siteBeingEdited = { id: null, element: null }
 </script>
 
-<main class="primo-reset">
+<main class="wdt-reset">
   <div class="container">
     <DashboardToolbar />
     <div class="sites-container">
@@ -147,7 +147,7 @@
 
 <style lang="postcss">
   main {
-    background-color: var(--primo-color-black);
+    background-color: var(--wdt-color-black);
     min-height: 100vh;
     position: relative;
     z-index: 0;
@@ -155,7 +155,7 @@
     .container {
       display: flex;
       flex-direction: column;
-      border-radius: var(--primo-border-radius);
+      border-radius: var(--wdt-border-radius);
       margin: 0 auto;
       padding: 1rem 2rem;
       min-height: 100vh;
@@ -178,7 +178,7 @@
 
         li {
           background: var(--color-gray-9);
-          border-radius: var(--primo-border-radius);
+          border-radius: var(--wdt-border-radius);
           overflow: hidden;
           font-size: var(--font-size-4);
           transition: 0.1s box-shadow;
@@ -188,15 +188,15 @@
           transition: 0.1s box-shadow;
 
           &:has(a:hover) {
-            box-shadow: var(--primo-ring-brand-thick);
+            box-shadow: var(--wdt-ring-brand-thick);
 
             & ~ li:last-child {
-              box-shadow: var(--primo-ring-brand-thin);
+              box-shadow: var(--wdt-ring-brand-thin);
             }
           }
 
           &:last-child {
-            box-shadow: var(--primo-ring-brand);
+            box-shadow: var(--wdt-ring-brand);
           }
 
           .site-link {
@@ -223,7 +223,7 @@
                 justify-content: space-between;
 
                 &:hover {
-                  color: var(--primo-color-brand);
+                  color: var(--wdt-color-brand);
                 }
               }
 
@@ -235,11 +235,11 @@
               }
 
               button {
-                border-radius: var(--primo-border-radius);
+                border-radius: var(--wdt-border-radius);
                 padding: 0 0.5rem;
 
                 &:hover {
-                  color: var(--primo-color-brand);
+                  color: var(--wdt-color-brand);
                 }
               }
             }
@@ -279,14 +279,14 @@
           justify-content: center;
           width: 100%;
           height: 100%;
-          background: var(--primo-color-black);
+          background: var(--wdt-color-black);
           font-weight: 400;
           font-size: 1.125rem;
           color: var(--color-gray-2);
 
           &:active {
-            background: var(--primo-color-brand);
-            color: var(--primo-color-black);
+            background: var(--wdt-color-brand);
+            color: var(--wdt-color-black);
           }
         }
       }
@@ -301,7 +301,7 @@
     text-decoration: underline;
     text-align: left;
     &:hover {
-      color: var(--primo-color-brand);
+      color: var(--wdt-color-brand);
     }
   }
 
@@ -310,7 +310,7 @@
       color 0.1s,
       background-color 0.1s;
     &:focus {
-      outline: 2px solid var(--primo-color-brand);
+      outline: 2px solid var(--wdt-color-brand);
     }
     &:disabled {
       opacity: 0.5;

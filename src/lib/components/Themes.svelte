@@ -74,7 +74,7 @@
   button {
     font-size: 1.25rem;
     &:not(:disabled):hover {
-      color: var(--primo-color-brand);
+      color: var(--wdt-color-brand);
     }
     &:disabled {
       opacity: 0.25;

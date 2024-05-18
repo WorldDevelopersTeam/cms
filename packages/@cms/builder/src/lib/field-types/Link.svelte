@@ -70,7 +70,7 @@
 	}
 </script>
 
-<div class="primo-link">
+<div class="wdt-link">
 	<span>{field.label}</span>
 	<div class="inputs">
 		<TextInput
@@ -123,7 +123,7 @@
 <slot />
 
 <style lang="postcss">
-	.primo-link {
+	.wdt-link {
 		display: flex;
 		flex-direction: column;
 

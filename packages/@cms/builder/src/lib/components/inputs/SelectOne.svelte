@@ -44,7 +44,7 @@
       transition: background 0.1s, color 0.1s;
 
       &.selected {
-        background: var(--primo-color-brand);
+        background: var(--wdt-color-brand);
         color: var(--color-gray-1);
         outline: 0;
       }

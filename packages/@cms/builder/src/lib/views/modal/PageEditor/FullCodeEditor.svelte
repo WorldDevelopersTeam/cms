@@ -99,7 +99,7 @@
 				<svelte:component
 					this={$CodeMirror}
 					mode="html"
-					docs="https://docs.primo.so/development#html"
+					docs="https://docs.wdt.so/development#html"
 					{data}
 					bind:value={html}
 					bind:selection={selections['html']}
@@ -115,7 +115,7 @@
 					bind:selection={selections['css']}
 					bind:value={css}
 					mode="css"
-					docs="https://docs.primo.so/development#css"
+					docs="https://docs.wdt.so/development#css"
 					on:change={() => dispatch('cssChange')}
 					on:save
 					on:refresh
@@ -142,7 +142,7 @@
 				<svelte:component
 					this={$CodeMirror}
 					mode="html"
-					docs="https://docs.primo.so/development#html"
+					docs="https://docs.wdt.so/development#html"
 					{data}
 					bind:value={html}
 					bind:selection={selections['html']}
@@ -168,7 +168,7 @@
 					bind:selection={selections['css']}
 					bind:value={css}
 					mode="css"
-					docs="https://docs.primo.so/development#css"
+					docs="https://docs.wdt.so/development#css"
 					on:change={() => dispatch('cssChange')}
 					on:save
 					on:refresh
@@ -200,7 +200,7 @@
 
 		button {
 			background: var(--color-gray-9);
-			color: var(--primo-color-white);
+			color: var(--wdt-color-white);
 			width: 100%;
 			text-align: center;
 			padding: 8px 0;
@@ -216,8 +216,8 @@
 				transition: background 0.1s, color 0.1s;
 
 				&:hover {
-					background: var(--primo-color-brand);
-					color: var(--primo-color-codeblack);
+					background: var(--wdt-color-brand);
+					color: var(--wdt-color-codeblack);
 				}
 
 				span {
@@ -248,7 +248,7 @@
 	}
 
 	.tabs ul li.is-active {
-		background: var(--primo-color-codeblack);
-		color: var(--primo-color-white);
+		background: var(--wdt-color-codeblack);
+		color: var(--wdt-color-white);
 	}
 </style>
