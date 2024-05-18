@@ -14,7 +14,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "workspaces": [
-    "packages/cms@builder"
+    "packages/*"
   ],
   "dependencies": {
     "@cms/builder": "^0.1.67",
