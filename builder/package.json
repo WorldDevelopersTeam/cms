@@ -88,8 +88,6 @@
 		"vite": "^4.4.2",
 		"vitest": "^0.32.2"
 	},
-	"svelte": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
 		"@tiptap/extension-image": "^2.2.6",

@@ -25,7 +25,7 @@ const config = {
     sourcemap: true
   },
 	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
+		include: ['./src/**/*.{test,spec}.{js,ts}']
 	},
 	server: {
     fs: {
