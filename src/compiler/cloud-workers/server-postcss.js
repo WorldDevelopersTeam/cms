@@ -1,5 +1,6 @@
 import postcss from 'postcss'
 import postcssNested from 'postcss-nested'
+import postcssAtRoot from 'postcss-atroot'
 import autoprefixer from 'autoprefixer'
 
 export default async function (css) {
@@ -12,6 +13,7 @@ export default async function (css) {
 		// Process the CSS
 		const result = await postcss([
 			postcssNested, // to process nested css rules
+			postcssAtRoot, // to process atroot css prefix
 			autoprefixer // to add vendor prefixes
 		]).process(css, { from: undefined }) // 'from' option is set to undefined because the source is unknown in a cloud function
 		final = result.css
