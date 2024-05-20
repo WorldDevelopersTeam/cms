@@ -6,6 +6,7 @@
 	import { add_language, delete_language, set_language } from '../../stores/actions'
 	import { languages as available_languages, Language_Name } from '../../const'
 	import { content } from '../../stores/data/site'
+	import { primary_language } from '$lib/stores/data/site.js'
 
 	export let align = 'right'
 
