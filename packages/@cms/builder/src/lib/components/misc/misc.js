@@ -1,4 +1,4 @@
-export const iframePreview = (locale = 'en') => `
+export const iframePreview = (locale = 'ru') => `
   <!DOCTYPE html>
   <html lang="${locale}">
     <head>

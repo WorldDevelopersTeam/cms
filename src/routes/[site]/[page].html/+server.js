@@ -43,7 +43,7 @@ export const GET = async (event) => {
         .order('index', { ascending: true }),
     ])
 
-    const locale = 'en'
+    const locale = 'ru'
 
     const component = await Promise.all([
       (async () => {
