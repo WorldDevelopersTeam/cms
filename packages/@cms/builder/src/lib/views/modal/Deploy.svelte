@@ -136,7 +136,7 @@
 	 */
 	async function deploy_to_repo({ name, provider, create_repo = false }) {
 		loading = true
-		const deployment = await push_site({ repo_name: name, provider }, creating_new_repo, $primary_language)
+		const deployment = await push_site({ repo_name: name, provider }, create_repo, $primary_language)
 		if (deployment) {
 			$active_deployment = deployment
 			stage = 'ACTIVE__DEPLOYED'
