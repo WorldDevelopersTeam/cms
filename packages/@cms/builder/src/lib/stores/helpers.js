@@ -2,7 +2,7 @@ import { find as _find, chain as _chain, flattenDeep as _flattenDeep } from 'lod
 import _ from 'lodash-es'
 import { get } from 'svelte/store'
 import { processors } from '../component.js'
-import { site as activeSite } from './data/site.js'
+import { site as activeSite, primary_language } from './data/site.js'
 import sections from './data/sections.js'
 import symbols from './data/symbols.js'
 import pages from './data/pages.js'
@@ -175,7 +175,9 @@ export function get_content_with_static({ component, symbol, loc }) {
 			const field_value = component.content?.[loc]?.[field.key]
 			// if field is static, use value from symbol content
 			if (field.is_static) {
-				const symbol_value = symbol.content?.[loc]?.[field.key]
+				const symbol_value = field.is_language_independent 
+					? symbol.content?.[primary_language]?.[field.key] 
+					: symbol.content?.[loc]?.[field.key]
 				return {
 					key: field.key,
 					value: symbol_value

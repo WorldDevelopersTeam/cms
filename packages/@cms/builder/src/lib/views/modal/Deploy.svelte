@@ -21,7 +21,7 @@
 	import { push_site, build_site_bundle } from './Deploy'
 	import PrimaryButton from '$lib/ui/PrimaryButton.svelte'
 	import { dataChanged } from '$lib/database'
-	import { content, primary_language } from '$lib/stores/data/site.js'
+	import { content, primary_language, include_assets } from '$lib/stores/data/site.js'
 	import { Language_Name } from '$lib/const.js'
 
 	let stage = 'INITIAL'
@@ -73,6 +73,7 @@
 		const files = await build_site_bundle({
 			pages: $pages,
 			symbols: $symbols,
+			include_assets: $include_assets,
 			primary_language: $primary_language
 		})
 		if (!files) {
@@ -85,8 +86,12 @@
 
 		async function create_site_zip(files) {
 			const zip = new JSZip()
-			files.forEach(({ path, content }) => {
-				zip.file(path, content)
+			files.forEach(({ path, content, blob }) => {
+				if (blob) {
+					zip.file(path, blob, { binary: true })
+				} else {
+					zip.file(path, content)
+				}
 			})
 			return await zip.generateAsync({ type: 'blob' })
 		}
@@ -423,6 +428,10 @@
 					<option value={lang_id}>{Language_Name(lang_id)}</option>
 				{/each}
 			</select>
+		</div>
+		<div style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
+			<div>Include assets:</div>
+			<input type="checkbox" bind:value={$include_assets}>
 		</div>
 	</div>
 </div>
