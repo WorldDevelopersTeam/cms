@@ -103,12 +103,13 @@ export const GET = async (event) => {
   <!DOCTYPE html>
   <html lang="${locale}">
     <head>
-      <meta name="generator" content="Wdt" />
       ${res.head}
       <style>${res.css}</style>
     </head>
     <body id="page">
-      ${res.html}
+      <div id="canvas">
+        ${res.html}
+      </div>
     </body>
   </html>
   `

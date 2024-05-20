@@ -75,8 +75,10 @@ export const iframePreview = (locale = 'en') => `
 		  <\/script>
     </head>
     <body id="page">
+      <div id="canvas">
         <div class="section">
         </div>
+      </div>
     </body>
   </html>
 `
@@ -88,8 +90,10 @@ export const componentPreview = (code) => {
     <html lang="en">
       <head>${code.head}</head>
       <body id="page">
-        ${code.html}
-        <style>${code.css}</style>
+        <div id="canvas">
+          ${code.html}
+          <style>${code.css}</style>
+        </div>
       </body>
     </html>
   `
@@ -122,6 +126,8 @@ export const pagePreview = `
 		  <\/script>
     </head>
     <body id="page">
+    <div id="canvas">
+    </div>
     </body>
     <style>
         .page {
@@ -146,6 +152,8 @@ export const currentPagePreview = `
 		  <\/script>
     </head>
     <body id="page">
+    <div id="canvas">
+    </div>
     </body>
     <style>
         .page {

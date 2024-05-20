@@ -109,13 +109,14 @@ export async function buildStaticPage({
   <!DOCTYPE html>
   <html lang="${locale}">
     <head>
-      <meta name="generator" content="Wdt" />
       ${res.head}
       <style>${res.css}</style>
     </head>
     <body id="page">
-      ${res.html}
-      ${no_js ? `` : `<script type="module">${fetch_modules(hydratable_symbols_on_page)}</script>`}
+    	<div id="canvas">
+      	${res.html}
+      	${no_js ? `` : `<script type="module">${fetch_modules(hydratable_symbols_on_page)}</script>`}
+      </div>
     </body>
   </html>
   `
