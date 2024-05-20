@@ -431,7 +431,7 @@
 		</div>
 		<div style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
 			<div>Include assets:</div>
-			<input type="checkbox" bind:value={$include_assets}>
+			<input type="checkbox" bind:checked={$include_assets}>
 		</div>
 	</div>
 </div>

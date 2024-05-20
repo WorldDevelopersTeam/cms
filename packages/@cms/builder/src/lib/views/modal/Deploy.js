@@ -263,7 +263,7 @@ async function swap_in_local_asset_urls(content) {
 				})
 				return {
 					...field_value,
-					url: `./images/${filename}`
+					url: `/_assets/${filename}`
 				}
 			}
 
@@ -303,7 +303,7 @@ async function swap_in_local_asset_urls(content) {
 				const blob = await response.blob();
 	
 				image_files.push({
-					path: `./images/${filename}`,
+					path: `./_assets/${filename}`,
 					blob
 				});
 			} catch (e) {

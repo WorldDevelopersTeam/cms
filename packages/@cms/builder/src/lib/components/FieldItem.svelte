@@ -228,7 +228,7 @@
 			</optgroup>
 		{/each}
 	</select>
-	<div slot="toggle">
+	<div slot="is_static">
 		{#if getContext('show_static_field')}
 			<Toggle
 				label="Static"
@@ -240,7 +240,7 @@
 		{/if}
 	</div>
 
-	<div slot="toggle">
+	<div slot="language_independent">
 			<Toggle
 				label="Language Independent"
 				toggled={field.is_language_independent}

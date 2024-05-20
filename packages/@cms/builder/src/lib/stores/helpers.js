@@ -182,6 +182,12 @@ export function get_content_with_static({ component, symbol, loc }) {
 					key: field.key,
 					value: symbol_value
 				}
+			} else if (field.is_language_independent) {
+				const default_value = symbol.content?.[primary_language]?.[field.key]
+				return {
+					key: field.key,
+					value: default_value
+				}
 			} else if (field_value !== undefined) {
 				return {
 					key: field.key,
