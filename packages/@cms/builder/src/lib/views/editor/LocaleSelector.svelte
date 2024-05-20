@@ -4,11 +4,12 @@
 	import { find as _find } from 'lodash-es'
 	import { locale } from '../../stores/app/misc'
 	import { add_language, delete_language, set_language } from '../../stores/actions'
-	import { languages as available_languages } from '../../const'
+	import { languages as available_languages, Language_Name } from '../../const'
 	import { content } from '../../stores/data/site'
 
 	export let align = 'right'
 
+	const PRIMARY_LANG = "en"
 	const Language_Name = (language) => _find(available_languages, ['key', language])['name']
 
 	let showingSelector = false
@@ -70,7 +71,7 @@
 		<div class="select-container" in:fly={{ duration: 100, y: -20, opacity: 0 }}>
 			{#if !addingLanguage}
 				<div class="language-list" aria-hidden="true">
-					{#each site_languages.sort((l) => (l === 'en' ? -1 : 1)) as languageID}
+					{#each site_languages.sort((l) => (l === $primary_language ? -1 : 1)) as languageID}
 						<div class="language-item">
 							<button
 								on:click={() => {
@@ -82,7 +83,7 @@
 							>
 								{Language_Name(languageID)} ({languageID})
 							</button>
-							{#if languageID !== 'en'}
+							{#if languageID !== $primary_language}
 								<button class="remove" on:click={() => delete_language(languageID)}>
 									<Icon icon="bi:x" />
 								</button>

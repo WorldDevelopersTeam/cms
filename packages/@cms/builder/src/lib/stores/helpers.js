@@ -44,7 +44,7 @@ export async function buildStaticPage({
 	site = get(activeSite),
 	page_sections = get(sections),
 	page_symbols = get(symbols),
-	locale = 'ru',
+	locale = 'en',
 	no_js = false
 }) {
 	const hydratable_symbols_on_page = page_symbols.filter(
