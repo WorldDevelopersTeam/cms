@@ -5,12 +5,9 @@
 	import { locale } from '../../stores/app/misc'
 	import { add_language, delete_language, set_language } from '../../stores/actions'
 	import { languages as available_languages, Language_Name } from '../../const'
-	import { content } from '../../stores/data/site'
-	import { primary_language } from '$lib/stores/data/site.js'
+	import { content, primary_language } from '../../stores/data/site'
 
 	export let align = 'right'
-
-	const PRIMARY_LANG = "en"
 
 	let showingSelector = false
 	let addingLanguage = false

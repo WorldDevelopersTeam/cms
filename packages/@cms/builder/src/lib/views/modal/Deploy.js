@@ -6,6 +6,9 @@ import { dataChanged } from '$lib/database.js'
 import { deploy } from '$lib/deploy'
 import { buildStaticPage } from '$lib/stores/helpers'
 import { processCode } from '$lib/utils'
+import { createUniqueID } from '$lib/utilities'
+import { primary_language } from '$lib/stores/data/site.js'
+import { toBase64 } from '@jsonjoy.com/base64'
 import _ from 'lodash-es'
 import { page } from '$app/stores'
 import { site } from '$lib/stores/data/site'
@@ -18,31 +21,43 @@ import { site } from '$lib/stores/data/site'
  * @param {boolean} create_new
  * @returns {Promise<import('$lib/deploy.js').DeploymentResponse>}
  */
-export async function push_site({repo_name, provider}, create_new = false, primary_language = 'en') {
+export async function push_site({repo_name, provider}, create_new = false, include_assets = false, primary_language = primary_language) {
 	const site_bundle = await build_site_bundle({
 		pages: get(pages),
 		symbols: get(symbols),
+		include_assets,
 		primary_language
 	})
 	if (!site_bundle) {
 		return null
 	}
-
-	const files = site_bundle.map((file) => ({
-		file: file.path,
-		data: file.content,
-		size: new Blob([file.content], { type: 'text/plain' }).size / 1024
+	const files = await Promise.all(site_bundle.map(async (file) => {
+		if (file.blob) {
+			const blob_data = new Uint8Array(await file.blob.arrayBuffer());
+			return {
+				binary: true,
+				file: file.path,
+				data: toBase64(blob_data),
+				size: file.blob.size / 1024
+			}
+		} else {
+			return {
+				binary: false,
+				file: file.path,
+				data: file.content,
+				size: new Blob([file.content], { type: 'text/plain' }).size / 1024
+			}
+		}
 	}))
-
 	return await deploy({ files, site_id: get(site).id, repo_name, provider }, create_new)
 }
 
-export async function build_site_bundle({ pages, symbols, include_assets = false, primary_language = 'en' }) {
+export async function build_site_bundle({ pages, symbols, include_assets = false, primary_language = primary_language }) {
 	let site_bundle
 
 	const all_sections = []
 	const all_pages = []
-	const image_files = []
+	const all_assets = []
 
 	try {
 		const page_files = await Promise.all(
@@ -54,20 +69,11 @@ export async function build_site_bundle({ pages, symbols, include_assets = false
 				)
 			})
 		)
-		// Download images & replace urls in sections
-		if (include_assets && has_nested_property(sections, 'alt')) {
-			await Promise.all(
-				sections.map(async (section, i) => {
-					const response = await swap_in_local_asset_urls(section.content)
-					image_files.push(...response.image_files) // store image blobs for later download
-					sections[i]['content'] = response.content // replace image urls in content with relative urls
-				})
-			)
-		}
+
 		const symbol_files = await Promise.all(
 			symbols.filter((s) => s.code.js).map((symbol) => build_symbol_tree(symbol))
 		)
-		site_bundle = build_site_tree([...symbol_files, ...page_files.flat()])
+		site_bundle = build_site_tree([...symbol_files, ...page_files.flat(), ...all_assets])
 	} catch (e) {
 		alert(e.message)
 	}
@@ -80,7 +86,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = false
 				html: symbol.code.html,
 				css: symbol.code.css,
 				js: symbol.code.js,
-				data: symbol.content['en']
+				data: symbol.content[primary_language]
 			}
 		})
 		if (res.error) {
@@ -104,6 +110,17 @@ export async function build_site_bundle({ pages, symbols, include_assets = false
 			match: { page: page.id },
 			order: ['index', { ascending: true }]
 		})
+
+		// Download assets & replace urls in sections
+		if (include_assets && has_nested_property(sections, 'alt')) {
+			await Promise.all(
+				sections.map(async (section, i) => {
+					const response = await swap_in_local_asset_urls(section.content)
+					all_assets.push(...response.assets) // store image blobs for later download
+					sections[i]['content'] = response.content // replace image urls in content with relative urls
+				})
+			)
+		}
 
 		const { html } = await buildStaticPage({
 			page,
@@ -165,66 +182,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = false
 
 	async function build_site_tree(pages) {
 		const site = get(page).data.site
-		const symbols = get(page).data.symbols
-		const json = JSON.stringify({
-			site: {
-				id: site.id,
-				name: site.name,
-				url: site.url,
-				code: site.code,
-				fields: site.fields,
-				content: site.content
-			},
-			pages: all_pages.map((p) => ({
-				id: p.id,
-				url: p.url,
-				name: p.name,
-				code: p.code,
-				fields: p.fields,
-				content: p.content,
-				site: p.site,
-				parent: p.parent
-			})),
-			sections: all_sections.map((s) => ({
-				id: s.id,
-				content: s.content,
-				page: s.page,
-				site: s.site,
-				symbol: s.symbol,
-				index: s.index
-			})),
-			symbols: symbols.map((s) => ({
-				id: s.id,
-				name: s.name,
-				code: s.code,
-				fields: s.fields,
-				content: s.content,
-				site: s.site
-			})),
-			version: 2
-		})
-
 		return [
-			...image_files,
 			..._.flattenDeep(pages),
-			{
-				path: 'edit/index.html',
-				content: `<!DOCTYPE html>
-        <html lang="en">
-          <head>
-            <meta http-equiv="Refresh" content="0; url='${get(page).url.origin}/${
-					get(page).params.site
-				}'" />
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Edit site</title>
-          </head>
-          <body style="margin:0">
-            <h1 style="font-family:sans-serif;text-align:center;">redirecting to Wdt server</h1>
-          </body>
-        </html>
-        `
-			},
 			{
 				path: 'robots.txt',
 				content: `User-agent: *`
@@ -250,12 +209,12 @@ async function swap_in_local_asset_urls(content) {
 	const updated_content = _.mapValues(content, (lang_value) =>
 		_.mapValues(lang_value, (field_value) => {
 
-			function swap_image(field_value) {
+			function swap_asset(field_value) {
 				const urlObject = new URL(field_value.url)
 				const pathname = urlObject.pathname
 				const extension = pathname.slice(pathname.lastIndexOf('.'))
 				const filename =
-					field_value.alt.replace(/[\/:*?"<>|\s]/g, '_') + `---${createUniqueID()}` + extension
+					createUniqueID(20) + extension
 
 				files_to_fetch.push({
 					url: field_value.url,
@@ -268,7 +227,7 @@ async function swap_in_local_asset_urls(content) {
 			}
 
 			if (typeof field_value === 'object' && field_value.hasOwnProperty('alt') && field_value.url != "") {
-				return swap_image(field_value);
+				return swap_asset(field_value);
 			} else if (Array.isArray(field_value)) {
 				
 				let field_value_copy = [];
@@ -278,7 +237,7 @@ async function swap_in_local_asset_urls(content) {
 						if (img.url != "" && img.url.indexOf("data:image") == -1) {
 							field_value_copy.push({
 								...value,
-								image: swap_image(img)
+								image: swap_asset(img)
 							});
 						}
 					} else {
@@ -295,15 +254,15 @@ async function swap_in_local_asset_urls(content) {
 	)
 
 	// Download images
-	const image_files = []
+	const assets = []
 	await Promise.all(
 		files_to_fetch.map(async ({ url, filename }) => {
 			try {
 				const response = await fetch(url);
 				const blob = await response.blob();
 	
-				image_files.push({
-					path: `./_assets/${filename}`,
+				assets.push({
+					path: `_assets/${filename}`,
 					blob
 				});
 			} catch (e) {
@@ -314,7 +273,7 @@ async function swap_in_local_asset_urls(content) {
 
 	return {
 		content: updated_content,
-		image_files
+		assets
 	}
 }
 

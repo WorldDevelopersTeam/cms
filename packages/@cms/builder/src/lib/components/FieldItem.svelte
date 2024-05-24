@@ -228,7 +228,7 @@
 			</optgroup>
 		{/each}
 	</select>
-	<div slot="is_static">
+	<div slot="toggle">
 		{#if getContext('show_static_field')}
 			<Toggle
 				label="Static"
@@ -238,16 +238,13 @@
 				}}
 			/>
 		{/if}
-	</div>
-
-	<div slot="language_independent">
-			<Toggle
-				label="Language Independent"
-				toggled={field.is_language_independent}
-				on:toggle={({ detail }) => {
-					field.is_language_independent = detail
-				}}
-			/>
+		<Toggle
+			label="Language Independent"
+			toggled={field.is_language_independent}
+			on:toggle={({ detail }) => {
+				field.is_language_independent = detail
+			}}
+		/>
 	</div>
 
 	<!-- <input type="checkbox" bind:checked={field.is_static} slot="static" /> -->

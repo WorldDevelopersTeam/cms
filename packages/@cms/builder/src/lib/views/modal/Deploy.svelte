@@ -16,6 +16,7 @@
 	import Spinner from '$lib/ui/Spinner.svelte'
 	import DropdownButton from '$lib/ui/DropdownButton.svelte'
 	import site, { active_deployment } from '$lib/stores/data/site'
+	import { active_site } from '$lib/stores/actions'
 	import pages from '$lib/stores/data/pages'
 	import symbols from '$lib/stores/data/symbols'
 	import { push_site, build_site_bundle } from './Deploy'
@@ -141,7 +142,7 @@
 	 */
 	async function deploy_to_repo({ name, provider, create_repo = false }) {
 		loading = true
-		const deployment = await push_site({ repo_name: name, provider }, create_repo, $primary_language)
+		const deployment = await push_site({ repo_name: name, provider }, create_repo, $include_assets, $primary_language)
 		if (deployment) {
 			$active_deployment = deployment
 			stage = 'ACTIVE__DEPLOYED'
@@ -423,7 +424,7 @@
 	<div class="container">
 		<div style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
 			<div>Primary Language:</div>
-			<select class="primo-button" bind:value={$primary_language}>
+			<select class="primo-button" bind:value={$primary_language} on:change={() => active_site.update({primary_language: $primary_language})}>
 				{#each site_languages as lang_id}
 					<option value={lang_id}>{Language_Name(lang_id)}</option>
 				{/each}
@@ -431,7 +432,7 @@
 		</div>
 		<div style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem;">
 			<div>Include assets:</div>
-			<input type="checkbox" bind:checked={$include_assets}>
+			<input type="checkbox" bind:checked={$include_assets} on:change={() => active_site.update({include_assets: $include_assets})}>
 		</div>
 	</div>
 </div>

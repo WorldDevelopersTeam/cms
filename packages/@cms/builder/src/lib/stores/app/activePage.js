@@ -1,11 +1,12 @@
-import {writable,get,derived} from 'svelte/store'
-import {Page} from '../../const'
+import { writable, get, derived } from 'svelte/store'
+import { primary_language } from '../data/site'
+import { Page } from '../../const'
 
 export const id = writable('')
 export const name = writable('')
 export const url = writable('index')
 export const code = writable(Page().code)
-export const content = writable({ en: {} })
+export const content = writable({ [primary_language]: {} })
 export const fields = writable(Page().fields)
 
 export function set(val) {
@@ -19,9 +20,11 @@ export function set(val) {
     url.set(val.url)
   }
   if (val.code) {
-    code.set(val.code)}
+    code.set(val.code)
+  }
   if (val.content) {
-    content.set(val.content)}
+    content.set(val.content)
+  }
   if (val.fields) {
     fields.set(val.fields)
   }

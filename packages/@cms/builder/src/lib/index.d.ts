@@ -1,3 +1,5 @@
+import { primary_language } from './stores/data/site.js'
+
 export type Section = {
 	id: string;
 	content: Content;
@@ -32,7 +34,7 @@ export type Page_Code = {
 }
 
 export type Content = {
-	en: {
+	[prrimary_language: string]: {
 		[field_key?: string]: any; //
 	};
 	[locale: string]: {
@@ -71,6 +73,8 @@ export type Site = {
 	fields: Array<Field>;
 	content: Content;
 	active_deployment?: object | null;
+	primary_language?: string | null;
+	include_assets?: boolean | null;
 	created_at?: string;
 }
 

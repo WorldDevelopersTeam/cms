@@ -4,6 +4,7 @@ import { get } from 'svelte/store'
 import { goto } from '$app/navigation'
 import * as activePage from './app/activePage'
 import { id as activePageID } from './app/activePage'
+import { primary_language } from './data/site'
 import { locale } from './app/misc'
 import stores, { update_timeline } from './data'
 import { update as update_site, content as site_content, site } from './data/site'
@@ -46,7 +47,7 @@ export const symbols = {
 				for (let language in get(site_content)) {
 					if (!symbol.hasOwnProperty(language)) {
 						// Set the corresponding language in the 'symbol.content' object
-						symbol.content[language] = symbol.content['en']
+						symbol.content[language] = symbol.content[primary_language]
 					}
 				}
 				stores.symbols.update((store) => [...store.slice(0, index), symbol, ...store.slice(index)])
@@ -242,7 +243,7 @@ export const active_page = {
 		for (let language in get(site_content)) {
 			if (!new_symbol.hasOwnProperty(language)) {
 				// Set the corresponding language in the 'symbol.content' object
-				new_symbol.content[language] = new_symbol.content['en']
+				new_symbol.content[language] = new_symbol.content[primary_language]
 			}
 		}
 
@@ -656,7 +657,7 @@ export async function add_language(key) {
 		doing: async () => {
 			site_content.update((s) => ({
 				...s,
-				[key]: s['en']
+				[key]: s[primary_language]
 			}))
 
 			stores.pages.update((store) =>
@@ -664,7 +665,7 @@ export async function add_language(key) {
 					...page,
 					content: {
 						...page.content,
-						[key]: page.content['en']
+						[key]: page.content[primary_language]
 					}
 				}))
 			)
@@ -674,7 +675,7 @@ export async function add_language(key) {
 					...symbol,
 					content: {
 						...symbol.content,
-						[key]: symbol.content['en']
+						[key]: symbol.content[primary_language]
 					}
 				}))
 			)
@@ -684,7 +685,7 @@ export async function add_language(key) {
 					...section,
 					content: {
 						...section.content,
-						[key]: section.content['en']
+						[key]: section.content[primary_language]
 					}
 				}))
 			)
@@ -698,7 +699,7 @@ export async function add_language(key) {
 					data: {
 						content: {
 							...get(site).content,
-							[key]: get(site).content['en']
+							[key]: get(site).content[primary_language]
 						}
 					}
 				}),
@@ -710,7 +711,7 @@ export async function add_language(key) {
 						data: {
 							content: {
 								...symbol.content,
-								[key]: symbol.content['en']
+								[key]: symbol.content[primary_language]
 							}
 						}
 					})
@@ -730,7 +731,7 @@ export async function add_language(key) {
 								data: {
 									content: {
 										...section.content,
-										[key]: section.content['en']
+										[key]: section.content[primary_language]
 									}
 								}
 							})
@@ -743,7 +744,7 @@ export async function add_language(key) {
 							data: {
 								content: {
 									...page.content,
-									[key]: page.content['en']
+									[key]: page.content[primary_language]
 								}
 							}
 						})
@@ -751,7 +752,7 @@ export async function add_language(key) {
 			])
 		},
 		undoing: async () => {
-			locale.set('en')
+			locale.set(primary_language)
 
 			site_content.update((s) => {
 				delete s[key]
@@ -833,7 +834,7 @@ export async function add_language(key) {
 }
 
 export async function delete_language(key) {
-	locale.set('en')
+	locale.set(primary_language)
 
 	const original = {
 		site_content: _.cloneDeep(get(site_content)),

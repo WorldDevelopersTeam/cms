@@ -1,10 +1,11 @@
 import { json } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
+import { get } from 'svelte/store'
 import { languages } from '@cms/builder'
 
 export async function GET({ url, params }) {
   const pages = params.page?.split('/') || []
-  const lang = languages.some((lang) => lang.key === pages[0]) ? pages.pop() : 'en'
+  const lang = languages.some((lang) => lang.key === pages[0]) ? pages.pop() : data.site_data.primary_language
   const page_url = pages.pop() || 'index'
   const parent_url = pages.pop() || null
 

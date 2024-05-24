@@ -115,7 +115,8 @@
 					css: $siteCode.css + $pageCode.css + symbol.code.css,
 					js: symbol.code.js
 				},
-				content: symbol.content
+				content: symbol.content,
+				locale: $locale
 			})
 			.catch((e) => console.error(e))
 		if (res?.data?.error) {

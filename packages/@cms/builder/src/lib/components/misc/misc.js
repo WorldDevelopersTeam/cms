@@ -1,4 +1,7 @@
-export const iframePreview = (locale = 'en') => `
+import { get } from 'svelte/store'
+import { primary_language } from '../../stores/data/site.js'
+
+export const iframePreview = (locale = get(primary_language)) => `
   <!DOCTYPE html>
   <html lang="${locale}">
     <head>

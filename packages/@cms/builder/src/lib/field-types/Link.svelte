@@ -5,6 +5,7 @@
 	import TextInput from '../components/inputs/TextInput.svelte'
 	import pages from '../stores/data/pages'
 	import { locale } from '../stores/app/misc'
+	import { primary_language } from '../stores/data/site.js'
 
 	const link = {
 		label: '',
@@ -45,7 +46,7 @@
 	}
 
 	function getPageUrl(page, loc, pages) {
-		const prefix = loc === 'en' ? '/' : `/${loc}/`
+		const prefix = loc === primary_language ? '/' : `/${loc}/`
 		if (page.url === 'index') {
 			return prefix
 		} else {

@@ -1,8 +1,9 @@
 import _, { chain as _chain, capitalize as _capitalize } from "lodash-es";
 import { processors } from './component'
+import { primary_language } from './stores/data/site'
 
 const componentsCache = new Map();
-export async function processCode({ component, buildStatic = true, format = 'esm', locale = 'en', hydrated = true, ignoreCachedData = false }) {
+export async function processCode({ component, buildStatic = true, format = 'esm', locale = primary_language, hydrated = true, ignoreCachedData = false }) {
   let css = ''
   if (component.css) {
     css = await processCSS(component.css || '')

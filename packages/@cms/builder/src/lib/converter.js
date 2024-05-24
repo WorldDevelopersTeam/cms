@@ -1,7 +1,8 @@
 import _ from 'lodash-es'
 import { v4 as uuidv4 } from 'uuid';
-import { createUniqueID } from "./utilities";
 import { getEmptyValue } from './utils.js'
+import { createUniqueID } from './utilities.js'
+import { primary_language } from './stores/data/site.js'
 
 const Field = (field) => {
   if (field.type === 'content') {
@@ -169,7 +170,7 @@ export function validate_site_structure_v2(site) {
       is_language_independent: false,
     }],
     content: {
-      en: {
+      [primary_language]: {
         'content': {
           markdown: '# This is a content block',
           html: '<h1>This is a content block</h1>'
@@ -259,7 +260,7 @@ export function validate_site_structure_v2(site) {
     })
     return accumulator
   }, {
-    en: {}
+    [primary_language]: {}
   })
 
   return {
@@ -269,6 +270,8 @@ export function validate_site_structure_v2(site) {
       name: site.name,
       code: site.code,
       fields: site.fields,
+      primary_language: site.primary_language,
+      include_assets: site.include_assets,
       content
     },
     pages: pages_with_children.map(page => {
@@ -294,7 +297,7 @@ export function validate_symbol(symbol) {
     }, {})
 
     symbol.content = {
-      'en': content
+      [primary_language]: content
     }
   }
 
@@ -343,10 +346,12 @@ export function validateSiteStructure(site) {
         siteContent[field.id] = field.content
       }),
       content: {
-        en: null
-      }
+        [primary_language]: null
+      },
+      primary_language: site.primary_language,
+      include_assets: site.include_assets
     }
-    updated.content['en'] = siteContent
+    updated.content[primary_language] = siteContent
 
     return updated
 

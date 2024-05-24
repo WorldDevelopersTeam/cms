@@ -1,9 +1,10 @@
 import { json } from '@sveltejs/kit'
 import { html_server } from '../../../compiler/cloud-workers/server-compiler.js'
+import { get } from 'svelte/store'
 import postcss from '../../../compiler/cloud-workers/server-postcss.js'
 
 export const POST = async (event) => {
-  const { id, code, content } = await event.request.json()
+  const { id, code, content, locale } = await event.request.json()
 
   const css = await postcss(code.css || '')
 
@@ -12,7 +13,7 @@ export const POST = async (event) => {
     res = await html_server({
       component: {
         id,
-        data: content.en,
+        data: content[locale],
         html: code.html,
         css: css,
         js: code.js,

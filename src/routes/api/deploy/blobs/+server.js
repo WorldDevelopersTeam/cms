@@ -20,6 +20,7 @@ export async function POST({ request, locals }) {
   const res = await Promise.all(
     files.map(async (file) => {
       const blob_sha = await create_blob({
+        binary: file.binary,
         content: file.data,
         token: token?.value,
         repo_name,
@@ -34,12 +35,12 @@ export async function POST({ request, locals }) {
   return json(res)
 }
 
-async function create_blob({ content, repo_name, token }) {
+async function create_blob({ binary, content, repo_name, token }) {
   const { data } = await axios.post(
     `https://api.github.com/repos/${repo_name}/git/blobs`,
     {
-      content,
-      encoding: 'utf-8',
+      content: content,
+      encoding: binary ? 'base64' : 'utf-8',
     },
     {
       headers: { Authorization: `Bearer ${token}` },

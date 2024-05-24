@@ -23,7 +23,7 @@
 			.get(
 				`https://api.iconify.design/search?query=${encodeURIComponent(
 					search_query.trim()
-				)}&limit=32`
+				)}`
 			)
 			.then(({ data }) => {
 				icons = data.icons

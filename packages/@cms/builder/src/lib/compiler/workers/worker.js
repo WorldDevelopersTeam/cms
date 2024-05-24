@@ -4,7 +4,7 @@ import {compile as svelte_compile} from '../lib/svelte-compiler.min.js'
 
 // Based on https://github.com/pngwn/REPLicant
 
-const CDN_URL = "https://cdn.jsdelivr.net/npm";
+const CDN_URL = 'https://cdn.jsdelivr.net/npm' // or 'https://unpkg.com'
 
 const cached_packages = new Map()
 

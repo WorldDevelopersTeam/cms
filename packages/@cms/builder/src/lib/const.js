@@ -1,4 +1,5 @@
-import { customAlphabet } from 'nanoid/non-secure'
+import { createUniqueID } from '$lib/utilities.js'
+import { primary_language } from '$lib/stores/data/site.js'
 import { v4 as uuidv4 } from 'uuid'
 import { find as _find } from 'lodash-es'
 
@@ -34,7 +35,7 @@ export const Symbol = (symbol) => ({
 	},
 	fields: [],
 	content: {
-		en: {}
+		[primary_language]: {}
 	},
 	site: symbol.site,
 	index: 0,
@@ -60,7 +61,7 @@ export const Page = (page = {}) => ({
 	},
 	fields: [],
 	content: {
-		en: {}
+		[primary_language]: {}
 	},
 	parent: null,
 	site: '',
@@ -128,11 +129,13 @@ export const Site = ({ url, name } = { url: 'default', name: 'Default' }) => ({
 	},
 	fields: [],
 	content: {
-		en: {
+		[primary_language]: {
 			// locale
 		}
 	},
 	active_deployment: null,
+	primary_language: "en",
+	include_assets: false,
 	created_at: new Date().toISOString()
 })
 
@@ -354,11 +357,5 @@ export const languages = [
 		name: 'Estonian'
 	}
 ]
-
-function createUniqueID(length = 5) {
-	const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz', length)
-	return nanoid()
-}
-
 
 export const Language_Name = (language) => _find(languages, ['key', language])['name']

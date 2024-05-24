@@ -1,5 +1,6 @@
 <script context="module">
 	import { writable, get } from 'svelte/store'
+	import { primary_language } from '$lib/stores/data/site'
 
 	const leftPaneSize = writable(get(onMobile) ? '100%' : '50%')
 	const rightPaneSize = writable('50%')
@@ -138,7 +139,7 @@
 			if (!local_content[loc]) {
 				local_content = {
 					...local_content,
-					[loc]: local_content['en']
+					[loc]: local_content[primary_language]
 				}
 			}
 		})

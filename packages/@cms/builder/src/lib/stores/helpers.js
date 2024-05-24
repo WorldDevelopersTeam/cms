@@ -44,7 +44,7 @@ export async function buildStaticPage({
 	site = get(activeSite),
 	page_sections = get(sections),
 	page_symbols = get(symbols),
-	locale = 'en',
+	locale = get(primary_language),
 	no_js = false
 }) {
 	const hydratable_symbols_on_page = page_symbols.filter(
@@ -169,36 +169,18 @@ export async function buildStaticPage({
  * @returns {import('$lib').Content}
  * */
 export function get_content_with_static({ component, symbol, loc }) {
-	if (!symbol) return { en: {} }
+	if (!symbol) return { [primary_language]: {} }
 	const content = _chain(symbol.fields)
 		.map((field) => {
-			const field_value = component.content?.[loc]?.[field.key]
-			// if field is static, use value from symbol content
-			if (field.is_static) {
-				const symbol_value = field.is_language_independent 
-					? symbol.content?.[primary_language]?.[field.key] 
-					: symbol.content?.[loc]?.[field.key]
-				return {
-					key: field.key,
-					value: symbol_value
-				}
-			} else if (field.is_language_independent) {
-				const default_value = symbol.content?.[primary_language]?.[field.key]
-				return {
-					key: field.key,
-					value: default_value
-				}
-			} else if (field_value !== undefined) {
-				return {
-					key: field.key,
-					value: field_value
-				}
-			} else {
-				const default_content = symbol.content?.[loc]?.[field.key]
-				return {
-					key: field.key,
-					value: default_content || getEmptyValue(field)
-				}
+			const field_value = field.is_language_independent 
+					? (component.content?.[get(primary_language)]?.[field.key] || component.content?.[loc]?.[field.key])
+					: component.content?.[loc]?.[field.key]
+			const default_value = (field.is_language_independent 
+					? (symbol.content?.[get(primary_language)]?.[field.key] || symbol.content?.[loc]?.[field.key]) 
+					: symbol.content?.[loc]?.[field.key]) || getEmptyValue(field)
+			return {
+				key: field.key,
+				value: (field.is_static || field_value === undefined) ? default_value : field_value
 			}
 		})
 		.keyBy('key')

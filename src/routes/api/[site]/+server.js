@@ -23,7 +23,7 @@ export async function GET({ url, params }) {
     ])
 
   const site = {
-    ...site_res['content']['en'],
+    ...site_res['content'][site.primary_language],
     _meta: {
       id: site_res.id,
       name: site_res.name,
@@ -33,7 +33,7 @@ export async function GET({ url, params }) {
   }
 
   const page = {
-    ...page_res['content']['en'],
+    ...page_res['content'][site.primary_language],
     _meta: {
       id: page_res.id,
       name: page_res.name,
