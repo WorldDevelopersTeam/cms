@@ -76,26 +76,28 @@
 	let local_content = get_local_content()
 	function get_local_content() {
 		let combined_content = symbol.content
-		symbol.fields.forEach((field) => {
-			if (field.is_static) {
-				const value = symbol.content[$locale][field.key]
-				combined_content = {
-					...combined_content,
-					[$locale]: {
-						...combined_content[$locale],
-						[field.key]: value !== undefined ? value : getCachedPlaceholder(field)
+		Object.entries(component.content).forEach(([language_key, language_value]) => {
+			symbol.fields.forEach((field) => {
+				if (field.is_static) {
+					const value = symbol.content[language_key][field.key]
+					combined_content = {
+						...combined_content,
+						[language_key]: {
+							...combined_content[language_key],
+							[field.key]: value !== undefined ? value : getCachedPlaceholder(field)
+						}
+					}
+				} else {
+					const value = component.content[language_key][field.key]
+					combined_content = {
+						...combined_content,
+						[language_key]: {
+							...combined_content[language_key],
+							[field.key]: value !== undefined ? value : getCachedPlaceholder(field)
+						}
 					}
 				}
-			} else {
-				const value = component.content[$locale][field.key]
-				combined_content = {
-					...combined_content,
-					[$locale]: {
-						...combined_content[$locale],
-						[field.key]: value !== undefined ? value : getCachedPlaceholder(field)
-					}
-				}
-			}
+			})
 		})
 		return combined_content
 	}

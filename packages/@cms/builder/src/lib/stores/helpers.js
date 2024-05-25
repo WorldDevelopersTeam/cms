@@ -55,6 +55,7 @@ export async function buildStaticPage({
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
 			const data = getPageData({ page, site, loc: locale })
+			const locales = Object.keys(site.content).sort()
 			return {
 				html: `
           <svelte:head>

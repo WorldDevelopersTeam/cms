@@ -49,12 +49,13 @@ export const GET = async (event) => {
       (async () => {
         const css = await postcss(site.code.css + page.code.css)
         const data = getPageData({ page, site, loc: locale })
+        const locales = Object.keys(site.content).sort()
         return {
           html: `
 			      <svelte:head>
 			        ${site.code.html.head}
 			        ${page.code.html.head}
-			        <style>${css}</style>
+              <style>${css}</style>
 			      </svelte:head>`,
           css: ``,
           js: ``,

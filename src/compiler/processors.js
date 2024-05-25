@@ -1,8 +1,7 @@
 import _ from 'lodash-es';
 import PromiseWorker from 'promise-worker';
 import { get } from 'svelte/store';
-import { site } from '@cms/builder';
-import { locale } from '@cms/builder';
+import { site, locale } from '@cms/builder';
 import rollupWorker from './workers/rollup.worker.js?worker';
 import postCSSWorker from './workers/postcss.worker.js?worker';
 
@@ -36,6 +35,7 @@ export async function html({ component, buildStatic = true, format = 'esm' }) {
 	const compile_page = Array.isArray(component);
 
 	let res;
+
 	try {
 		const has_js = compile_page ? component.some((s) => s.js) : !!component.js;
 		res = await rollup_worker.postMessage({
@@ -61,6 +61,7 @@ export async function html({ component, buildStatic = true, format = 'esm' }) {
 		};
 		res = {};
 	} else if (res.error) {
+		console.trace()
 		console.error(res.error);
 		payload = {
 			error: escapeHtml(res.error)
