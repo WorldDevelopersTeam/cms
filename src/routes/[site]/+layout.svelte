@@ -23,7 +23,7 @@
 		}
 
 		if (payload.provider === 'github') {
-			const chunks = chunk_payload(payload, 4500) // break payload up into chunks to avoid cloud function body limits
+			const chunks = chunk_payload(payload, 2500) // break payload up into chunks to avoid cloud function body limits
 			const blob_list = (await Promise.all(chunks.map(create_blob_list))).flat()
 			return await deploy_to_server({
 				...payload,
