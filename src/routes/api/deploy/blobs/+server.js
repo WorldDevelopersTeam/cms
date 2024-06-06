@@ -1,3 +1,5 @@
+import { minify_sync as minifyJS } from 'terser';
+import { minify as minifyHTML } from 'html-minifier-terser';
 import { json, error as server_error } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import axios from 'axios'
@@ -9,13 +11,61 @@ export async function POST({ request, locals }) {
     throw server_error(401, { message: 'Unauthorized' })
   }
 
-  const { repo_name, files, provider } = await request.json()
+  let { repo_name, files, provider } = await request.json()
 
   const { data: token } = await supabase_admin
     .from('config')
     .select('value')
     .eq('id', `${provider}_token`)
     .single()
+
+  // minify html and js
+  files = await Promise.all(files.map(async (file) => {
+    if (typeof file === 'object')
+    {
+      let path = file.file
+      let content = file.data
+      if (typeof path === 'string' && typeof content === 'string')
+      {
+        if (path.endsWith('.js'))
+        {
+          // minify js
+          content = minifyJS(content, { sourceMap: false }).code
+        }
+        else if (path.endsWith('.html'))
+        {
+          // strip comments
+          content = await minifyHTML(content, {
+            html5: true,
+            removeComments: true,
+          })
+          // merge inline styles
+          content = content.replaceAll(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/gim, function(stylesElems, style1OpenTag, style1Content, style1CloseTag, style2OpenTag, style2Content, style2CloseTag)
+          {
+            return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
+          })
+          // normalize sinline styles
+          content = content.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
+          // normalize inline scripts
+          content = content.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
+          // minify html
+          content = await minifyHTML(content, {
+            html5: true,
+            minifyCSS: true,
+            minifyJS: true,
+            minifyURLs: true,
+            quoteCharacter: '"',
+            removeEmptyAttributes: true,
+            collapseWhitespace: true,
+            sortAttributes: true,
+            sortClassName: true
+          })
+        }
+        file.data = content
+      }
+    }
+    return file
+  }))
 
   const res = await Promise.all(
     files.map(async (file) => {
@@ -36,16 +86,25 @@ export async function POST({ request, locals }) {
 }
 
 async function create_blob({ binary, content, repo_name, token }) {
-  const { data } = await axios.post(
-    `https://api.github.com/repos/${repo_name}/git/blobs`,
-    {
-      content: content,
-      encoding: binary ? 'base64' : 'utf-8',
-    },
-    {
-      headers: { Authorization: `Bearer ${token}` },
+  let [data, attempts] = [false, 0]
+  while (attempts < 3) {
+    try {
+      data = (await axios.post(
+        `https://api.github.com/repos/${repo_name}/git/blobs`,
+        {
+          content: content,
+          encoding: binary ? 'base64' : 'utf-8',
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )).data
+    } catch(e) {
+      attempts = attempts + 1
+    } finally {
+      break;
     }
-  )
+  }
 
   return data.sha
 }

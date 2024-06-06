@@ -1,7 +1,7 @@
 import { json } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import { get } from 'svelte/store'
-import { languages } from '@cms/builder'
+import { languages } from '@worlddev/cms-builder'
 
 export async function GET({ url, params }) {
   const pages = params.page?.split('/') || []

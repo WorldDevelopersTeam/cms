@@ -38,6 +38,7 @@ export async function html_server({ component, buildStatic = true, format = 'esm
       buildStatic,
       format,
     })
+
     // console.log({ component, res })
   } catch (e) {
     console.log('error', e)
@@ -50,13 +51,13 @@ export async function html_server({ component, buildStatic = true, format = 'esm
 
   if (!res) {
     payload = {
-      html: '<h1 style="text-align: center">could not render</h1>',
+      html: '<h1 style="text-align:center">could not render</h1>',
     }
     res = {}
   } else if (res.error) {
     // console.error(res.error)
     payload = {
-      html: '<h1 style="text-align: center">could not render</h1>',
+      html: '<h1 style="text-align:center">could not render</h1>',
       error: escapeHtml(res.error),
     }
     function escapeHtml(unsafe) {

@@ -82,7 +82,7 @@ export async function buildStaticPage({
 				return {
 					html: `
           <div class="section" id="section-${section_id}">
-            ${html} 
+            ${html}
           </div>`,
 					js,
 					css,
@@ -154,7 +154,7 @@ export async function buildStaticPage({
 					.join('\n')}
       })
       .catch(e => console.error(e))
-    `
+    	`
 			)
 			.join('\n')
 	}
@@ -173,10 +173,10 @@ export function get_content_with_static({ component, symbol, loc }) {
 	if (!symbol) return { [primary_language]: {} }
 	const content = _chain(symbol.fields)
 		.map((field) => {
-			const field_value = field.is_language_independent 
+			const field_value = field.is_language_independent
 					? (component.content?.[get(primary_language)]?.[field.key] || component.content?.[loc]?.[field.key])
 					: component.content?.[loc]?.[field.key]
-			const default_value = (field.is_language_independent 
+			const default_value = (field.is_language_independent
 					? (symbol.content?.[get(primary_language)]?.[field.key] || symbol.content?.[loc]?.[field.key]) 
 					: symbol.content?.[loc]?.[field.key]) || getEmptyValue(field)
 			return {

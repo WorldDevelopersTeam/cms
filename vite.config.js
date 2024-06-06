@@ -23,7 +23,7 @@ const config = {
 
   ],
   optimizeDeps: {
-    include: ["@cms/builder"]
+    include: ["@worlddev/cms-builder"]
   },
   build: {
     sourcemap: true

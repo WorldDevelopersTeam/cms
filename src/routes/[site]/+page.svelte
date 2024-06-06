@@ -3,7 +3,7 @@
     WdtPage,
     realtime_subscribe,
     locked_blocks,
-  } from '@cms/builder'
+  } from '@worlddev/cms-builder'
   import { browser } from '$app/environment'
   import { invalidate } from '$app/navigation'
   import { createUniqueID } from '$lib/utils'

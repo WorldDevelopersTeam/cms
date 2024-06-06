@@ -1,5 +1,5 @@
 {
-	"name": "@cms/builder",
+	"name": "@worlddev/cms-builder",
 	"version": "0.1.67",
 	"scripts": {
 		"dev": "vite dev",
@@ -29,7 +29,6 @@
 		"!./dist/**/*.spec.*"
 	],
 	"dependencies": {
-		"@tiptap/extension-image": "^2.2.6",
 		"@codemirror/autocomplete": "^6.1.0",
 		"@codemirror/commands": "^6.0.1",
 		"@codemirror/lang-css": "^6.0.0",
@@ -47,6 +46,7 @@
 		"@tiptap/extension-bullet-list": "^2.0.0-beta.26",
 		"@tiptap/extension-floating-menu": "^2.0.0-beta.50",
 		"@tiptap/extension-highlight": "^2.0.0-beta.33",
+		"@tiptap/extension-image": "^2.2.6",
 		"@tiptap/extension-link": "^2.0.0-beta.199",
 		"@tiptap/starter-kit": "^2.0.0-beta.183",
 		"autosize": "^5.0.1",
@@ -54,10 +54,12 @@
 		"codemirror": "^6.0.1",
 		"file-saver": "^2.0.5",
 		"idb-keyval": "^6.1.0",
+		"install": "^0.13.0",
 		"jszip": "^3.7.1",
 		"lodash-es": "^4.17.21",
 		"mousetrap": "^1.6.5",
 		"nanoid": "^3.1.23",
+		"npm": "^10.5.1",
 		"pluralize": "^8.0.0",
 		"prettier": "^2.4.1",
 		"promise-worker": "^2.0.1",
@@ -67,8 +69,6 @@
 		"svelte-dnd-action": "^0.9.24",
 		"svelte-toggle": "^3.1.0",
 		"timeago.js": "^4.0.2",
-		"install": "^0.13.0",
-		"npm": "^10.5.1",
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
@@ -77,8 +77,8 @@
 		"@sveltejs/kit": "^1.20.4",
 		"@sveltejs/package": "^2.0.0",
 		"autoprefixer": "^10.4.14",
-		"postcss-nested": "^6.0.1",
 		"postcss-atroot": "^0.2.4",
+		"postcss-nested": "^6.0.1",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
 		"publint": "^0.1.9",
@@ -96,6 +96,6 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"engines": {
-    	"node": "18.x"
-  	}
+		"node": "18.x"
+	}
 }

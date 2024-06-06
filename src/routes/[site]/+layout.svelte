@@ -1,6 +1,6 @@
 <script>
 	import _ from 'lodash'
-	import Wdt, { database_subscribe, storage_subscribe, deploy_subscribe } from '@cms/builder'
+	import Wdt, { database_subscribe, storage_subscribe, deploy_subscribe } from '@worlddev/cms-builder'
 	import axios from 'axios'
 
 	export let data
@@ -9,7 +9,7 @@
 
 	deploy_subscribe(async (untyped_payload, create_new) => {
 		// workaround because adding the type next to the argument throws a parsing error (?)
-		/** @type {import('@cms/builder/src/lib/deploy.js').DeploymentPayload} */
+		/** @type {import('@worlddev/cms-builder/src/lib/deploy.js').DeploymentPayload} */
 		const payload = untyped_payload
 
 		if (create_new) {

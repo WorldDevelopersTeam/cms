@@ -1,7 +1,7 @@
 import _ from 'lodash-es';
 import PromiseWorker from 'promise-worker';
 import { get } from 'svelte/store';
-import { site, locale } from '@cms/builder';
+import { site, locale } from '@worlddev/cms-builder';
 import rollupWorker from './workers/rollup.worker.js?worker';
 import postCSSWorker from './workers/postcss.worker.js?worker';
 

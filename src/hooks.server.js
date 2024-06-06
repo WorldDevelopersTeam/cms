@@ -16,7 +16,7 @@ export async function handle({ resolve, event }) {
       data: { session },
     } = await event.locals.supabase.auth.getSession()
     return session
-  }  
+  }
 
   const response = await resolve(event, {
     filterSerializedResponseHeaders(name) {
@@ -29,18 +29,18 @@ export async function handle({ resolve, event }) {
     // retrieve site and page from db
     const [{data:site}, {data:page}] = await Promise.all([
       supabase_admin.from('sites').select('id, url').eq('url', event.params.site).single(),
-      supabase_admin.from('pages').select('id, url, site!inner(*)').match({      
+      supabase_admin.from('pages').select('id, url, site!inner(*)').match({
         url: event.params.page || 'index',
         'site.url': event.params.site
       }).single()
     ])
-    
+
     if (!site || !page) return new Response('no page found')
 
     const {data:file} = await supabase_admin.storage.from('sites').download(`${site.id}/${page.id}/index.html`)
 
     return new Response(file ||  'no preview found', {
-      headers: {  
+      headers: {
         'Content-Type': 'text/html;charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },

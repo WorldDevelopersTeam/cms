@@ -1,5 +1,5 @@
 {
-  "name": "@cms/server",
+  "name": "@worlddev/cms-system",
   "version": "2.0.0--beta.48",
   "scripts": {
     "dev": "vite dev",
@@ -14,7 +14,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "workspaces": [
-    "packages/@cms/builder"
+    "packages/builder"
   ],
   "dependencies": {
     "@fontsource/fira-code": "^5.0.5",
@@ -32,22 +32,24 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
+    "@jsonjoy.com/base64": "^1.1.2",
     "@playwright/test": "^1.33.0",
     "@sveltejs/adapter-auto": "2.1.1",
     "@sveltejs/kit": "^1.22.4",
-    "@jsonjoy.com/base64": "^1.1.2",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.3.6",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte": "^2.32.4",
+    "html-minifier-terser": "^7.2.0",
+    "terser": "^5.31.0",
     "file-saver": "^2.0.5",
     "js-beautify": "^1.14.9",
     "jszip": "^3.10.1",
     "mousetrap": "^1.6.5",
-    "postcss-nested": "^5.0.6",
     "postcss-atroot": "^0.2.4",
+    "postcss-nested": "^5.0.6",
     "randomstring": "^1.2.3",
     "showdown-highlight": "^3.1.0",
     "svelte": "^3.59.2",

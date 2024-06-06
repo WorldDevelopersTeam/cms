@@ -1,5 +1,5 @@
 <script>
-  import { WdtPage } from '@cms/builder'
+  import { WdtPage } from '@worlddev/cms-builder'
 
   export let data
 </script>
