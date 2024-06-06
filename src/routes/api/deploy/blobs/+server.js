@@ -87,7 +87,7 @@ export async function POST({ request, locals }) {
 
 async function create_blob({ binary, content, repo_name, token }) {
   let [data, attempts] = [false, 0]
-  while (attempts < 10) {
+  while (attempts < 50) {
     try {
       data = (await axios.post(
         `https://api.github.com/repos/${repo_name}/git/blobs`,
