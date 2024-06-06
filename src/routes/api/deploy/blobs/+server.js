@@ -67,27 +67,27 @@ export async function POST({ request, locals }) {
     return file
   }))
 
-  const res = await Promise.all(
-    files.map(async (file) => {
-      const blob_sha = await create_blob({
-        binary: file.binary,
-        content: file.data,
-        token: token?.value,
-        repo_name,
-      })
-      return {
-        path: file.file,
-        sha: blob_sha,
-      }
+  res = [];
+
+  for (let key in files) {
+    const blob_sha = await create_blob({
+      binary: files[key].binary,
+      content: files[key].data,
+      token: token?.value,
+      repo_name,
     })
-  )
+    res[key] = {
+      path: files[key].file,
+      sha: blob_sha
+    }
+  }
 
   return json(res)
 }
 
 async function create_blob({ binary, content, repo_name, token }) {
   let [data, attempts] = [false, 0]
-  while (attempts < 50) {
+  while (attempts < 5) {
     try {
       data = (await axios.post(
         `https://api.github.com/repos/${repo_name}/git/blobs`,
