@@ -23,14 +23,11 @@
 		}
 
 		if (payload.provider === 'github') {
-			const chunks = chunk_payload(payload, 3000) // break payload up into chunks to avoid cloud function body limits
-			const blob_list = []
-			for (let key in chunks) {
-				blob_list[key] = await create_blob_list(chunks[i])
-			}
+			const chunks = chunk_payload(payload, 3500) // break payload up into chunks to avoid cloud function body limits
+			const blob_list = (await Promise.all(chunks.map(create_blob_list))).flat()
 			return await deploy_to_server({
 				...payload,
-				files: blob_list.flat(),
+				files: blob_list,
 				message: `Deploy site`
 			})
 
