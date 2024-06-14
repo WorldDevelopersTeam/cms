@@ -67,7 +67,7 @@ export async function POST({ request, locals }) {
     return file
   }))
 
-  res = [];
+  let res = [];
 
   for (let key in files) {
     const blob_sha = await create_blob({
