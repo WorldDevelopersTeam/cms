@@ -50,7 +50,7 @@
 			function calc_file_complexity(file) {
 				let complexity = file.size
 				if (is_minifiable_file(file)) {
-					complexity = complexity * Math.max(16, 16 + (file.size / 32) - 2)
+					complexity = complexity * Math.max(16, 16 + (file.size / 16))
 				}
 				return complexity
 			}
