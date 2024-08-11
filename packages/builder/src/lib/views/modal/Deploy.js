@@ -30,21 +30,17 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 		return null
 	}
 	const files = await Promise.all(site_bundle.map(async (file) => {
+		let file_data = null
 		if (file.blob) {
-			const blob_data = toBase64(new Uint8Array(await file.blob.arrayBuffer()));
-			return {
-				binary: true,
-				file: file.path,
-				data: blob_data,
-				size: blob_data.length / 1024
-			}
+			blob_data = toBase64(new Uint8Array(await file.blob.arrayBuffer()))
 		} else {
-			return {
-				binary: false,
-				file: file.path,
-				data: file.content,
-				size: new Blob([file.content], { type: 'text/plain' }).size / 1024
-			}
+			blob_data = file.content
+		}
+		return {
+			binary: file.blob ? true : false,
+			file: file.path,
+			data: file_data,
+			size: file_data.length / 1024
 		}
 	}))
 	return await deploy({ files, site_id: get(site).id, repo_name, provider }, create_new)
