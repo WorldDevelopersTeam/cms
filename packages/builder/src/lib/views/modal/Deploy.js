@@ -261,8 +261,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 
 async function process_assets(obj) {
 	let assets_list, assets_map = [], {
-		by_hash: {},
-		by_content: {}
+		by_path: {},
+		by_hash: {}
 	}
 
 	let updated_content = _.mapValues(obj, (lang_content) => {
