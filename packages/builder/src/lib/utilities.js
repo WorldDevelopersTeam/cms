@@ -6,6 +6,17 @@ export function createUniqueID(length = 5) {
 	return nanoid()
 }
 
+export function mapValuesAsync(object, fn) {
+  return Object.fromEntries(
+    await Promise.all(
+      Object.entries(object).map(async ([key, value]) => [
+        key,
+        await fn(value, key, object)
+      ])
+    )
+  );
+}
+
 // https://stackoverflow.com/a/21071454
 export function move(array, from, to) {
 	if (to === from) return array

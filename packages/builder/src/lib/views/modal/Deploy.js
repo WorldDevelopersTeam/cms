@@ -5,7 +5,7 @@ import { dataChanged } from '$lib/database.js'
 import { deploy } from '$lib/deploy'
 import { buildStaticPage } from '$lib/stores/helpers'
 import { processCode } from '$lib/utils'
-import { createUniqueID } from '$lib/utilities'
+import { mapValuesAsync } from '$lib/utilities'
 import { toBase64 } from '@jsonjoy.com/base64'
 import { RMD160 } from 'jshashes'
 import _ from 'lodash-es'
@@ -158,7 +158,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		if (include_assets && has_nested_property(sections, 'alt')) {
 			await Promise.all(
 				sections.map(async (section, i) => {
-					const response = await swap_in_local_asset_urls(section.content)
+					const response = await process_content(section.content)
 					assets.push(...response.assets) // store image blobs for later download
 					sections[i]['content'] = response.content // replace image urls in content with relative urls
 				})
@@ -259,15 +259,15 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 	}
 }
 
-async function process_assets(obj) {
+async function process_content(obj) {
 	let assets_list = []
 	let assets_map = {
 		by_path: {},
 		by_hash: {}
 	}
 
-	let updated_content = _.mapValues(obj, (lang_content) => {
-		return process_fields_for_swap_asset(assets_list, assets_map, lang_content)
+	let updated_content = await mapValuesAsync(obj, async function (lang_content) {
+		return await process_fields(assets_list, assets_map, lang_content)
 	})
 
 	return {
@@ -276,10 +276,10 @@ async function process_assets(obj) {
 	}
 }
 
-function process_fields(assets_list, assets_map, obj) {
+async function process_fields(assets_list, assets_map, obj) {
 	let processed_fields = _.mapValues(obj, (val) => {
 
-		function swap_asset(field_value) {
+		async function swap_asset(field_value) {
 			const urlObject = new URL(field_value.url)
 			const pathname = urlObject.pathname
 			if (pathname in assets_map.by_path) {
@@ -310,7 +310,8 @@ function process_fields(assets_list, assets_map, obj) {
 					path: `_assets/${filename}`,
 					blob
 				});
-				assets_map[hash] = filename
+				assets_map.by_path[pathname] = filename
+				assets_map.by_hash[hash] = filename
 
 				return {
 					...field_value,
@@ -343,7 +344,7 @@ function process_fields(assets_list, assets_map, obj) {
 				});
 				return field_value_copy
 			} else {
-				return process_fields(assets_list, assets_map, val)
+				return await process_fields(assets_list, assets_map, val)
 			}
 		} else {
 			return val
