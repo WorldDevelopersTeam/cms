@@ -282,50 +282,54 @@ async function process_fields(assets_list, assets_map, obj) {
 		async function swap_asset(field_value) {
 			const urlObject = new URL(field_value.url)
 			const pathname = urlObject.pathname
-			if (pathname in assets_map.by_path) {
-				return {
-					...field_value,
-					url: `/_assets/${assets_map.by_path[pathname]}`
-				}
-			}
+			const extension = pathname.slice(pathname.lastIndexOf('.'))
 
-			try {
-				const response = await fetch(field_value.url);
-				const blob = await response.blob();
-
-				const blob_str = await blob.text()
-				const extension = pathname.slice(pathname.lastIndexOf('.'))
-				const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
-
-				if (hash in assets_map.by_hash) {
+			if (extension.length > 1) {
+				if (pathname in assets_map.by_path) {
 					return {
 						...field_value,
-						url: `/_assets/${assets_map.by_hash[hash]}`
+						url: `/_assets/${assets_map.by_path[pathname]}`
 					}
 				}
 
-				const filename = hash + extension
+				try {
+					const response = await fetch(field_value.url);
+					const blob = await response.blob();
 
-				assets_list.push({
-					path: `_assets/${filename}`,
-					blob
-				});
-				assets_map.by_path[pathname] = filename
-				assets_map.by_hash[hash] = filename
+					const blob_str = await blob.text()
 
-				return {
-					...field_value,
-					url: `/_assets/${filename}`
+					const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+
+					if (hash in assets_map.by_hash) {
+						return {
+							...field_value,
+							url: `/_assets/${assets_map.by_hash[hash]}`
+						}
+					}
+
+					const filename = hash + extension
+
+					assets_list.push({
+						path: `_assets/${filename}`,
+						blob
+					});
+					assets_map.by_path[pathname] = filename
+					assets_map.by_hash[hash] = filename
+
+					return {
+						...field_value,
+						url: `/_assets/${filename}`
+					}
+				} catch (e) {
+					console.error('Error while fetching asset', e.message);
 				}
-			} catch (e) {
-				console.log(e.message);
 			}
 
 			return field_value
 		}
 
 		if (typeof val === 'object') {
-			if (has_nested_property(val, 'alt') && val.url != "") {
+			if (val.hasOwnProperty('alt') && val.url != "") {
 				return await swap_asset(val)
 			} else if (Array.isArray(val)) {
 				let field_value_copy = [];
