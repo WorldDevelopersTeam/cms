@@ -7,6 +7,7 @@ import { buildStaticPage } from '$lib/stores/helpers'
 import { processCode } from '$lib/utils'
 import { createUniqueID } from '$lib/utilities'
 import { toBase64 } from '@jsonjoy.com/base64'
+import { RMD160 } from 'jshashes'
 import _ from 'lodash-es'
 import { page } from '$app/stores'
 import { site, content } from '$lib/stores/data/site'
@@ -258,61 +259,67 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 	}
 }
 
-async function swap_in_local_asset_urls(obj) {
-	let files_list = []
-	let files_map = {}
+async function process_assets(obj) {
+	let assets_list, assets_map = [], {
+		by_hash: {},
+		by_content: {}
+	}
 
-	const updated_content = _.mapValues(obj, (lang_content) => {
-		return process_fields_for_swap_asset(files_list, files_map, lang_content)
+	let updated_content = _.mapValues(obj, (lang_content) => {
+		return process_fields_for_swap_asset(assets_list, assets_map, lang_content)
 	})
-
-	const assets = []
-	await Promise.all(
-		files_list.map(async ({ url, filename }) => {
-			try {
-				const response = await fetch(url);
-				const blob = await response.blob();
-
-				assets.push({
-					path: `_assets/${filename}`,
-					blob
-				});
-			} catch (e) {
-				console.log(e.message);
-			}
-		})
-	)
 
 	return {
 		content: updated_content,
-		assets
+		assets: assets_list
 	}
 }
 
-function process_fields_for_swap_asset(files_list, files_map, obj) {
+function process_fields(assets_list, assets_map, obj) {
 	let processed_fields = _.mapValues(obj, (val) => {
 
 		function swap_asset(field_value) {
 			const urlObject = new URL(field_value.url)
 			const pathname = urlObject.pathname
-			if (pathname in files_map) {
+			if (pathname in assets_map.by_path) {
 				return {
 					...field_value,
-					url: `/_assets/${files_map[pathname]}`
+					url: `/_assets/${assets_map.by_path[pathname]}`
 				}
 			}
-			const extension = pathname.slice(pathname.lastIndexOf('.'))
-			const filename = createUniqueID(20) + extension
 
-			files_list.push({
-				url: field_value.url,
-				filename
-			})
-			files_map[pathname] = filename
-			return {
-				...field_value,
-				url: `/_assets/${filename}`
+			try {
+				const response = await fetch(field_value.url);
+				const blob = await response.blob();
+
+				const blob_str = await blob.text()
+				const extension = pathname.slice(pathname.lastIndexOf('.'))
+				const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+
+				if (hash in assets_map.by_content) {
+					return {
+						...field_value,
+						url: `/_assets/${assets_map.by_hash[hash]}`
+					}
+				}
+
+				const filename = hash + extension
+
+				assets_list.push({
+					path: `_assets/${filename}`,
+					blob
+				});
+				assets_map[hash] = filename
+
+				return {
+					...field_value,
+					url: `/_assets/${filename}`
+				}
+			} catch (e) {
+				console.log(e.message);
 			}
+
+			return field_value
 		}
 
 		if (typeof val === 'object') {
@@ -335,7 +342,7 @@ function process_fields_for_swap_asset(files_list, files_map, obj) {
 				});
 				return field_value_copy
 			} else {
-				return process_fields_for_swap_asset(files_list, files_map, val)
+				return process_fields(assets_list, assets_map, val)
 			}
 		} else {
 			return val

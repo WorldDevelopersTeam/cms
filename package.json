@@ -32,7 +32,6 @@
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {
-    "@jsonjoy.com/base64": "^1.1.2",
     "@playwright/test": "^1.33.0",
     "@sveltejs/adapter-auto": "2.1.1",
     "@sveltejs/kit": "^1.22.4",
