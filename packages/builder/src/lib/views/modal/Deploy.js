@@ -260,7 +260,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 }
 
 async function process_assets(obj) {
-	let assets_list, assets_map = [], {
+	let assets_list = []
+	let assets_map = {
 		by_path: {},
 		by_hash: {}
 	}
