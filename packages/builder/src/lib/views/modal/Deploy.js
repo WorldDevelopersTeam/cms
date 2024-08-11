@@ -32,9 +32,9 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 	const files = await Promise.all(site_bundle.map(async (file) => {
 		let file_data = null
 		if (file.blob) {
-			blob_data = toBase64(new Uint8Array(await file.blob.arrayBuffer()))
+			file_data = toBase64(new Uint8Array(await file.blob.arrayBuffer()))
 		} else {
-			blob_data = file.content
+			file_data = file.content
 		}
 		return {
 			binary: file.blob ? true : false,
