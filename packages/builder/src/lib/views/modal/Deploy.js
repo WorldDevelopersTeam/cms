@@ -297,7 +297,7 @@ async function process_fields(assets_list, assets_map, obj) {
 				const extension = pathname.slice(pathname.lastIndexOf('.'))
 				const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
 
-				if (hash in assets_map.by_content) {
+				if (hash in assets_map.by_hash) {
 					return {
 						...field_value,
 						url: `/_assets/${assets_map.by_hash[hash]}`
