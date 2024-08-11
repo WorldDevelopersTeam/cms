@@ -40,7 +40,7 @@
 			)
 		} else {
 			const home_page = selected_theme.pages.find((page) => page.url === 'index')
-			const preview = await buildStaticPage({
+			const page = await buildStaticPage({
 				page: home_page,
 				site: selected_theme.site,
 				page_sections: selected_theme.sections.filter((section) => section.page === home_page.id),
@@ -56,7 +56,7 @@
 						name: site_name
 					}
 				},
-				preview.html
+				page.html
 			)
 		}
 	}
