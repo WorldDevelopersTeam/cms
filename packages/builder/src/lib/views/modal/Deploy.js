@@ -40,7 +40,7 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 			binary: file.blob ? true : false,
 			file: file.path,
 			data: file_data,
-			size: file_data.length / 1024
+			size: (new Blob([file_data], { type: 'text/plain' }).size) / 1024
 		}
 	}))
 	return await deploy({ files, site_id: get(site).id, repo_name, provider }, create_new)
