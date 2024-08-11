@@ -326,7 +326,7 @@ async function process_fields(assets_list, assets_map, obj) {
 
 		if (typeof val === 'object') {
 			if (has_nested_property(val, 'alt') && val.url != "") {
-				return swap_asset(val)
+				return await swap_asset(val)
 			} else if (Array.isArray(val)) {
 				let field_value_copy = [];
 				for (let value of val) {
@@ -335,7 +335,7 @@ async function process_fields(assets_list, assets_map, obj) {
 						if (img.url != "" && img.url.indexOf("data:image") == -1) {
 							field_value_copy.push({
 								...value,
-								image: swap_asset(img)
+								image: await swap_asset(img)
 							});
 						}
 					} else {
