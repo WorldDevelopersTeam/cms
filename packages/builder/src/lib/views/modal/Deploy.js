@@ -325,11 +325,11 @@ async function process_fields(assets_list, assets_map, obj) {
 		}
 
 		if (typeof val === 'object') {
-			if (val.hasOwnProperty('alt') && val.url != "") {
+			if (has_nested_property(val, 'alt') && val.url != "") {
 				return swap_asset(val)
 			} else if (Array.isArray(val)) {
 				let field_value_copy = [];
-				_.each(val, (value) => {
+				for (let value of val)
 					if (typeof value === 'object' && value.hasOwnProperty('image') && typeof value.image === 'object') {
 						let img = value.image;
 						if (img.url != "" && img.url.indexOf("data:image") == -1) {
