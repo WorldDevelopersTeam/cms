@@ -64,6 +64,7 @@ export async function POST({ request, locals }) {
         file.data = content
       }
     }
+    console.log(file)
     return file
   }))
 
