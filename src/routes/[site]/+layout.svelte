@@ -23,7 +23,7 @@
 		}
 
 		if (payload.provider === 'github') {
-			const chunks = chunk_payload(payload, 1023) // break payload up into chunks to avoid cloud function body limits
+			const chunks = chunk_payload(payload, 3500) // break payload up into chunks to avoid cloud function body limits
 			const blob_list = (await Promise.all(chunks.map(create_blob_list))).flat()
 			return await deploy_to_server({
 				...payload,
@@ -39,14 +39,30 @@
 				return data
 			}
 
-			function chunk_payload(payload, max_size) {
+			function is_minifiable_file(file) {
+				let path = file.file
+				if (typeof path === 'string') {
+					path = path.toLowerCase()
+					return path.endsWith('.html') || path.endsWith('.css') || path.endsWith('.js')
+				}
+			}
+
+			function calc_file_complexity(file) {
+				let complexity = file.size
+				if (is_minifiable_file(file)) {
+					complexity = complexity * 2
+				}
+				return complexity
+			}
+
+			function chunk_payload(payload, max_complexity) {
 				const chunks = []
 				payload.files.forEach((file) => {
 					const current_chunk = chunks[chunks.length - 1]
 					const current_chunk_size = current_chunk
-						? current_chunk.files.reduce((acc, payload) => acc + file.size, 0)
+						? current_chunk.files.reduce((acc, payload) => acc + calc_file_complexity(file), 0)
 						: 0
-					if (current_chunk && current_chunk_size + file.size < max_size) {
+					if (current_chunk && current_chunk_size + calc_file_complexity(file) < max_complexity) {
 						// current chunk below limit
 						current_chunk.files.push(file)
 					} else {

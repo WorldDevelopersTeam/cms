@@ -27,6 +27,7 @@ export async function POST({ request, locals }) {
       let content = file.data
       if (typeof path === 'string' && typeof content === 'string')
       {
+        path = path.toLowerCase()
         if (path.endsWith('.js'))
         {
           // minify js
@@ -64,7 +65,6 @@ export async function POST({ request, locals }) {
         file.data = content
       }
     }
-    console.log(file)
     return file
   }))
 
