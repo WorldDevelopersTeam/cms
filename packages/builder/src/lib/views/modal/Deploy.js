@@ -277,7 +277,7 @@ async function process_content(obj) {
 }
 
 async function process_fields(assets_list, assets_map, obj) {
-	let processed_fields = _.mapValues(obj, (val) => {
+	let processed_fields = await mapValuesAsync(obj, async function (val) {
 
 		async function swap_asset(field_value) {
 			const urlObject = new URL(field_value.url)
