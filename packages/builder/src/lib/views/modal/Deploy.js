@@ -329,7 +329,7 @@ async function process_fields(assets_list, assets_map, obj) {
 				return swap_asset(val)
 			} else if (Array.isArray(val)) {
 				let field_value_copy = [];
-				for (let value of val)
+				for (let value of val) {
 					if (typeof value === 'object' && value.hasOwnProperty('image') && typeof value.image === 'object') {
 						let img = value.image;
 						if (img.url != "" && img.url.indexOf("data:image") == -1) {
@@ -341,7 +341,7 @@ async function process_fields(assets_list, assets_map, obj) {
 					} else {
 						field_value_copy.push(value)
 					}
-				});
+				}
 				return field_value_copy
 			} else {
 				return await process_fields(assets_list, assets_map, val)
