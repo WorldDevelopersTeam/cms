@@ -104,9 +104,9 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			}
 			return match + addins
 		})
-		html = html.replaceAll(/\<\s*body(\s*id="[^"]*")?>.*?\<\s*\/\s*body>/gim, '')
-		html = html.replaceAll(/\<\s*script.+?\<\s*\/\s*script>/gim, '')
-		html = html.replaceAll(/\<\s*style.+?\<\s*\/\s*style>/gim, '')
+		html = html.replaceAll(/\<\s*body(\s*id="[^"]*")?>[\n\N]*?\<\s*\/\s*body>/gim, '')
+		html = html.replaceAll(/\<\s*script[\n\N]+?\<\s*\/\s*script>/gim, '')
+		html = html.replaceAll(/\<\s*style[\n\N]+?\<\s*\/\s*style>/gim, '')
 		html = html.replace(/\<\s*\/\s*head>/gim, function(match) {
 			match = `<script type="text/javascript">!function(){var e,t=document.documentElement.lang,n=(e=document.cookie.match(RegExp("(?:^|; )"+"__wdt_userLocale".replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g,"\\\\$1")+"=([^;]*)")))?decodeURIComponent(e[1]):void 0;if("string"!=typeof n&&(n="object"==typeof navigator&&("string"==typeof navigator.language&&"ru"===navigator.language.substring(0,2)||"object"==typeof navigator.languages&&"function"==typeof navigator.languages.find&&navigator.languages.find(function(e){return"string"==typeof e&&"ru"===e.substring(0,2)}))?"ru":"en"),"string"==typeof n){!function(e,t,n){var o=(n=n||{}).expires;if("number"==typeof o&&o){var a=new Date;a.setTime(a.getTime()+1e3*o),o=n.expires=a}o&&o.toUTCString&&(n.expires=o.toUTCString());var r=e+"="+(t=encodeURIComponent(t));for(var i in n){r+="; "+i;var c=n[i];!0!==c&&(r+="="+c)}document.cookie=r}("__wdt_userLocale",n,{expires:2592e3,secure:!0});var o="/"+n+window.location.pathname+window.location.search+window.location.hash;n!==t?window.location.replace(window.location.origin+o):"object"==typeof history&&"function"==typeof history.replaceState&&history.replaceState(null,null,o)}}();</script>` + match
 			return match
