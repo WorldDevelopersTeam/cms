@@ -36,7 +36,7 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 				binary: true,
 				file: file.path,
 				data: toBase64(blob_data),
-				size: (file.blob.size * 1.33333333334) / 1024
+				size: (file.blob.size * 1.34) / 1024
 			}
 		} else {
 			return {
