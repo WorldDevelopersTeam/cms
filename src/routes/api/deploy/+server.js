@@ -117,8 +117,7 @@ const github = {
     }
 
     async function create_tree() {
-      console.log(files)
-      const tree = files.map((file) => ({
+      const tree = files.filter(file => file).map((file) => ({
         path: file.path,
         sha: file.sha,
         type: 'blob',
