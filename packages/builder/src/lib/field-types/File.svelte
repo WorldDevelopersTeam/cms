@@ -101,7 +101,6 @@
 			{/if}
 		</div>
 		<div class="inputs">
-			<TextInput bind:value={field.value.alt} on:input label="Description" />
 			<TextInput
 				value={field.value.url}
 				label="URL"
