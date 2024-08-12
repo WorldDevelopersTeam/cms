@@ -207,24 +207,26 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 }
 
 export async function grabAssetsAndGetPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
-	const page_content = await grabAssets(assets_list, assets_map, page.content, loc)
-	const site_content = await grabAssets(assets_list, assets_map, site.content, loc)
+	const page_content = hasNestedAssets(page.content[loc]) ? (await grabAssets(assets_list, assets_map, page.content, loc)) : page.content[loc]
+	const site_content = hasNestedAssets(site.content[loc]) ? (await grabAssets(assets_list, assets_map, site.content, loc)) : site.content[loc]
 	return {
 		...site_content,
 		...page_content
 	}
 }
 
-export function isAssetField(obj) {
-	console.log(obj)
-	if (obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
+export async function isAssetField(obj) {
+	if (obj instanceof Promise) {
+		obj = await obj
+	}
+	if (typeof obj === 'object' && obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
 		return obj.type === 'file' || obj.type === 'image'
 	}
 	return false
 }
 
-export function hasNestedAssets(obj) {
-	if (isAssetField(obj)) {
+export async function hasNestedAssets(obj) {
+	if (await isAssetField(obj)) {
 		return true
 	}
 	for (let i in obj) {
@@ -297,7 +299,7 @@ export async function grabAssetsFromField(assets_list, assets_map, field) {
 		}
 	}
 
-	if (isAssetField(field)) {
+	if (await isAssetField(field)) {
 		return {
 			...field,
 			url: await grabAsset(field)
