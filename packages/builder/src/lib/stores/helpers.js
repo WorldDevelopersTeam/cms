@@ -45,7 +45,10 @@ export async function buildStaticPage({
 	page_sections = get(sections),
 	page_symbols = get(symbols),
 	locale = get(primary_language),
-	no_js = false
+	no_js = false,
+	grab_assets = false,
+	assets_list = [],
+	assets_map = { by_path: {}, by_hash: {} }
 }) {
 	const hydratable_symbols_on_page = page_symbols.filter(
 		(s) => s.code.js && page_sections.some((section) => section.symbol === s.id)
@@ -54,7 +57,7 @@ export async function buildStaticPage({
 	const component = await Promise.all([
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
-			const data = getPageData({ page, site, loc: locale })
+			const data = getPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
 			const locales = Object.keys(site.content).sort()
 			return {
 				html: `
@@ -91,7 +94,7 @@ export async function buildStaticPage({
 			})
 			.filter(Boolean), // remove options blocks
 		(async () => {
-			const data = getPageData({ page, site, loc: locale })
+			const data = getPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
 			return {
 				html: site.code.html.below + page.code.html.below,
 				css: ``,
@@ -124,7 +127,8 @@ export async function buildStaticPage({
 
 	return {
 		html: final,
-		js: res.js
+		js: res.js,
+		assets: assets_list
 	}
 
 	// fetch module to hydrate component, include hydration data
@@ -191,11 +195,124 @@ export function get_content_with_static({ component, symbol, loc }) {
 	return _.cloneDeep(content)
 }
 
-export function getPageData({ page = get(activePage), site = get(activeSite), loc = get(locale) }) {
-	const page_content = page.content[loc]
-	const site_content = site.content[loc]
+export function getPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), grab_assets = false, assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
+	const page_content = with_assets ? grabAssets(assets_list, assets_map, page.content, loc) : page.content[loc]
+	const site_content = with_assets ? grabAssets(assets_list, assets_map, site.content, loc) : site.content[loc]
 	return {
 		...site_content,
 		...page_content
 	}
+}
+
+export function isAssetField(obj) {
+	console.log(obj)
+	if (obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
+		return obj.type === 'file' || obj.type === 'image'
+	}
+	return false
+}
+
+export function hasNestedAssets(obj) {
+	if (is_asset_field(obj)) {
+		return true
+	}
+	for (let i in obj) {
+		if (typeof obj[i] === 'object') {
+			if (has_nested_assets(obj[i])) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+export async function grabAsset(assets_list, assets_map, field_value) {
+	const urlObject = new URL(field_value.url)
+	const pathname = urlObject.pathname
+	const extension = pathname.slice(pathname.lastIndexOf('.'))
+
+	if (extension.length > 1) {
+		if (pathname in assets_map.by_path) {
+			return {
+				...field_value,
+				url: `/_assets/${assets_map.by_path[pathname]}`
+			}
+		}
+
+		try {
+			const response = await fetch(field_value.url);
+			const blob = await response.blob();
+
+			const blob_str = await blob.text()
+
+			const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+
+			if (hash in assets_map.by_hash) {
+				return {
+					...field_value,
+					url: `/_assets/${assets_map.by_hash[hash]}`
+				}
+			}
+
+			const filename = hash + extension
+
+			assets_list.push({
+				path: `_assets/${filename}`,
+				blob
+			});
+			assets_map.by_path[pathname] = filename
+			assets_map.by_hash[hash] = filename
+
+			return {
+				...field_value,
+				url: `/_assets/${filename}`
+			}
+		} catch (e) {
+			console.error('Error while fetching asset', e.message);
+		}
+	}
+
+	return field_value
+}
+
+export async function grabAssetsFromField(assets_list, assets_map, field) {
+	if (typeof field !== 'object' || field === null) {
+		return field
+	}
+
+	if (Array.isArray(field)) {
+		for (let idx in field) {
+			field[idx] = grabAssetsFromField(assets_list, assets_map, field[idx])
+		}
+	}
+
+	if (isAssetField(field)) {
+		return {
+			...field,
+			url: await grabAsset(field)
+		}
+	}
+
+	return await grabAssetsFromFields(assets_list, assets_map, field)
+}
+
+export async function grabAssetsFromFields(assets_list, assets_map, obj) {
+	let new_fields = await mapValuesAsync(obj, async function (field) {
+		return await grabAssetsFromField(assets_list, assets_map, field)
+	})
+	return new_fields
+}
+
+export async function grabAssets(assets_list, assets_map, obj, lang) {
+	let updated_content
+	if (!lang)
+	{
+		updated_content = await mapValuesAsync(obj, async function (lang_content) {
+			return await grabAssetsFromFields(assets_list, assets_map, lang_content)
+		})
+	} else {
+		updated_content = await grabAssetsFromFields(assets_list, assets_map, obj[lang])
+	}
+
+	return updated_content
 }

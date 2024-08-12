@@ -159,10 +159,15 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			await Promise.all(
 				sections.map(async (section, i) => {
 					const response = await process_content(section.content)
-					assets.push(...response.assets) // store image blobs for later download
-					sections[i]['content'] = response.content // replace image urls in content with relative urls
+					assets.push(...response.assets)
+					sections[i]['content'] = response.content
 				})
 			)
+		}
+		let assets_list = []
+		let assets_map = {
+			by_path: {},
+			by_hash: {}
 		}
 
 		let { html } = await buildStaticPage({
@@ -171,7 +176,10 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			page_symbols: symbols.filter((symbol) =>
 				sections.find((section) => section.symbol === symbol.id)
 			),
-			locale: language
+			locale: language,
+			grab_assets: include_assets,
+			assets_list,
+			assets_map
 		})
 
 		let parent_urls = []
@@ -236,7 +244,10 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			})
 		}
 
-		return page_tree
+		return {
+			...page_tree,
+			...assets_list
+		}
 	}
 
 	async function build_site_tree(pages) {
@@ -256,121 +267,5 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 				content: ''
 			}
 		]
-	}
-}
-
-function is_asset_field(obj) {
-	console.log(obj)
-	if (obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
-		return obj.type === 'file' || obj.type === 'image'
-	}
-	return false
-}
-
-function has_nested_assets(obj) {
-	if (is_asset_field(obj)) {
-		return true
-	}
-	for (let i in obj) {
-		if (typeof obj[i] === 'object') {
-			if (has_nested_assets(obj[i])) {
-				return true
-			}
-		}
-	}
-	return false
-}
-
-async function swap_asset(assets_list, assets_map, field_value) {
-	const urlObject = new URL(field_value.url)
-	const pathname = urlObject.pathname
-	const extension = pathname.slice(pathname.lastIndexOf('.'))
-
-	if (extension.length > 1) {
-		if (pathname in assets_map.by_path) {
-			return {
-				...field_value,
-				url: `/_assets/${assets_map.by_path[pathname]}`
-			}
-		}
-
-		try {
-			const response = await fetch(field_value.url);
-			const blob = await response.blob();
-
-			const blob_str = await blob.text()
-
-			const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
-
-			if (hash in assets_map.by_hash) {
-				return {
-					...field_value,
-					url: `/_assets/${assets_map.by_hash[hash]}`
-				}
-			}
-
-			const filename = hash + extension
-
-			assets_list.push({
-				path: `_assets/${filename}`,
-				blob
-			});
-			assets_map.by_path[pathname] = filename
-			assets_map.by_hash[hash] = filename
-
-			return {
-				...field_value,
-				url: `/_assets/${filename}`
-			}
-		} catch (e) {
-			console.error('Error while fetching asset', e.message);
-		}
-	}
-
-	return field_value
-}
-
-async function process_field(assets_list, assets_map, field) {
-	if (typeof field !== 'object' || field === null) {
-		return field
-	}
-
-	if (Array.isArray(field)) {
-		for (let idx in field) {
-			field[idx] = process_field(assets_list, assets_map, field[idx])
-		}
-	}
-
-	if (is_asset_field(field)) {
-		return {
-			...field,
-			url: await swap_asset(field)
-		}
-	}
-
-	return await process_fields(assets_list, assets_map, field)
-}
-
-async function process_fields(assets_list, assets_map, obj) {
-	let new_fields = await mapValuesAsync(obj, async function (field) {
-		return await process_field(field)
-	})
-	return new_fields
-}
-
-async function process_content(obj) {
-	let assets_list = []
-	let assets_map = {
-		by_path: {},
-		by_hash: {}
-	}
-
-	let updated_content = await mapValuesAsync(obj, async function (lang_content) {
-		return await process_fields(assets_list, assets_map, lang_content)
-	})
-
-	return {
-		content: updated_content,
-		assets: assets_list
 	}
 }
