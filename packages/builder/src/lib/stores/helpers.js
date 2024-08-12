@@ -225,7 +225,7 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 	}
 }
 
-export async function unpromiseData(objects = [], data) {
+export async function unpromiseData(data, objects = []) {
 	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
 		if (data instanceof Promise) {
 			data = await data
@@ -234,7 +234,7 @@ export async function unpromiseData(objects = [], data) {
 		objects.push(data)
 
 		for (let i in data) {
-			data[i] = await unpromiseData(objects, data[i])
+			data[i] = await unpromiseData(data[i], objects)
 		}
 	}
 	return data
