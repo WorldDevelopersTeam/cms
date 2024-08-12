@@ -10,8 +10,7 @@
 	const dispatch = createEventDispatcher()
 
 	const defaultValue = {
-		type: 'image',
-		alt: '',
+		type: 'file',
 		url: ''
 	}
 
@@ -29,8 +28,7 @@
 
 	function set_url(url) {
 		field.value = {
-			url,
-			alt: field.value.alt
+			url
 		}
 	}
 
@@ -41,60 +39,38 @@
 		}
 	}
 
-	async function convert_image(url, new_type) {
-		const response = await fetch(url)
-		const blob = await response.blob()
-
-		const image = new Image()
-		image.crossOrigin = 'anonymous' // This is important for CORS if the image is from a different domain
-		image.src = URL.createObjectURL(blob)
-		image.onload = () => {
-			const canvas = document.createElement('canvas')
-			canvas.width = image.naturalWidth
-			canvas.height = image.naturalHeight
-			canvas.getContext('2d').drawImage(image, 0, 0)
-			canvas.toBlob((blob) => {
-				// Now we have a `blob` containing webp data
-
-				// Use the file rename trick to turn it back into a file
-				const myImage = new File([blob], `${blob.name}.${new_type}`, { type: blob.type })
-				uploadImage(myImage)
-			}, `image/${new_type}`)
-		}
-	}
-
-	async function uploadImage(image) {
+	async function uploadFile(file) {
 		loading = true
 
-		const key = `${$site.id}/${uuidv4() + image.name.slice(image.name.lastIndexOf("."))}`
+		const key = `${$site.id}/${uuidv4() + file.name.slice(file.name.lastIndexOf("."))}`
 		const url = await storageChanged({
-			bucket: 'images',
+			bucket: 'files',
 			action: 'upload',
 			key,
-			file: image
+			file: file
 		})
 
 		if (url) {
-			imagePreview = url
+			filePreview = url
 			set_url(url)
 			set_options({
-				original_type: field.options.original_type || image.type.replace('image/', ''),
-				type: image.type.replace('image/', ''),
-				size: Math.round(image.size / 1000)
+				original_type: field.options.original_type || file.type.replace('file/', ''),
+				type: file.type.replace('file/', ''),
+				size: Math.round(file.size / 1000)
 			})
 			dispatch('input', field)
 		}
 		loading = false
 	}
 
-	let imagePreview = field.value.url || ''
+	let filePreview = field.value.url || ''
 	let loading = false
 </script>
 
-<div class="image-field">
+<div class="file-field">
 	<span class="field-label">{field.label}</span>
-	<div class="image-info">
-		<div class="image-preview">
+	<div class="file-info">
+		<div class="file-preview">
 			{#if loading}
 				<div class="spinner-container">
 					<Spinner />
@@ -105,11 +81,8 @@
 						{field.options.size}KB
 					</span>
 				{/if}
-				{#if field.value.url}
-					<img src={imagePreview} alt="Preview" />
-				{/if}
-				<label class="image-upload">
-					<Icon icon="uil:image-upload" />
+				<label class="file-upload">
+					<Icon icon="uil:file-upload" />
 					{#if !field.value.url}
 						<span>Upload</span>
 					{/if}
@@ -117,12 +90,12 @@
 						on:change={({ target }) => {
 							const { files } = target
 							if (files.length > 0) {
-								const image = files[0]
-								uploadImage(image)
+								const file = files[0]
+								uploadFile(file)
 							}
 						}}
 						type="file"
-						accept="image/*"
+						accept="file/*"
 					/>
 				</label>
 			{/if}
@@ -133,31 +106,11 @@
 				value={field.value.url}
 				label="URL"
 				on:input={({ detail: value }) => {
-					imagePreview = value
+					filePreview = value
 					set_url(value)
 					dispatch('input', field)
 				}}
 			/>
-			{#if field.options.type && field.options.type !== 'svg+xml'}
-				{@const original_active = field.options.type === field.options.original_type}
-				{@const webp_active = field.options.type === 'webp'}
-				<div class="image-type-buttons">
-					<button
-						on:click={() => convert_image(field.value.url, field.options.original_type)}
-						class:active={original_active}
-						disabled={original_active}
-					>
-						{field.options.original_type?.toUpperCase()}
-					</button>
-					<button
-						on:click={() => convert_image(field.value.url, 'webp')}
-						class:active={webp_active}
-						disabled={webp_active}
-					>
-						WEBP
-					</button>
-				</div>
-			{/if}
 		</div>
 	</div>
 </div>
@@ -167,7 +120,7 @@
 	* {
 		--TextInput-label-font-size: 0.75rem;
 	}
-	.image-field {
+	.file-field {
 		display: grid;
 		gap: 0.5rem;
 	}
@@ -176,7 +129,7 @@
 		display: inline-block;
 		font-size: var(--label-font-size, 1rem);
 	}
-	.image-info {
+	.file-info {
 		display: flex;
 		gap: 0.75rem;
 		overflow: hidden;
@@ -197,7 +150,7 @@
 	input {
 		background: var(--color-gray-8);
 	}
-	.image-preview {
+	.file-preview {
 		border: 1px dashed #3e4041;
 		border-radius: 4px;
 		aspect-ratio: 1;
@@ -205,7 +158,7 @@
 		width: 13rem;
 		position: relative;
 
-		.image-upload {
+		.file-upload {
 			flex: 1 1 0%;
 			padding: 1rem;
 			cursor: pointer;
@@ -254,14 +207,6 @@
 			font-weight: 600;
 			border-bottom-right-radius: 0.25rem;
 		}
-
-		img {
-			position: absolute;
-			inset: 0;
-			object-fit: cover;
-			height: 100%;
-			width: 100%;
-		}
 	}
 
 	.inputs {
@@ -271,7 +216,7 @@
 		--TextInput-font-size: 0.75rem;
 	}
 
-	.image-type-buttons {
+	.file-type-buttons {
 		margin-top: 3px;
 		font-size: 0.75rem;
 		display: flex;

@@ -8,6 +8,7 @@
 	import { primary_language } from '../stores/data/site.js'
 
 	const link = {
+		type: 'link',
 		label: '',
 		url: '',
 		active: false

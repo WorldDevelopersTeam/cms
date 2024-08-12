@@ -259,6 +259,104 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 	}
 }
 
+function is_asset_field(obj) {
+	if (obj.hasOwnProperty('type') && obj.hasOwnProperty('url')) {
+		return obj.type === 'image' || obj.type === 'file'
+	}
+	return false
+}
+
+function has_nested_assets(obj) {
+	if (is_asset_field(obj)) {
+		return true
+	}
+	for (let i in obj) {
+		if (typeof obj[i] === 'object') {
+			if (has_nested_assets(obj[i])) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+async function swap_asset(assets_list, assets_map, field_value) {
+	const urlObject = new URL(field_value.url)
+	const pathname = urlObject.pathname
+	const extension = pathname.slice(pathname.lastIndexOf('.'))
+
+	if (extension.length > 1) {
+		if (pathname in assets_map.by_path) {
+			return {
+				...field_value,
+				url: `/_assets/${assets_map.by_path[pathname]}`
+			}
+		}
+
+		try {
+			const response = await fetch(field_value.url);
+			const blob = await response.blob();
+
+			const blob_str = await blob.text()
+
+			const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+
+			if (hash in assets_map.by_hash) {
+				return {
+					...field_value,
+					url: `/_assets/${assets_map.by_hash[hash]}`
+				}
+			}
+
+			const filename = hash + extension
+
+			assets_list.push({
+				path: `_assets/${filename}`,
+				blob
+			});
+			assets_map.by_path[pathname] = filename
+			assets_map.by_hash[hash] = filename
+
+			return {
+				...field_value,
+				url: `/_assets/${filename}`
+			}
+		} catch (e) {
+			console.error('Error while fetching asset', e.message);
+		}
+	}
+
+	return field_value
+}
+
+async function process_field(assets_list, assets_map, field) {
+	if (typeof field !== 'object') {
+		return field
+	}
+
+	if (Array.isArray(field)) {
+		for (let idx in field) {
+			field[idx] = process_field(assets_list, assets_map, field[idx])
+		}
+	}
+
+	if (is_asset_field(field)) {
+		return {
+			...field,
+			url: await swap_asset(field)
+		}
+	}
+
+	return await process_fields(assets_list, assets_map, field)
+}
+
+async function process_fields(assets_list, assets_map, obj) {
+	let new_fields = await mapValuesAsync(obj, async function (field) {
+		return await process_field(field)
+	})
+	return new_fields
+}
+
 async function process_content(obj) {
 	let assets_list = []
 	let assets_map = {
@@ -274,99 +372,4 @@ async function process_content(obj) {
 		content: updated_content,
 		assets: assets_list
 	}
-}
-
-async function process_fields(assets_list, assets_map, obj) {
-	let processed_fields = await mapValuesAsync(obj, async function (val) {
-
-		async function swap_asset(field_value) {
-			const urlObject = new URL(field_value.url)
-			const pathname = urlObject.pathname
-			const extension = pathname.slice(pathname.lastIndexOf('.'))
-
-			if (extension.length > 1) {
-				if (pathname in assets_map.by_path) {
-					return {
-						...field_value,
-						url: `/_assets/${assets_map.by_path[pathname]}`
-					}
-				}
-
-				try {
-					const response = await fetch(field_value.url);
-					const blob = await response.blob();
-
-					const blob_str = await blob.text()
-
-					const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
-
-					if (hash in assets_map.by_hash) {
-						return {
-							...field_value,
-							url: `/_assets/${assets_map.by_hash[hash]}`
-						}
-					}
-
-					const filename = hash + extension
-
-					assets_list.push({
-						path: `_assets/${filename}`,
-						blob
-					});
-					assets_map.by_path[pathname] = filename
-					assets_map.by_hash[hash] = filename
-
-					return {
-						...field_value,
-						url: `/_assets/${filename}`
-					}
-				} catch (e) {
-					console.error('Error while fetching asset', e.message);
-				}
-			}
-
-			return field_value
-		}
-
-		if (typeof val === 'object') {
-			if (val.hasOwnProperty('alt') && val.url != "") {
-				return await swap_asset(val)
-			} else if (Array.isArray(val)) {
-				let field_value_copy = [];
-				for (let value of val) {
-					if (typeof value === 'object' && value.hasOwnProperty('image') && typeof value.image === 'object') {
-						let img = value.image;
-						if (img.url != "" && img.url.indexOf("data:image") == -1) {
-							field_value_copy.push({
-								...value,
-								image: await swap_asset(img)
-							});
-						}
-					} else {
-						field_value_copy.push(value)
-					}
-				}
-				return field_value_copy
-			} else {
-				return await process_fields(assets_list, assets_map, val)
-			}
-		} else {
-			return val
-		}
-	})
-	return processed_fields
-}
-
-function has_nested_property(obj, key) {
-	if (obj.hasOwnProperty(key)) {
-		return true
-	}
-	for (let i in obj) {
-		if (typeof obj[i] === 'object') {
-			if (has_nested_property(obj[i], key)) {
-				return true
-			}
-		}
-	}
-	return false
 }
