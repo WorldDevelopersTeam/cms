@@ -65,7 +65,9 @@ export async function buildStaticPage({
 			if (grab_assets)
 			{
 				data = await unpromiseData(data)
-				if (hasNestedAssets(data)) {
+				console.warn('Data unpromised', data)
+				if (await hasNestedAssets(data)) {
+					console.warn('Data has assets', data)
 					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
 				}
 			}
@@ -108,7 +110,9 @@ export async function buildStaticPage({
 			if (grab_assets)
 			{
 				data = await unpromiseData(data)
+				console.warn('Data unpromised', data)
 				if (hasNestedAssets(data)) {
+					console.warn('Data has assets', data)
 					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
 				}
 			}
