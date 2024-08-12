@@ -172,6 +172,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			assets_map
 		})
 
+		console.warn(assets_list, assets_map, html)
+
 		let parent_urls = []
 		const parent = pages.find((p) => p.id === page.parent)
 
