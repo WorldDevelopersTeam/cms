@@ -308,18 +308,26 @@ export async function grabAssets(assets_list, assets_map, data) {
 		data = await unpromiseData(data)
 		console.warn("grabAssetsInField", assets_list, assets_map, data)
 
-		if (Array.isArray(data)) {
-			for (let idx in data) {
-				data[idx] = grabAssets(assets_list, assets_map, data[idx])
-			}
-		}
-		if (await hasAsset(field)) {
+		if (await hasAsset(data)) {
 			data = await grabAssetsInField(assets_list, assets_map, data)
 		}
 
-		return await mapValuesAsync(data, async function (field) {
-			data = await grabAssets(assets_list, assets_map, field)
-		})
+		if (Array.isArray(data)) {
+			for (let idx in data) {
+				if (await hasNestedAssets(data)) {
+					data[idx] = grabAssets(assets_list, assets_map, data[idx])
+				}
+			}
+		}
+
+		if (await hasNestedAssets(data)) {
+			data = await mapValuesAsync(data, async function (field) {
+				if (await hasNestedAssets(field)) {
+					field = await grabAssets(assets_list, assets_map, field)
+				}
+				return field
+			})
+		}
 	}
 
 	return dataa
