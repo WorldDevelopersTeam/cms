@@ -268,45 +268,46 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 
 		const urlObject = new URL(field.url)
 		const pathname = urlObject.pathname
-		const extension = pathname.slice(pathname.lastIndexOf('.'))
-		if (extension.length > 1) {
-			if (pathname in assets_map.by_path) {
+		if (pathname in assets_map.by_path) {
 				return {
 					...field,
 					url: `/_assets/${assets_map.by_path[pathname]}`
 				}
 			}
-			try {
-				const response = await fetch(field.url);
-				const blob = await response.blob();
 
-				const blob_str = await blob.text()
+		const extension = pathname.slice(pathname.lastIndexOf('.'))
 
-				const hash = (new Hashes.RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+		if (extension.length < 2) {
+			return field
+		}
 
-				if (hash in assets_map.by_hash) {
-					return {
-						...field,
-						url: `/_assets/${assets_map.by_hash[hash]}`
-					}
-				}
+		try {
+			const resp = await fetch(field.url);
+			const blob = await resp.blob();
 
-				const filename = hash + extension
+			const hash = (new Hashes.RMD160).hex(await blob.text()) + '.' + blob.size.toString(16)
 
-				assets_list.push({
-					path: `_assets/${filename}`,
-					blob
-				});
-				assets_map.by_path[pathname] = filename
-				assets_map.by_hash[hash] = filename
-
+			if (hash in assets_map.by_hash) {
 				return {
 					...field,
-					url: `/_assets/${filename}`
+					url: `/_assets/${assets_map.by_hash[hash]}`
 				}
-			} catch (e) {
-				console.error('Error while fetching asset', e.message);
 			}
+
+			const filename = hash + extension
+			assets_list.push({
+				path: `_assets/${filename}`,
+				blob
+			});
+			assets_map.by_path[pathname] = filename
+			assets_map.by_hash[hash] = filename
+
+			return {
+				...field,
+				url: `/_assets/${filename}`
+			}
+		} catch (e) {
+			console.error('Error while fetching asset', e.message);
 		}
 	}
 	return field
