@@ -260,7 +260,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 }
 
 function is_asset_field(obj) {
-	if (obj.hasOwnProperty('type') && obj.hasOwnProperty('url')) {
+	if (obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
 		return obj.type === 'image' || obj.type === 'file'
 	}
 	return false
