@@ -225,7 +225,9 @@ export async function unpromiseData(obj) {
 export async function hasAsset(data) {
 	if (data.hasOwnProperty('url') && data.hasOwnProperty('type'))
 	{
-		return data.type === 'file' || data.type === 'image'
+		if (data.type === 'file' || data.type === 'image') {
+			return typeof data.url === 'string' && data.url.length > 0 && !data.url.startsWith('/_assets/')
+		}
 	}
 
 	return false
@@ -313,5 +315,5 @@ export async function grabAssets(assets_list, assets_map, data) {
 		})
 	}
 
-	return data
+	return dataa
 }
