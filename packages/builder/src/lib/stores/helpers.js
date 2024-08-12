@@ -59,8 +59,13 @@ export async function buildStaticPage({
 	const component = await Promise.all([
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
-			const data = grab_assets ? (await grabAssetsAndGetPageData({ page, site, assets_list, assets_map, loc: locale })) : getPageData({ page, site, loc: locale })
 			const locales = Object.keys(site.content).sort()
+
+			let data = getPageData({ page, site, loc: locale })
+			if (grab_assets && await hasNestedAssets(data))
+			{
+				data = await grabAssets(assets_list, assets_map, data)
+			}
 			return {
 				html: `
           <svelte:head>
@@ -96,7 +101,11 @@ export async function buildStaticPage({
 			})
 			.filter(Boolean), // remove options blocks
 		(async () => {
-			const data = grab_assets ? (await grabAssetsAndGetPageData({ page, site, assets_list, assets_map, loc: locale })) : getPageData({ page, site, loc: locale })
+			let data = getPageData({ page, site, loc: locale })
+			if (grab_assets && await hasNestedAssets(data))
+			{
+				data = await grabAssets(assets_list, assets_map, data)
+			}
 			return {
 				html: site.code.html.below + page.code.html.below,
 				css: ``,
@@ -206,49 +215,44 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 	}
 }
 
-export async function grabAssetsAndGetPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
-	const page_content = hasNestedAssets(page.content[loc]) ? (await grabAssets(assets_list, assets_map, page.content, loc)) : page.content[loc]
-	const site_content = hasNestedAssets(site.content[loc]) ? (await grabAssets(assets_list, assets_map, site.content, loc)) : site.content[loc]
-	return {
-		...site_content,
-		...page_content
+export async function unpromiseData(obj) {
+	if (obj instanceof Promise) {
+		return await obj
 	}
+	return obj
 }
 
-export async function isAssetField(obj) {
-	if (obj instanceof Promise) {
-		obj = await obj
+export async function hasAsset(data) {
+	if (data.hasOwnProperty('url') && data.hasOwnProperty('type'))
+	{
+		return data.type === 'file' || data.type === 'image'
 	}
-	if (typeof obj === 'object' && obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
-		console.warn("isAssetField", obj, obj.type === 'file' || obj.type === 'image')
-		return obj.type === 'file' || obj.type === 'image'
-	}
+
 	return false
 }
 
-export async function hasNestedAssets(obj) {
-	if (await isAssetField(obj)) {
-		console.warn("hasNestedAssets", obj, true)
-		return true
-	}
-	for (let i in obj) {
-		if (typeof obj[i] === 'object') {
-			if (hasNestedAssets(obj[i])) {
-				console.warn("hasNestedAssets", obj, true)
+export async function hasNestedAssets(data) {
+	if (typeof data === 'object' && data !== null) {
+		data = unpromiseData(data)
+
+		if (await hasAsset(data)) {
+			return true
+		}
+
+		for (let i in data) {
+			if (await hasNestedAssets(data[i])) {
 				return true
 			}
 		}
 	}
-	console.warn("hasNestedAssets", obj, false)
+
 	return false
 }
 
-export async function grabAsset(assets_list, assets_map, field) {
-	console.warn("grabAsset", field)
+export async function grabAssetsInField(assets_list, assets_map, field) {
 	const urlObject = new URL(field.url)
 	const pathname = urlObject.pathname
 	const extension = pathname.slice(pathname.lastIndexOf('.'))
-
 	if (extension.length > 1) {
 		if (pathname in assets_map.by_path) {
 			return {
@@ -256,7 +260,6 @@ export async function grabAsset(assets_list, assets_map, field) {
 				url: `/_assets/${assets_map.by_path[pathname]}`
 			}
 		}
-
 		try {
 			const response = await fetch(field.url);
 			const blob = await response.blob();
@@ -289,44 +292,26 @@ export async function grabAsset(assets_list, assets_map, field) {
 			console.error('Error while fetching asset', e.message);
 		}
 	}
-
 	return field
 }
 
-export async function grabAssetsFromField(assets_list, assets_map, field) {
-	console.warn("grabAssetsFromField", field)
-	if (typeof field !== 'object' || field === null) {
-		return field
-	}
+export async function grabAssets(assets_list, assets_map, data) {
+	if (typeof data === 'object' || data !== null) {
+		data = unpromiseData(data)
 
-	if (Array.isArray(field)) {
-		for (let idx in field) {
-			field[idx] = grabAssetsFromField(assets_list, assets_map, field[idx])
+		if (Array.isArray(data)) {
+			for (let idx in data) {
+				data[idx] = grabAssets(assets_list, assets_map, data[idx])
+			}
 		}
-	}
+		if (await isAssetField(field)) {
+			data = await grabAssetsInField(assets_list, assets_map, data)
+		}
 
-	if (await isAssetField(field)) {
-		return await grabAsset(assets_list, assets_map, field)
-	}
-
-	return await grabAssetsFromFields(assets_list, assets_map, field)
-}
-
-export async function grabAssetsFromFields(assets_list, assets_map, obj) {
-	console.warn("grabAssetsFromFields", obj)
-	let new_fields = await mapValuesAsync(obj, async function (field) {
-		return await grabAssetsFromField(assets_list, assets_map, field)
-	})
-	return new_fields
-}
-
-export async function grabAssets(assets_list, assets_map, obj, lang) {
-	console.warn("grabAssets", obj, lang)
-	if (!lang) {
-		return await mapValuesAsync(obj, async function (lang_content) {
-			return await grabAssetsFromFields(assets_list, assets_map, lang_content)
+		return await mapValuesAsync(data, async function (field) {
+			data = await grabAssets(assets_list, assets_map, field)
 		})
-	} else {
-		return await grabAssetsFromFields(assets_list, assets_map, obj[lang])
 	}
+
+	return data
 }
