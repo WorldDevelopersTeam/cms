@@ -302,7 +302,7 @@ export async function grabAssetsFromField(assets_list, assets_map, field) {
 	if (await isAssetField(field)) {
 		return {
 			...field,
-			url: await grabAsset(field)
+			url: await grabAsset(assets_list, assets_map, field)
 		}
 	}
 
