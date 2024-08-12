@@ -60,20 +60,20 @@ export async function buildStaticPage({
 		page = {
 			...await unpromiseData(page),
 			content: await mapValuesAsync(page.content, async function(loc_content) {
-				return await grabAssets(assets_list, assets_map, loc_content)
+				return await grabAssets(assets_list, assets_map, _.deepClone(loc_content))
 			})
 		}
 		site = {
 			...await unpromiseData(site),
 			content: await mapValuesAsync(site.content, async function(loc_content) {
-				return await grabAssets(assets_list, assets_map, loc_content)
+				return await grabAssets(assets_list, assets_map, _.deepClone(loc_content))
 			})
 		}
 		page_sections = await mapValuesAsync(await unpromiseData(page_sections), async function(page_section) {
 			return {
 				...page_section,
 				content: await mapValuesAsync(page_section.content, async function(loc_content) {
-					return await grabAssets(assets_list, assets_map, loc_content)
+					return await grabAssets(assets_list, assets_map, _.deepClone(loc_content))
 				})
 			}
 		})
@@ -81,7 +81,7 @@ export async function buildStaticPage({
 			return {
 				...page_symbol,
 				content: await mapValuesAsync(page_symbol.content, async function(loc_content) {
-					return await grabAssets(assets_list, assets_map, loc_content)
+					return await grabAssets(assets_list, assets_map, _.deepClone(loc_content))
 				})
 			}
 		})
