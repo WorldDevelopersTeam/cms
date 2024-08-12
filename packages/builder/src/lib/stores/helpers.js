@@ -62,9 +62,12 @@ export async function buildStaticPage({
 			const locales = Object.keys(site.content).sort()
 
 			let data = getPageData({ page, site, loc: locale })
-			if (grab_assets && await hasNestedAssets(data))
+			if (grab_assets)
 			{
-				data = await grabAssets(assets_list, assets_map, data)
+				data = await unpromiseData(data)
+				if (hasNestedAssets(data)) {
+					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
+				}
 			}
 			return {
 				html: `
@@ -102,9 +105,12 @@ export async function buildStaticPage({
 			.filter(Boolean), // remove options blocks
 		(async () => {
 			let data = getPageData({ page, site, loc: locale })
-			if (grab_assets && await hasNestedAssets(data))
+			if (grab_assets)
 			{
-				data = await grabAssets(assets_list, assets_map, data)
+				data = await unpromiseData(data)
+				if (hasNestedAssets(data)) {
+					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
+				}
 			}
 			return {
 				html: site.code.html.below + page.code.html.below,
@@ -215,15 +221,17 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 	}
 }
 
-export async function unpromiseData(obj) {
+export async function unpromiseData(data) {
 	if (obj instanceof Promise) {
-		return await obj
+		return await unpromiseData(await data)
+	}
+	for (let i in data) {
+		data[i] = await unpromiseData(data)
 	}
 	return obj
 }
 
 export async function hasAsset(data) {
-	console.warn("hasAsset", data)
 	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
 		if (data.type === 'file' || data.type === 'image') {
 			return typeof data.url === 'string' && data.url.length > 0 && (data.url.startsWith('http://') || data.url.startsWith('https://'))
@@ -235,9 +243,6 @@ export async function hasAsset(data) {
 
 export async function hasNestedAssets(data) {
 	if (typeof data === 'object' && data !== null) {
-		data = await unpromiseData(data)
-		console.warn("hasNestedAssets", data)
-
 		if (await hasAsset(data)) {
 			return true
 		}
@@ -254,7 +259,6 @@ export async function hasNestedAssets(data) {
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' && field !== null) {
-		field = await unpromiseData(field)
 		console.warn("grabAssetsInField", assets_list, assets_map, field)
 
 		const urlObject = new URL(field.url)
@@ -305,7 +309,6 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 
 export async function grabAssets(assets_list, assets_map, data) {
 	if (typeof data === 'object' && data !== null) {
-		data = await unpromiseData(data)
 		console.warn("grabAssets", assets_list, assets_map, data)
 
 		if (await hasAsset(data)) {
