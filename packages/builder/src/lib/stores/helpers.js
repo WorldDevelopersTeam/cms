@@ -59,7 +59,7 @@ export async function buildStaticPage({
 	const component = await Promise.all([
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
-			const data = getPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
+			const data = await grabAssetsAndGetPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
 			const locales = Object.keys(site.content).sort()
 			return {
 				html: `
@@ -96,7 +96,7 @@ export async function buildStaticPage({
 			})
 			.filter(Boolean), // remove options blocks
 		(async () => {
-			const data = getPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
+			const data = await grabAssetsAndGetPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
 			return {
 				html: site.code.html.below + page.code.html.below,
 				css: ``,
@@ -197,9 +197,18 @@ export function get_content_with_static({ component, symbol, loc }) {
 	return _.cloneDeep(content)
 }
 
-export function getPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), grab_assets = false, assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
-	const page_content = grab_assets ? grabAssets(assets_list, assets_map, page.content, loc) : page.content[loc]
-	const site_content = grab_assets ? grabAssets(assets_list, assets_map, site.content, loc) : site.content[loc]
+export function getPageData({ page = get(activePage), site = get(activeSite), loc = get(locale) }) {
+	const page_content = page.content[loc]
+	const site_content = site.content[loc]
+	return {
+		...site_content,
+		...page_content
+	}
+}
+
+export async function grabAssetsAndGetPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
+	const page_content = await grabAssets(assets_list, assets_map, page.content, loc)
+	const site_content = await grabAssets(assets_list, assets_map, site.content, loc)
 	return {
 		...site_content,
 		...page_content
