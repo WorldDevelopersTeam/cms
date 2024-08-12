@@ -269,6 +269,7 @@ export async function hasAsset(data) {
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' && field !== null) {
 		console.warn("grabAssetsInField", assets_list, assets_map, field)
+		console.warn("Before", field)
 
 		const urlObject = new URL(field.url)
 		const pathname = urlObject.pathname
@@ -305,7 +306,10 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 			});
 			assets_map.by_path[pathname] = filename
 			assets_map.by_hash[hash] = filename
-
+			console.warn("After", {
+				...field,
+				url: `/_assets/${filename}`
+			})
 			return {
 				...field,
 				url: `/_assets/${filename}`
