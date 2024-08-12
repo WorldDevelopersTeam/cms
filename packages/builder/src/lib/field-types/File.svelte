@@ -47,7 +47,7 @@
 			bucket: 'files',
 			action: 'upload',
 			key,
-			file: file
+			file
 		})
 
 		if (url) {
