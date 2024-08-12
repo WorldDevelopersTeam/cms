@@ -9,7 +9,7 @@ export function createUniqueID(length = 5) {
 export async function mapValuesAsync(object, fn) {
   return Object.fromEntries(
     await Promise.all(
-      Object.entries(object).map(async ([key, value]) => [
+    	Array.prototype.map.call(Object.entries(object), async ([key, value]) => [
         key,
         await fn(value, key, object)
       ])

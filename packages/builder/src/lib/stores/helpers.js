@@ -254,7 +254,7 @@ export async function unpromiseData(data, objects = []) {
 
 export async function hasAsset(data) {
 	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
-		if (data.type === 'file' || data.type === 'image') {
+		if (data.type === 'file' || (data.type === 'image' || data.hasOwnProperty('alt'))) {
 			return typeof data.url === 'string' && data.url.length > 0 && (data.url.startsWith('http://') || data.url.startsWith('https://'))
 		}
 	}
