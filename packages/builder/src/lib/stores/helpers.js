@@ -220,6 +220,7 @@ export async function isAssetField(obj) {
 		obj = await obj
 	}
 	if (typeof obj === 'object' && obj !== null && obj.hasOwnProperty('url') && obj.hasOwnProperty('type')) {
+		console.warn("isAssetField", obj, obj.type === 'file' || obj.type === 'image')
 		return obj.type === 'file' || obj.type === 'image'
 	}
 	return false
@@ -227,33 +228,37 @@ export async function isAssetField(obj) {
 
 export async function hasNestedAssets(obj) {
 	if (await isAssetField(obj)) {
+		console.warn("hasNestedAssets", obj, true)
 		return true
 	}
 	for (let i in obj) {
 		if (typeof obj[i] === 'object') {
 			if (hasNestedAssets(obj[i])) {
+				console.warn("hasNestedAssets", obj, true)
 				return true
 			}
 		}
 	}
+	console.warn("hasNestedAssets", obj, false)
 	return false
 }
 
-export async function grabAsset(assets_list, assets_map, field_value) {
-	const urlObject = new URL(field_value.url)
+export async function grabAsset(assets_list, assets_map, field) {
+	console.warn("grabAsset", field)
+	const urlObject = new URL(field.url)
 	const pathname = urlObject.pathname
 	const extension = pathname.slice(pathname.lastIndexOf('.'))
 
 	if (extension.length > 1) {
 		if (pathname in assets_map.by_path) {
 			return {
-				...field_value,
+				...field,
 				url: `/_assets/${assets_map.by_path[pathname]}`
 			}
 		}
 
 		try {
-			const response = await fetch(field_value.url);
+			const response = await fetch(field.url);
 			const blob = await response.blob();
 
 			const blob_str = await blob.text()
@@ -262,7 +267,7 @@ export async function grabAsset(assets_list, assets_map, field_value) {
 
 			if (hash in assets_map.by_hash) {
 				return {
-					...field_value,
+					...field,
 					url: `/_assets/${assets_map.by_hash[hash]}`
 				}
 			}
@@ -277,7 +282,7 @@ export async function grabAsset(assets_list, assets_map, field_value) {
 			assets_map.by_hash[hash] = filename
 
 			return {
-				...field_value,
+				...field,
 				url: `/_assets/${filename}`
 			}
 		} catch (e) {
@@ -285,10 +290,11 @@ export async function grabAsset(assets_list, assets_map, field_value) {
 		}
 	}
 
-	return field_value
+	return field
 }
 
 export async function grabAssetsFromField(assets_list, assets_map, field) {
+	console.warn("grabAssetsFromField", field)
 	if (typeof field !== 'object' || field === null) {
 		return field
 	}
@@ -307,6 +313,7 @@ export async function grabAssetsFromField(assets_list, assets_map, field) {
 }
 
 export async function grabAssetsFromFields(assets_list, assets_map, obj) {
+	console.warn("grabAssetsFromFields", obj)
 	let new_fields = await mapValuesAsync(obj, async function (field) {
 		return await grabAssetsFromField(assets_list, assets_map, field)
 	})
@@ -314,15 +321,12 @@ export async function grabAssetsFromFields(assets_list, assets_map, obj) {
 }
 
 export async function grabAssets(assets_list, assets_map, obj, lang) {
-	let updated_content
-	if (!lang)
-	{
-		updated_content = await mapValuesAsync(obj, async function (lang_content) {
+	console.warn("grabAssets", obj, lang)
+	if (!lang) {
+		return await mapValuesAsync(obj, async function (lang_content) {
 			return await grabAssetsFromFields(assets_list, assets_map, lang_content)
 		})
 	} else {
-		updated_content = await grabAssetsFromFields(assets_list, assets_map, obj[lang])
+		return await grabAssetsFromFields(assets_list, assets_map, obj[lang])
 	}
-
-	return updated_content
 }
