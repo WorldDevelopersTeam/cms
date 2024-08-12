@@ -235,7 +235,7 @@ export async function hasAsset(data) {
 
 export async function hasNestedAssets(data) {
 	if (typeof data === 'object' && data !== null) {
-		data = unpromiseData(data)
+		data = await unpromiseData(data)
 		console.warn("hasNestedAssets", data)
 
 		if (await hasAsset(data)) {
@@ -254,7 +254,7 @@ export async function hasNestedAssets(data) {
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' || field !== null) {
-		field = unpromiseData(field)
+		field = await unpromiseData(field)
 		console.warn("grabAssetsInField", assets_list, assets_map, field)
 
 		const urlObject = new URL(field.url)
@@ -305,7 +305,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 
 export async function grabAssets(assets_list, assets_map, data) {
 	if (typeof data === 'object' || data !== null) {
-		data = unpromiseData(data)
+		data = await unpromiseData(data)
 		console.warn("grabAssetsInField", assets_list, assets_map, data)
 
 		if (Array.isArray(data)) {
