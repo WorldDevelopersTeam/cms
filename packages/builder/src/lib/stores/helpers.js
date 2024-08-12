@@ -223,7 +223,7 @@ export async function unpromiseData(obj) {
 }
 
 export async function hasAsset(data) {
-	console.warn("hasAsset", assets_list, assets_map, data)
+	console.warn("hasAsset", data)
 	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
 		if (data.type === 'file' || data.type === 'image') {
 			return typeof data.url === 'string' && data.url.length > 0 && !data.url.startsWith('/_assets/')
@@ -236,7 +236,7 @@ export async function hasAsset(data) {
 export async function hasNestedAssets(data) {
 	if (typeof data === 'object' && data !== null) {
 		data = unpromiseData(data)
-		console.warn("hasNestedAssets", assets_list, assets_map, data)
+		console.warn("hasNestedAssets", data)
 
 		if (await hasAsset(data)) {
 			return true
