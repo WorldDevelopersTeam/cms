@@ -226,7 +226,7 @@ export async function hasAsset(data) {
 	console.warn("hasAsset", data)
 	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
 		if (data.type === 'file' || data.type === 'image') {
-			return typeof data.url === 'string' && data.url.length > 0 && !data.url.startsWith('/_assets/')
+			return typeof data.url === 'string' && data.url.length > 0 && (data.url.startsWith('http://') || data.url.startsWith('https://'))
 		}
 	}
 
@@ -253,7 +253,7 @@ export async function hasNestedAssets(data) {
 }
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
-	if (typeof field === 'object' || field !== null) {
+	if (typeof field === 'object' && field !== null) {
 		field = await unpromiseData(field)
 		console.warn("grabAssetsInField", assets_list, assets_map, field)
 
@@ -304,7 +304,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 }
 
 export async function grabAssets(assets_list, assets_map, data) {
-	if (typeof data === 'object' || data !== null) {
+	if (typeof data === 'object' && data !== null) {
 		data = await unpromiseData(data)
 		console.warn("grabAssets", assets_list, assets_map, data)
 
@@ -323,5 +323,5 @@ export async function grabAssets(assets_list, assets_map, data) {
 		})
 	}
 
-	return dataa
+	return data
 }
