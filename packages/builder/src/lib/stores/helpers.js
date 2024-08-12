@@ -222,13 +222,13 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 }
 
 export async function unpromiseData(data) {
-	if (obj instanceof Promise) {
+	if (data instanceof Promise) {
 		return await unpromiseData(await data)
 	}
 	for (let i in data) {
 		data[i] = await unpromiseData(data)
 	}
-	return obj
+	return data
 }
 
 export async function hasAsset(data) {
