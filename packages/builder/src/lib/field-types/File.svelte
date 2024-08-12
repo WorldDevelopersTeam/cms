@@ -54,8 +54,8 @@
 			filePreview = url
 			set_url(url)
 			set_options({
-				original_type: field.options.original_type || file.type.replace('file/', ''),
-				type: file.type.replace('file/', ''),
+				original_type: field.options.original_type || file.type,
+				type: file.type,
 				size: Math.round(file.size / 1000)
 			})
 			dispatch('input', field)
