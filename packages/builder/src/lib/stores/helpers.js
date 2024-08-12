@@ -330,7 +330,7 @@ export async function grabAssets(assets_list, assets_map, data, objects = []) {
 				return await grabAssets(assets_list, assets_map, field, objects)
 			})
 		}
-		if (newData !== data)
+		if (new_data !== data)
 		{
 			objects.push(new_data)
 			data = new_data
