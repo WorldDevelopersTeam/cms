@@ -56,21 +56,19 @@ export async function buildStaticPage({
 		(s) => s.code.js && page_sections.some((section) => section.symbol === s.id)
 	)
 
+	if (grab_assets)
+	{
+		console.warn(page)
+		console.warn(site)
+		console.warn(page_sections)
+		console.warn(page_symbols)
+	}
+
 	const component = await Promise.all([
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
+			const data = getPageData({ page, site, loc: locale })
 			const locales = Object.keys(site.content).sort()
-
-			let data = getPageData({ page, site, loc: locale })
-			if (grab_assets)
-			{
-				data = await unpromiseData(data)
-				console.warn('Data unpromised', data)
-				if (await hasNestedAssets(data)) {
-					console.warn('Data has assets', data)
-					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
-				}
-			}
 			return {
 				html: `
           <svelte:head>
@@ -106,16 +104,7 @@ export async function buildStaticPage({
 			})
 			.filter(Boolean), // remove options blocks
 		(async () => {
-			let data = getPageData({ page, site, loc: locale })
-			if (grab_assets)
-			{
-				data = await unpromiseData(data)
-				console.warn('Data unpromised', data)
-				if (hasNestedAssets(data)) {
-					console.warn('Data has assets', data)
-					data = await grabAssets(assets_list, assets_map, _.cloneDeep(data))
-				}
-			}
+			const data = getPageData({ page, site, loc: locale })
 			return {
 				html: site.code.html.below + page.code.html.below,
 				css: ``,
