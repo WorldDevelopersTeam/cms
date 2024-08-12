@@ -226,20 +226,16 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 }
 
 export async function unpromiseData(objects = [], data) {
-	if (typeof data === 'object' && data !== null) {
+	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
 		if (data instanceof Promise) {
-			data = await unpromiseData(objects, await data)
+			data = await data
 		}
 
-		if (objects.indexOf(data) !== -1) {
-			return data
-		}
+		objects.push(data)
 
 		for (let i in data) {
-			objects.push(data[i])
-			data[i] = await unpromiseData(objects, data)
+			data[i] = await unpromiseData(objects, data[i])
 		}
-		objects.push(data)
 	}
 	return data
 }
@@ -255,17 +251,14 @@ export async function hasAsset(data) {
 }
 
 export async function hasNestedAssets(objects = [], data) {
-	if (typeof data === 'object' && data !== null) {
+	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
 		if (await hasAsset(data)) {
 			return true
 		}
 
-		if (objects.indexOf(data) !== -1) {
-			return data
-		}
+		objects.push(data)
 
 		for (let i in data) {
-			objects.push(data[i])
 			if (await hasNestedAssets(data[i])) {
 				return true
 			}
