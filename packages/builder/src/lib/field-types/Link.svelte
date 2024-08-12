@@ -24,6 +24,7 @@
 
 	$: if (typeof field.value === 'string' || !field.value) {
 		field.value = {
+			...link,
 			label: '',
 			url: '',
 			active: false

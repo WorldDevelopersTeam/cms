@@ -29,6 +29,7 @@
 
 	function set_url(url) {
 		field.value = {
+			...defaultValue,
 			url,
 			alt: field.value.alt
 		}

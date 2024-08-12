@@ -28,6 +28,7 @@
 
 	function set_url(url) {
 		field.value = {
+			...defaultValue,
 			url
 		}
 	}
