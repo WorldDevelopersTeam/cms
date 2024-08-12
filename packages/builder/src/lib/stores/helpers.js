@@ -7,6 +7,8 @@ import sections from './data/sections.js'
 import symbols from './data/symbols.js'
 import pages from './data/pages.js'
 import activePage from './app/activePage.js'
+import { mapValuesAsync } from '../utilities.js'
+import { RMD160 } from 'jshashes'
 import { locale } from './app/misc.js'
 import { processCSS, getEmptyValue } from '../utils.js'
 
