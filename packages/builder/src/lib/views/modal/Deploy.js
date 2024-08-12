@@ -330,7 +330,7 @@ async function swap_asset(assets_list, assets_map, field_value) {
 }
 
 async function process_field(assets_list, assets_map, field) {
-	if (typeof field !== 'object') {
+	if (typeof field !== 'object' || field === null) {
 		return field
 	}
 
