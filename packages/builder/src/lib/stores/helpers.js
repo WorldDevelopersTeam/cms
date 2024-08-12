@@ -196,8 +196,8 @@ export function get_content_with_static({ component, symbol, loc }) {
 }
 
 export function getPageData({ page = get(activePage), site = get(activeSite), loc = get(locale), grab_assets = false, assets_list = [], assets_map = { by_path: {}, by_hash: {} } }) {
-	const page_content = with_assets ? grabAssets(assets_list, assets_map, page.content, loc) : page.content[loc]
-	const site_content = with_assets ? grabAssets(assets_list, assets_map, site.content, loc) : site.content[loc]
+	const page_content = grab_assets ? grabAssets(assets_list, assets_map, page.content, loc) : page.content[loc]
+	const site_content = grab_assets ? grabAssets(assets_list, assets_map, site.content, loc) : site.content[loc]
 	return {
 		...site_content,
 		...page_content
