@@ -252,34 +252,6 @@ export async function unpromiseData(data, objects = []) {
 	return data
 }
 
-export async function hasAsset(data) {
-	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
-		if (data.type === 'file' || data.type === 'image') {
-			return typeof data.url === 'string' && data.url.length > 0 && (data.url.startsWith('http://') || data.url.startsWith('https://'))
-		}
-	}
-
-	return false
-}
-
-export async function hasNestedAssets(objects = [], data) {
-	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
-		if (await hasAsset(data)) {
-			return true
-		}
-
-		objects.push(data)
-
-		for (let i in data) {
-			if (await hasNestedAssets(data[i])) {
-				return true
-			}
-		}
-	}
-
-	return false
-}
-
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' && field !== null) {
 		console.warn("grabAssetsInField", assets_list, assets_map, field)
