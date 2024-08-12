@@ -313,7 +313,7 @@ export async function grabAssets(assets_list, assets_map, data) {
 				data[idx] = grabAssets(assets_list, assets_map, data[idx])
 			}
 		}
-		if (await isAssetField(field)) {
+		if (await hasAsset(field)) {
 			data = await grabAssetsInField(assets_list, assets_map, data)
 		}
 
