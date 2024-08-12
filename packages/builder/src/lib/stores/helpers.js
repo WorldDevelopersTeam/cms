@@ -58,18 +58,18 @@ export async function buildStaticPage({
 
 	if (grab_assets) {
 		page = {
-			...page,
+			...await unpromiseData(page),
 			content: await mapValuesAsync(page.content, async function(loc_content) {
 				return await grabAssets(assets_list, assets_map, loc_content)
 			})
 		}
 		site = {
-			...site,
+			...await unpromiseData(site),
 			content: await mapValuesAsync(site.content, async function(loc_content) {
 				return await grabAssets(assets_list, assets_map, loc_content)
 			})
 		}
-		page_sections = await mapValuesAsync(page_sections, async function(page_section) {
+		page_sections = await mapValuesAsync(await unpromiseData(page_sections), async function(page_section) {
 			return {
 				...page_section,
 				content: await mapValuesAsync(page_section.content, async function(loc_content) {
@@ -77,7 +77,7 @@ export async function buildStaticPage({
 				})
 			}
 		})
-		page_symbols = await mapValuesAsync(page_symbols, async function(page_symbol) {
+		page_symbols = await mapValuesAsync(await unpromiseData(page_symbols), async function(page_symbol) {
 			return {
 				...page_symbol,
 				content: await mapValuesAsync(page_symbol.content, async function(loc_content) {
