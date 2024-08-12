@@ -47,7 +47,11 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 
 export async function build_site_bundle({ pages, symbols, include_assets = get(site.include_assets), primary_language = get(site.primary_language)}) {
 	let site_bundle
-	let assets = []
+	let assets_list = []
+	let assets_map = {
+		by_path: {},
+		by_hash: {}
+	}
 
 	try {
 		const page_files = await Promise.all(
@@ -63,7 +67,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		const symbol_files = await Promise.all(
 			symbols.filter((s) => s.code.js).map((symbol) => build_symbol_tree(symbol))
 		)
-		site_bundle = build_site_tree([...symbol_files, ...page_files.flat(), ...assets])
+		site_bundle = build_site_tree([...symbol_files, ...page_files.flat(), ...assets_list])
 	} catch (e) {
 		alert(e.message)
 	}
@@ -152,12 +156,6 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			order: ['index', { ascending: true }]
 		})
 
-		let assets_list = []
-		let assets_map = {
-			by_path: {},
-			by_hash: {}
-		}
-
 		let { html } = await buildStaticPage({
 			page,
 			page_sections: sections,
@@ -169,8 +167,6 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			assets_list,
 			assets_map
 		})
-
-		console.warn(assets_list, assets_map, html)
 
 		let parent_urls = []
 		const parent = pages.find((p) => p.id === page.parent)
@@ -234,10 +230,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			})
 		}
 
-		return {
-			...page_tree,
-			...assets_list
-		}
+		return page_tree
 	}
 
 	async function build_site_tree(pages) {
