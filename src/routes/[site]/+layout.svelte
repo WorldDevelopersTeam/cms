@@ -139,7 +139,7 @@
 	storage_subscribe(async ({ bucket, action, key, file, options }) => {
 		if (action === 'upload') {
 			await supabase.storage.from(bucket).upload(key, file, options)
-			if (bucket === 'images') {
+			if (bucket === 'images' || bucket === 'files') {
 				const { data: res } = supabase.storage.from(bucket).getPublicUrl(key)
 				return res.publicUrl
 			}

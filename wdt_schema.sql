@@ -388,6 +388,7 @@ INSERT INTO
     storage.buckets (id, name, public)
 VALUES
     ('sites', 'sites', TRUE),
+    ('files', 'files', TRUE),
     ('images', 'images', TRUE);
 
 -- Set storage security
@@ -416,6 +417,36 @@ UPDATE
 CREATE POLICY "Give Authenticated users access to delete sites" ON storage.objects FOR DELETE USING (
     (
         (bucket_id = 'sites' :: text)
+        AND (auth.role() = 'authenticated' :: text)
+    )
+);
+
+-- Set storage security
+CREATE POLICY "Public access to view files" ON storage.objects FOR
+SELECT
+    USING (((bucket_id = 'files' :: text)));
+
+CREATE POLICY "Give Authenticated users access to upload new files" ON storage.objects FOR
+INSERT
+    WITH CHECK (
+        (
+            (bucket_id = 'files' :: text)
+            AND (auth.role() = 'authenticated' :: text)
+        )
+    );
+
+CREATE POLICY "Give Authenticated users access to update files" ON storage.objects FOR
+UPDATE
+    USING (
+        (
+            (bucket_id = 'files' :: text)
+            AND (auth.role() = 'authenticated' :: text)
+        )
+    );
+
+CREATE POLICY "Give Authenticated users access to delete files" ON storage.objects FOR DELETE USING (
+    (
+        (bucket_id = 'files' :: text)
         AND (auth.role() = 'authenticated' :: text)
     )
 );

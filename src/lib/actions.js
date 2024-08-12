@@ -92,6 +92,10 @@ export const sites = {
       if (siteFiles.length)
         await supabase.storage.from('sites').remove(siteFiles)
 
+      let fileFiles = await getFiles('files', site.id)
+      if (fileFiles.length)
+        await supabase.storage.from('files').remove(fileFiles)
+
       let imageFiles = await getFiles('images', site.id)
       if (imageFiles.length)
         await supabase.storage.from('images').remove(imageFiles)
