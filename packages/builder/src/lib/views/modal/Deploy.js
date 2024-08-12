@@ -67,6 +67,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		const symbol_files = await Promise.all(
 			symbols.filter((s) => s.code.js).map((symbol) => build_symbol_tree(symbol))
 		)
+		console.warn(assets_list)
 		site_bundle = build_site_tree([...symbol_files, ...page_files.flat(), ...assets_list])
 	} catch (e) {
 		alert(e.message)

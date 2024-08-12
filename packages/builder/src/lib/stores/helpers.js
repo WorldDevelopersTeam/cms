@@ -223,8 +223,8 @@ export async function unpromiseData(obj) {
 }
 
 export async function hasAsset(data) {
-	if (data.hasOwnProperty('url') && data.hasOwnProperty('type'))
-	{
+	console.warn("hasAsset", assets_list, assets_map, data)
+	if (data.hasOwnProperty('url') && data.hasOwnProperty('type')) {
 		if (data.type === 'file' || data.type === 'image') {
 			return typeof data.url === 'string' && data.url.length > 0 && !data.url.startsWith('/_assets/')
 		}
@@ -236,6 +236,7 @@ export async function hasAsset(data) {
 export async function hasNestedAssets(data) {
 	if (typeof data === 'object' && data !== null) {
 		data = unpromiseData(data)
+		console.warn("hasNestedAssets", assets_list, assets_map, data)
 
 		if (await hasAsset(data)) {
 			return true
@@ -252,46 +253,51 @@ export async function hasNestedAssets(data) {
 }
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
-	const urlObject = new URL(field.url)
-	const pathname = urlObject.pathname
-	const extension = pathname.slice(pathname.lastIndexOf('.'))
-	if (extension.length > 1) {
-		if (pathname in assets_map.by_path) {
-			return {
-				...field,
-				url: `/_assets/${assets_map.by_path[pathname]}`
-			}
-		}
-		try {
-			const response = await fetch(field.url);
-			const blob = await response.blob();
+	if (typeof field === 'object' || field !== null) {
+		field = unpromiseData(field)
+		console.warn("grabAssetsInField", assets_list, assets_map, field)
 
-			const blob_str = await blob.text()
-
-			const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
-
-			if (hash in assets_map.by_hash) {
+		const urlObject = new URL(field.url)
+		const pathname = urlObject.pathname
+		const extension = pathname.slice(pathname.lastIndexOf('.'))
+		if (extension.length > 1) {
+			if (pathname in assets_map.by_path) {
 				return {
 					...field,
-					url: `/_assets/${assets_map.by_hash[hash]}`
+					url: `/_assets/${assets_map.by_path[pathname]}`
 				}
 			}
+			try {
+				const response = await fetch(field.url);
+				const blob = await response.blob();
 
-			const filename = hash + extension
+				const blob_str = await blob.text()
 
-			assets_list.push({
-				path: `_assets/${filename}`,
-				blob
-			});
-			assets_map.by_path[pathname] = filename
-			assets_map.by_hash[hash] = filename
+				const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
 
-			return {
-				...field,
-				url: `/_assets/${filename}`
+				if (hash in assets_map.by_hash) {
+					return {
+						...field,
+						url: `/_assets/${assets_map.by_hash[hash]}`
+					}
+				}
+
+				const filename = hash + extension
+
+				assets_list.push({
+					path: `_assets/${filename}`,
+					blob
+				});
+				assets_map.by_path[pathname] = filename
+				assets_map.by_hash[hash] = filename
+
+				return {
+					...field,
+					url: `/_assets/${filename}`
+				}
+			} catch (e) {
+				console.error('Error while fetching asset', e.message);
 			}
-		} catch (e) {
-			console.error('Error while fetching asset', e.message);
 		}
 	}
 	return field
@@ -300,6 +306,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 export async function grabAssets(assets_list, assets_map, data) {
 	if (typeof data === 'object' || data !== null) {
 		data = unpromiseData(data)
+		console.warn("grabAssetsInField", assets_list, assets_map, data)
 
 		if (Array.isArray(data)) {
 			for (let idx in data) {
