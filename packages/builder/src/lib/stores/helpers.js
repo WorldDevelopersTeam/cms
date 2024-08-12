@@ -243,14 +243,14 @@ export function getPageData({ page = get(activePage), site = get(activeSite), lo
 
 export async function unpromiseData(data, objects = []) {
 	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
+		objects.push(data)
 		if (data instanceof Promise) {
 			data = await data
+			objects.push(data)
 		}
-
-		objects.push(data)
-
 		for (let i in data) {
 			data[i] = await unpromiseData(data[i], objects)
+			objects.push(data)
 		}
 	}
 	return data
@@ -268,8 +268,6 @@ export async function hasAsset(data) {
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' && field !== null) {
-		console.warn("Before", field)
-
 		const urlObject = new URL(field.url)
 		const pathname = urlObject.pathname
 		if (pathname in assets_map.by_path) {
@@ -305,10 +303,6 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 			});
 			assets_map.by_path[pathname] = filename
 			assets_map.by_hash[hash] = filename
-			console.warn("After", {
-				...field,
-				url: `/_assets/${filename}`
-			})
 			return {
 				...field,
 				url: `/_assets/${filename}`
@@ -320,22 +314,27 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 	return field
 }
 
-export async function grabAssets(assets_list, assets_map, data) {
-	if (typeof data === 'object' && data !== null) {
+export async function grabAssets(assets_list, assets_map, data, objects = []) {
+	if (typeof data === 'object' && data !== null && objects.indexOf(data) === -1) {
+		objects.push(data)
+		let new_data;
 		if (await hasAsset(data)) {
-			data = await grabAssetsInField(assets_list, assets_map, data)
-		}
-
-		if (Array.isArray(data)) {
+			new_data = await grabAssetsInField(assets_list, assets_map, data)
+		} else if (Array.isArray(data)) {
+			new_data = []
 			for (let idx in data) {
-				data[idx] = grabAssets(assets_list, assets_map, data[idx])
+				new_data[idx] = await grabAssets(assets_list, assets_map, data[idx], objects)
 			}
+		} else {
+			new_data = await mapValuesAsync(data, async function (field) {
+				return await grabAssets(assets_list, assets_map, field, objects)
+			})
 		}
-
-		data = await mapValuesAsync(data, async function (field) {
-			return await grabAssets(assets_list, assets_map, field)
-		})
+		if (newData !== data)
+		{
+			objects.push(new_data)
+			data = new_data
+		}
 	}
-
 	return data
 }
