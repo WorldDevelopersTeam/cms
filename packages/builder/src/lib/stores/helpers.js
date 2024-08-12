@@ -268,7 +268,6 @@ export async function hasAsset(data) {
 
 export async function grabAssetsInField(assets_list, assets_map, field) {
 	if (typeof field === 'object' && field !== null) {
-		console.warn("grabAssetsInField", assets_list, assets_map, field)
 		console.warn("Before", field)
 
 		const urlObject = new URL(field.url)
@@ -323,8 +322,6 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 
 export async function grabAssets(assets_list, assets_map, data) {
 	if (typeof data === 'object' && data !== null) {
-		console.warn("grabAssets", assets_list, assets_map, data)
-
 		if (await hasAsset(data)) {
 			data = await grabAssetsInField(assets_list, assets_map, data)
 		}
