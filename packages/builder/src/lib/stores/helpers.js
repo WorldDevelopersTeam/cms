@@ -59,7 +59,7 @@ export async function buildStaticPage({
 	const component = await Promise.all([
 		(async () => {
 			const css = await processCSS(site.code.css + page.code.css)
-			const data = await grabAssetsAndGetPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
+			const data = grab_assets ? (await grabAssetsAndGetPageData({ page, site, assets_list, assets_map, loc: locale })) : getPageData({ page, site, loc: locale })
 			const locales = Object.keys(site.content).sort()
 			return {
 				html: `
@@ -96,7 +96,7 @@ export async function buildStaticPage({
 			})
 			.filter(Boolean), // remove options blocks
 		(async () => {
-			const data = await grabAssetsAndGetPageData({ page, site, grab_assets, assets_list, assets_map, loc: locale })
+			const data = grab_assets ? (await grabAssetsAndGetPageData({ page, site, assets_list, assets_map, loc: locale })) : getPageData({ page, site, loc: locale })
 			return {
 				html: site.code.html.below + page.code.html.below,
 				css: ``,
