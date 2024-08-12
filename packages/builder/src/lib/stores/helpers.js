@@ -8,7 +8,7 @@ import symbols from './data/symbols.js'
 import pages from './data/pages.js'
 import activePage from './app/activePage.js'
 import { mapValuesAsync } from '../utilities.js'
-import RMD160 from 'jshashes'
+import Hashes from 'jshashes'
 import { locale } from './app/misc.js'
 import { processCSS, getEmptyValue } from '../utils.js'
 
@@ -273,7 +273,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 
 				const blob_str = await blob.text()
 
-				const hash = (new RMD160).hex(blob_str) + '.' + blob.size.toString(16)
+				const hash = (new Hashes.RMD160).hex(blob_str) + '.' + blob.size.toString(16)
 
 				if (hash in assets_map.by_hash) {
 					return {
