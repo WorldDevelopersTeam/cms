@@ -154,16 +154,6 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			order: ['index', { ascending: true }]
 		})
 
-		// Download assets & replace urls in sections
-		if (include_assets && has_nested_assets(sections)) {
-			await Promise.all(
-				sections.map(async (section, i) => {
-					const response = await process_content(section.content)
-					assets.push(...response.assets)
-					sections[i]['content'] = response.content
-				})
-			)
-		}
 		let assets_list = []
 		let assets_map = {
 			by_path: {},

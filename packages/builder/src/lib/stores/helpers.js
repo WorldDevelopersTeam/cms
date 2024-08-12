@@ -213,12 +213,12 @@ export function isAssetField(obj) {
 }
 
 export function hasNestedAssets(obj) {
-	if (is_asset_field(obj)) {
+	if (isAssetField(obj)) {
 		return true
 	}
 	for (let i in obj) {
 		if (typeof obj[i] === 'object') {
-			if (has_nested_assets(obj[i])) {
+			if (hasNestedAssets(obj[i])) {
 				return true
 			}
 		}
