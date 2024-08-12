@@ -69,22 +69,26 @@ export async function buildStaticPage({
 				return await grabAssets(assets_list, assets_map, _.cloneDeep(loc_content))
 			})
 		}
-		page_sections = await mapValuesAsync(await unpromiseData(page_sections), async function(page_section) {
-			return {
-				...page_section,
-				content: await mapValuesAsync(page_section.content, async function(loc_content) {
+		const new_page_sections = []
+		for (let idx in page_sections) {
+			new_page_sections[idx] = {
+				...page_sections[idx],
+				content: await mapValuesAsync(page_sections[idx].content, async function(loc_content) {
 					return await grabAssets(assets_list, assets_map, _.cloneDeep(loc_content))
 				})
 			}
-		})
-		page_symbols = await mapValuesAsync(await unpromiseData(page_symbols), async function(page_symbol) {
-			return {
-				...page_symbol,
-				content: await mapValuesAsync(page_symbol.content, async function(loc_content) {
+		}
+		page_sections = new_page_sections
+		const new_page_symbols = []
+		for (let idx in page_symbols) {
+			new_page_symbols[idx] = {
+				...page_symbols[idx],
+				content: await mapValuesAsync(page_symbols[idx].content, async function(loc_content) {
 					return await grabAssets(assets_list, assets_map, _.cloneDeep(loc_content))
 				})
 			}
-		})
+		}
+		page_symbols = new_page_symbols
 	}
 
 	const component = await Promise.all([
