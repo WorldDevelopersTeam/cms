@@ -41,10 +41,12 @@ export async function POST({ request, locals }) {
             removeComments: true,
           })
           // merge inline styles
-          content = content.replaceAll(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/gim, function(stylesElems, style1OpenTag, style1Content, style1CloseTag, style2OpenTag, style2Content, style2CloseTag)
-          {
-            return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
-          })
+          while (content.match(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/im)) {
+            content = content.replaceAll(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/gim, function(stylesElems, style1OpenTag, style1Content, style1CloseTag, style2OpenTag, style2Content, style2CloseTag)
+            {
+              return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
+            })
+          }
           // normalize sinline styles
           content = content.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
           // normalize inline scripts
