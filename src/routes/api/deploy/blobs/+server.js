@@ -99,7 +99,6 @@ async function create_blob({ binary, content, repo_name, token }) {
       headers: { Authorization: `Bearer ${token}` },
     }
   )).data
-  console.log(data)
 
   return data.sha
 }
