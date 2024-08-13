@@ -89,25 +89,17 @@ export async function POST({ request, locals }) {
 }
 
 async function create_blob({ binary, content, repo_name, token }) {
-  let [data, attempts] = [false, 0]
-  while (attempts < 5) {
-    try {
-      data = (await axios.post(
-        `https://api.github.com/repos/${repo_name}/git/blobs`,
-        {
-          content: content,
-          encoding: binary ? 'base64' : 'utf-8',
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )).data
-    } catch(e) {
-      attempts = attempts + 1
-    } finally {
-      break;
+  const data = (await axios.post(
+    `https://api.github.com/repos/${repo_name}/git/blobs`,
+    {
+      content: content,
+      encoding: binary ? 'base64' : 'utf-8',
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
     }
-  }
+  )).data
+  console.log(data)
 
   return data.sha
 }
