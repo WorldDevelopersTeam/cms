@@ -124,7 +124,6 @@
 				label="Path"
 				on:input={({ detail: value }) => {
 					set_path(value)
-					dispatch('input', field)
 				}}
 			/>
 		</div>
