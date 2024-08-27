@@ -292,7 +292,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 			if (hash in assets_map.by_hash) {
 				return {
 					...field,
-					url: assets_map.by_hash[hash]}
+					url: assets_map.by_hash[hash]
 				}
 			}
 
