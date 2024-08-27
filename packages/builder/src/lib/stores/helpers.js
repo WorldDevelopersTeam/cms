@@ -301,7 +301,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 			{
 				path = field.path
 			} else {
-				path = '/_assets/' + hash + extension
+				path = '_assets/' + hash + extension
 			}
 
 			assets_list.push({
