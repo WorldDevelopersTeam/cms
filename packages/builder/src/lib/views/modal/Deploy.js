@@ -103,7 +103,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		common_tags = common_tags + `<meta charset="utf-8">`
 		common_tags = common_tags + `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
 		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0"> `
-		common_tags = common_tags + `<meta name="url" content="https://${base}/${language}/${rel_path}">`
+		common_tags = common_tags + `<meta name="url" content="https://${base}/${curr_lang}/${rel_path}">`
 		html = html.replace('<!--[wdt:tags:common]-->', common_tags)
 
 		let links_tags = ''
@@ -112,13 +112,13 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			{
 				for (var lang of languages)
 				{
-					if (lang !== language)
+					if (lang !== curr_lang)
 					{
 						links_tags = links_tags + `<link rel="alternate" href="https://${base}/${lang}/${rel_path}" hreflang="${lang}">`
 					}
 				}
 				links_tags = `<link rel="alternate" href="https://${base}/${curr_lang}/${rel_path}" hreflang="x-default">` + links_tags
-				links_tags = `<link rel="canonical" href="https://${base}/${language}/${rel_path}">` + links_tags
+				links_tags = `<link rel="canonical" href="https://${base}/${curr_lang}/${rel_path}">` + links_tags
 			}
 			else
 			{
@@ -160,7 +160,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 
 		let og_tags = ''
 		og_tags = og_tags + `<meta property="og:type" content="website">`
-		og_tags = og_tags + `<meta property="og:url" content="https://${base}/${language}/${rel_path}">`
+		og_tags = og_tags + `<meta property="og:url" content="https://${base}/${curr_lang}/${rel_path}">`
 		og_tags = og_tags + `<meta property="og:locale" content="${curr_lang}">`
 		for (var lang of languages)
 		{
