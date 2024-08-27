@@ -23,7 +23,7 @@
 		}
 
 		if (payload.provider === 'github') {
-			const chunks = chunk_payload(payload, 2000) // break payload up into chunks to avoid cloud function body limits
+			const chunks = chunk_payload(payload, 3500, 16) // break payload up into chunks to avoid cloud function body limits
 			const blob_list = (await Promise.all(chunks.map(create_blob_list))).flat()
 			return await deploy_to_server({
 				...payload,
@@ -55,14 +55,14 @@
 				return complexity
 			}
 
-			function chunk_payload(payload, max_complexity) {
+			function chunk_payload(payload, max_complexity, max_chunk_length) {
 				const chunks = []
 				payload.files.forEach((file) => {
 					const current_chunk = chunks[chunks.length - 1]
 					const current_chunk_size = current_chunk
 						? current_chunk.files.reduce((acc, payload) => acc + calc_file_complexity(file), 0)
 						: 0
-					if (current_chunk && current_chunk_size + calc_file_complexity(file) < max_complexity) {
+					if (current_chunk && current_chunk_size + calc_file_complexity(file) < max_complexity && current_chunk.length < max_chunk_length) {
 						// current chunk below limit
 						current_chunk.files.push(file)
 					} else {
