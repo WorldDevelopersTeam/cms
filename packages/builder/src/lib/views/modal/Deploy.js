@@ -133,11 +133,11 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 
 		let seo_tags = ''
 		let page_title = ''
-		if ('site_name' in site.content[curr_lang]) {
+		if ('name' in site.content[curr_lang]) {
 			if ('title' in page.content[curr_lang] && typeof page.content[curr_lang] == 'string' && page.content[curr_lang].length > 0) {
-				page_title = page.content[curr_lang]['title'] + ' · ' + site.content[curr_lang]['site_name']
+				page_title = page.content[curr_lang]['title'] + ' · ' + site.content[curr_lang]['name']
 			} else {
-				page_title = site.content[curr_lang]['site_name']
+				page_title = site.content[curr_lang]['name']
 			}
 		} else {
 			page_title = 'An unnamed page'
@@ -149,8 +149,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		if ('keywords' in page.content[curr_lang]) {
 			seo_tags = seo_tags + `<meta name="keywords" content="${page.content[curr_lang]['keywords']}">`
 		}
-		if ('page_name' in page.content[curr_lang]) {
-			seo_tags = seo_tags + `<meta name="page_name" content="${page.content[curr_lang]['page_name']}">`
+		if ('name' in page.content[curr_lang]) {
+			seo_tags = seo_tags + `<meta name="page_name" content="${page.content[curr_lang]['name']}">`
 		}
 		if ('copyright' in page.content[curr_lang]) {
 			seo_tags = seo_tags + `<meta name="copyright" content="${page.content[curr_lang]['copyright']}">`
@@ -169,8 +169,8 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			}
 		}
 
-		if ('site_name' in site.content[curr_lang]) {
-			og_tags = og_tags + `<meta property="og:site_name" content="${site.content[curr_lang]['site_name']}">`
+		if ('name' in site.content[curr_lang]) {
+			og_tags = og_tags + `<meta property="og:site_name" content="${site.content[curr_lang]['name']}">`
 		}
 		og_tags = og_tags + `<meta property="og:title" content="${page_title}">`
 		if ('description' in page.content[curr_lang]) {
