@@ -101,8 +101,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		let common_tags = ''
 		common_tags = common_tags + `<meta charset="utf-8">`
 		common_tags = common_tags + `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
-		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0"> `
-		common_tags = common_tags + `<meta name="url" content="https://${base}/${curr_lang}/${rel_path}">`
+		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
 		html = html.replace('<cms:head property="tags" content="common">', common_tags)
 
 		let links_tags = ''
