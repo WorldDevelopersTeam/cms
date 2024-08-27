@@ -96,48 +96,98 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		}
 	}
 
-	async function make_default_page(html, base, languages, path) {
-		path = path !== 'index' ? (path + '/') : ''
-		html = html.replace(/\<\s*meta\s+charset.+?\>/gim, function(match) {
-			var addins = "";
-			for (var lang of languages)
-			{
-				addins = addins + `<link rel="canonical" href="https://${base}/${lang}/${path}">`
-			}
-			return match + addins
-		})
-		html = html.replaceAll(/\<\s*body(\s*id="[^"]*")?>[\s\S]*?\<\s*\/\s*body>/gim, '')
-		html = html.replaceAll(/\<\s*script[\s\S]+?\<\s*\/\s*script>/gim, '')
-		html = html.replaceAll(/\<\s*style[\s\S]+?\<\s*\/\s*style>/gim, '')
-		html = html.replace(/\<\s*\/\s*head>/gim, function(match) {
-			match = `<script type="text/javascript">!function(){var e,t=document.documentElement.lang,n=(e=document.cookie.match(RegExp("(?:^|; )"+"__wdt_userLocale".replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g,"\\\\$1")+"=([^;]*)")))?decodeURIComponent(e[1]):void 0;if("string"!=typeof n&&(n="object"==typeof navigator&&("string"==typeof navigator.language&&"ru"===navigator.language.substring(0,2)||"object"==typeof navigator.languages&&"function"==typeof navigator.languages.find&&navigator.languages.find(function(e){return"string"==typeof e&&"ru"===e.substring(0,2)}))?"ru":"en"),"string"==typeof n){!function(e,t,n){var o=(n=n||{}).expires;if("number"==typeof o&&o){var a=new Date;a.setTime(a.getTime()+1e3*o),o=n.expires=a}o&&o.toUTCString&&(n.expires=o.toUTCString());var r=e+"="+(t=encodeURIComponent(t));for(var i in n){r+="; "+i;var c=n[i];!0!==c&&(r+="="+c)}document.cookie=r}("__wdt_userLocale",n,{expires:2592e3,secure:!0});var o="/"+n+window.location.pathname+window.location.search+window.location.hash;n!==t?window.location.replace(window.location.origin+o):"object"==typeof history&&"function"==typeof history.replaceState&&history.replaceState(null,null,o)}}();</script>` + match
-			return match
-		})
-		return html
-	}
+	async function sanitize_page_code(site, page, html, base, languages, path, curr_lang, is_redirect) {
+		let rel_path = path !== 'index' ? (path + '/') : ''
 
-	async function make_localized_page(html, base, languages, path, language) {
-		path = path !== 'index' ? (path + '/') : ''
-		html = html.replace(/\<\s*meta\s+charset.+?\>/gim, function(match) {
-			var addins = ''
+		let common_tags = ''
+		common_tags = common_tags + `<meta charset="utf-8">`
+		common_tags = common_tags + `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
+		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0"> `
+		common_tags = common_tags + `<meta name="url" content="https://${base}/${language}/${rel_path}">`
+		html = html.replace('<!--[wdt:tags:common]-->', common_tags)
+
+		let links_tags = ''
+		if (!is_redirect) {
 			if (languages.length > 0)
 			{
 				for (var lang of languages)
 				{
 					if (lang !== language)
 					{
-						addins = addins + `<link rel="alternate" href="https://${base}/${lang}/${path}" hreflang="${lang}">`
+						links_tags = links_tags + `<link rel="alternate" href="https://${base}/${lang}/${rel_path}" hreflang="${lang}">`
 					}
 				}
-				addins = `<link rel="alternate" href="https://${base}/${languages[0]}/${path}" hreflang="x-default">` + addins
-				addins = `<link rel="canonical" href="https://${base}/${language}/${path}">` + addins
+				links_tags = `<link rel="alternate" href="https://${base}/${curr_lang}/${rel_path}" hreflang="x-default">` + links_tags
+				links_tags = `<link rel="canonical" href="https://${base}/${language}/${rel_path}">` + links_tags
 			}
 			else
 			{
-				addins = `<link rel="canonical" href="https://${base}/${path}">` + addins
+				links_tags = `<link rel="canonical" href="https://${base}/${rel_path}">` + links_tags
 			}
-			return match + addins
-		})
+		} else {
+			for (var lang of languages)
+			{
+				links_tags = links_tags + `<link rel="canonical" href="https://${base}/${lang}/${path}">`
+			}
+		}
+		html = html.replace('<!--[wdt:tags:links]-->', links_tags)
+
+		let seo_tags = ''
+		let page_title = ''
+		if ('site_name' in site.content[curr_lang]) {
+			if ('title' in page.content[curr_lang] && typeof page.content[curr_lang] == 'string' && page.content[curr_lang].length > 0) {
+				page_title = page.content[curr_lang]['title'] + ' · ' + site.content[curr_lang]['site_name']
+			} else {
+				page_title = site.content[curr_lang]['site_name']
+			}
+		} else {
+			page_title = 'An unnamed page'
+		}
+		seo_tags = seo_tags + `<title>${page_title}</title>`
+		if ('description' in page.content[curr_lang]) {
+			seo_tags = seo_tags + `<meta name="description" content="${page.content[curr_lang]['description']}">`
+		}
+		if ('keywords' in page.content[curr_lang]) {
+			seo_tags = seo_tags + `<meta name="keywords" content="${page.content[curr_lang]['keywords']}">`
+		}
+		if ('page_name' in page.content[curr_lang]) {
+			seo_tags = seo_tags + `<meta name="page_name" content="${page.content[curr_lang]['page_name']}">`
+		}
+		if ('copyright' in page.content[curr_lang]) {
+			seo_tags = seo_tags + `<meta name="copyright" content="${page.content[curr_lang]['copyright']}">`
+		}
+		html = html.replace('<!--[wdt:tags:seo]-->', seo_tags)
+
+		let og_tags = ''
+		og_tags = og_tags + `<meta property="og:type" content="website">`
+		og_tags = og_tags + `<meta property="og:url" content="https://${base}/${language}/${rel_path}">`
+		og_tags = og_tags + `<meta property="og:locale" content="${curr_lang}">`
+		for (var lang of languages)
+		{
+			if (lang !== curr_lang)
+			{
+				og_tags = og_tags + `<meta property="og:locale:alternate" content="${lang}">`
+			}
+		}
+
+		if ('site_name' in site.content[curr_lang]) {
+			og_tags = og_tags + `<meta property="og:site_name" content="${site.content[curr_lang]['site_name']}">`
+		}
+		og_tags = og_tags + `<meta property="og:title" content="${page_title}">`
+		if ('description' in page.content[curr_lang]) {
+			og_tags = og_tags + `<meta property="og:description" content="${page.content[curr_lang]['description']}">`
+		}
+		html = html.replace('<!--[wdt:tags:opengraph]-->', og_tags)
+
+		if (is_redirect) {
+			html = html.replaceAll(/\<\s*body[^\>]*?>[\s\S]*?\<\s*\/\s*body>/gim, '')
+			html = html.replaceAll(/\<\s*script[^\>]*?\<\s*\/\s*script>/gim, '')
+			html = html.replaceAll(/\<\s*style[^\>]*?\<\s*\/\s*style>/gim, '')
+			html = html.replace(/\<\s*\/\s*head[^\>]*?>/gim, function(match) {
+				return `<script type="text/javascript">!function(){var e,t=document.documentElement.lang,n=(e=document.cookie.match(RegExp("(?:^|; )"+"__wdt_userLocale".replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g,"\\\\$1")+"=([^;]*)")))?decodeURIComponent(e[1]):void 0;if("string"!=typeof n&&(n="object"==typeof navigator&&("string"==typeof navigator.language&&"ru"===navigator.language.substring(0,2)||"object"==typeof navigator.languages&&"function"==typeof navigator.languages.find&&navigator.languages.find(function(e){return"string"==typeof e&&"ru"===e.substring(0,2)}))?"ru":"en"),"string"==typeof n){!function(e,t,n){var o=(n=n||{}).expires;if("number"==typeof o&&o){var a=new Date;a.setTime(a.getTime()+1e3*o),o=n.expires=a}o&&o.toUTCString&&(n.expires=o.toUTCString());var r=e+"="+(t=encodeURIComponent(t));for(var i in n){r+="; "+i;var c=n[i];!0!==c&&(r+="="+c)}document.cookie=r}("__wdt_userLocale",n,{expires:2592e3,secure:!0});var o="/"+n+window.location.pathname+window.location.search+window.location.hash;n!==t?window.location.replace(window.location.origin+o):"object"==typeof history&&"function"==typeof history.replaceState&&history.replaceState(null,null,o)}}();</script>` + match
+			})
+		}
+
 		return html
 	}
 
@@ -197,37 +247,19 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 
 		const page_tree = []
 
-		// handle special pages
-		if (page.url === '404') {
-			if (is_primary) {
-				page_tree.push({
-					path,
-					content: html
-				})
-			}
-			return page_tree
-		}
-
-		// create default page
+		// add redirect page
 		if (is_multilang && is_primary) {
 			page_tree.push({
 				path,
-				content: await make_default_page(html, current_site.url, site_languages, full_url)
+				content: await sanitize_page_code(current_site, page, html, current_site.url, site_languages, full_url, language, true)
 			})
 		}
 
 		// add page
-		if (is_multilang) {
-			page_tree.push({
-				path: `${language}/${path}`,
-				content: await make_localized_page(html, current_site.url, site_languages, full_url, language)
-			})
-		} else {
-			page_tree.push({
-				path,
-				content: await make_localized_page(html, current_site.url, [], full_url, '')
-			})
-		}
+		page_tree.push({
+			is_multilang ? `${language}/${path}` : path,
+			content: await sanitize_page_code(current_site, page, html, current_site.url, site_languages, full_url, language, False)
+		})
 
 		return page_tree
 	}
