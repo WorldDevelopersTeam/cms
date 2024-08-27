@@ -273,7 +273,7 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 		if (pathname in assets_map.by_path) {
 				return {
 					...field,
-					url: `/_assets/${assets_map.by_path[pathname]}`
+					url: assets_map.by_path[pathname]
 				}
 			}
 
@@ -292,20 +292,28 @@ export async function grabAssetsInField(assets_list, assets_map, field) {
 			if (hash in assets_map.by_hash) {
 				return {
 					...field,
-					url: `/_assets/${assets_map.by_hash[hash]}`
+					url: assets_map.by_hash[hash]
 				}
 			}
 
-			const filename = hash + extension
+			let path = ''
+			if (typeof field.path == 'string' && field.path != '')
+			{
+				path = field.path
+			} else {
+				path = '_/assets/' + hash + extension
+			}
+
 			assets_list.push({
-				path: `_assets/${filename}`,
+				path,
 				blob
 			});
-			assets_map.by_path[pathname] = filename
-			assets_map.by_hash[hash] = filename
+			assets_map.by_path[pathname] = path
+			assets_map.by_hash[hash] = path
+
 			return {
 				...field,
-				url: `/_assets/${filename}`
+				url: path
 			}
 		} catch (e) {
 			console.error('Error while fetching asset', e.message);

@@ -11,7 +11,8 @@
 
 	const defaultValue = {
 		type: 'file',
-		url: ''
+		url: '',
+		path: ''
 	}
 
 	export let field = {
@@ -30,6 +31,13 @@
 		field.value = {
 			...defaultValue,
 			url
+		}
+	}
+
+	function set_path(path) {
+		field.value = {
+			...defaultValue,
+			path
 		}
 	}
 
@@ -108,6 +116,14 @@
 				on:input={({ detail: value }) => {
 					filePreview = value
 					set_url(value)
+					dispatch('input', field)
+				}}
+			/>
+			<TextInput
+				value={field.value.path}
+				label="Path"
+				on:input={({ detail: value }) => {
+					set_path(value)
 					dispatch('input', field)
 				}}
 			/>
