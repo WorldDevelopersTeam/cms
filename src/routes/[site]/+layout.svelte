@@ -23,7 +23,7 @@
 		}
 
 		if (payload.provider === 'github') {
-			const chunks = chunk_payload(payload, 3500) // break payload up into chunks to avoid cloud function body limits
+			const chunks = chunk_payload(payload, 2000) // break payload up into chunks to avoid cloud function body limits
 			const blob_list = (await Promise.all(chunks.map(create_blob_list))).flat()
 			return await deploy_to_server({
 				...payload,
@@ -50,7 +50,7 @@
 			function calc_file_complexity(file) {
 				let complexity = file.size
 				if (is_minifiable_file(file)) {
-					complexity = complexity * Math.max(32, 32 + (file.size / 16))
+					complexity = complexity * Math.max(16, 16 + (file.size / 16))
 				}
 				return complexity
 			}
