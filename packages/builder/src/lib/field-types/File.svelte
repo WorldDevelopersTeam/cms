@@ -30,6 +30,7 @@
 	function set_url(url) {
 		field.value = {
 			...defaultValue,
+			path: field.value.path,
 			url
 		}
 	}
@@ -37,6 +38,7 @@
 	function set_path(path) {
 		field.value = {
 			...defaultValue,
+			url: field.value.url,
 			path
 		}
 	}
@@ -124,6 +126,7 @@
 				label="Path"
 				on:input={({ detail: value }) => {
 					set_path(value)
+					dispatch('input', field)
 				}}
 			/>
 		</div>
