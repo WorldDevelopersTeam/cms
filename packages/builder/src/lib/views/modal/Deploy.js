@@ -104,7 +104,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		common_tags = common_tags + `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
 		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0"> `
 		common_tags = common_tags + `<meta name="url" content="https://${base}/${curr_lang}/${rel_path}">`
-		html = html.replace('<!-- HEAD_TAGS_COMMON -->', common_tags)
+		html = html.replace('<cms:head property="tags" content="common">', common_tags)
 
 		let links_tags = ''
 		if (!is_redirect) {
@@ -130,7 +130,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 				links_tags = links_tags + `<link rel="canonical" href="https://${base}/${lang}/${path}">`
 			}
 		}
-		html = html.replace('<!-- HEAD_TAGS_LINKS -->', links_tags)
+		html = html.replace('<cms:head property="tags" content="links">', links_tags)
 
 		let seo_tags = ''
 		let page_title = ''
@@ -156,7 +156,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		if ('copyright' in page.content[curr_lang]) {
 			seo_tags = seo_tags + `<meta name="copyright" content="${page.content[curr_lang]['copyright']}">`
 		}
-		html = html.replace('<!-- HEAD_TAGS_SEO -->', seo_tags)
+		html = html.replace('<cms:head property="tags" content="seo">', seo_tags)
 
 		let og_tags = ''
 		og_tags = og_tags + `<meta property="og:type" content="website">`
@@ -177,7 +177,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		if ('description' in page.content[curr_lang]) {
 			og_tags = og_tags + `<meta property="og:description" content="${page.content[curr_lang]['description']}">`
 		}
-		html = html.replace('<!-- HEAD_TAGS_OPENGRAPH -->', og_tags)
+		html = html.replace('<cms:head property="tags" content="opengraph">', og_tags)
 
 		if (is_redirect) {
 			html = html.replaceAll(/\<\s*body[^\>]*?>[\s\S]*?\<\s*\/\s*body>/gim, '')
