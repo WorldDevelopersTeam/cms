@@ -258,7 +258,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		// add page
 		page_tree.push({
 			path: is_multilang ? `${language}/${path}` : path,
-			content: await sanitize_page_code(current_site, page, html, current_site.url, site_languages, full_url, language, False)
+			content: await sanitize_page_code(current_site, page, html, current_site.url, site_languages, full_url, language, false)
 		})
 
 		return page_tree
