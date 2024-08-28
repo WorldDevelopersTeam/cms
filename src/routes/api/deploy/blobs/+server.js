@@ -1,6 +1,6 @@
 import { minify_sync as minifyJS } from 'terser'
 import { minify as minifyHTML } from 'html-minifier-terser'
-import { JavaScriptObfuscator as obfuscator } from 'javascript-obfuscator'
+import JavaScriptObfuscator from 'javascript-obfuscator'
 import { json, error as server_error } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import axios from 'axios'
