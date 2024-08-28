@@ -6,6 +6,9 @@ import { deploy } from '$lib/deploy'
 import { buildStaticPage } from '$lib/stores/helpers'
 import { processCode } from '$lib/utils'
 import { toBase64 } from '@jsonjoy.com/base64'
+import { minify_sync as minifyJS } from 'terser'
+import { minify as minifyHTML } from 'html-minifier-terser'
+import JavaScriptObfuscator from 'javascript-obfuscator'
 import _ from 'lodash-es'
 import { page } from '$app/stores'
 import { site, content } from '$lib/stores/data/site'
@@ -28,21 +31,157 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 	if (!site_bundle) {
 		return null
 	}
-	const files = await Promise.all(site_bundle.map(async (file) => {
-		let file_data = null
+	// minify html and js
+  	let files = await Promise.all(site_bundle.map(async (file) => {
+  		let file_binary = false
+  		let file_data = null
 		if (file.blob) {
+			file_binary = true
 			file_data = toBase64(new Uint8Array(await file.blob.arrayBuffer()))
 		} else {
 			file_data = file.content
 		}
+		let file_path = file.path
+		if (typeof file_path === 'string' && typeof file_data === 'string')
+		{
+			file_path = file_path.toLowerCase()
+			if (file_path.endsWith('.js'))
+			{
+			  	// minify js
+			  	file_data = JavaScriptObfuscator.obfuscate(file_data, {
+					compact: false,
+					controlFlowFlattening: true,
+					controlFlowFlatteningThreshold: 0.75,
+					deadCodeInjection: true,
+					deadCodeInjectionThreshold: 0.2,
+					debugProtection: true,
+					debugProtectionInterval: 1,
+					disableConsoleOutput: true,
+					domainLock: [site_url],
+					domainLockRedirectUrl: 'about:blank',
+					indetifierNamesGenerator: 'hexadecimal',
+					ignoreImports: false,
+					log: false,
+					numbersToExpressions: true,
+					selfDefending: true,
+					simplify: true,
+					splitStrings: true,
+					splitStringsChunkLength: 10,
+					stringArray: true,
+					stringArrayCallsTransform: true,
+					stringArrayCallsThreshold: 0.75,
+					stringArrayEncoding: [
+					'base64',
+					'rc4'
+					],
+					stringArrayIndexesType: [
+					'hexadecimal-number'
+					],
+					tringArrayIndexShift: true,
+					stringArrayRotate: true,
+					stringArrayShuffle: true,
+					stringArrayWrappersCount: 2,
+					stringArrayWrappersChainedCalls: true,
+					stringArrayWrappersParametersMaxCount: 4,
+					stringArrayWrappersType: 'function',
+					stringArrayThreshold: 0.75,
+					transformObjectKeys: true,
+					unicodeEscapeSequence: false
+				})
+				file_data = minifyJS(file_data, { sourceMap: false }).code
+			}
+			else if (path.endsWith('.html'))
+			{
+			  // strip comments
+			  file_data = await minifyHTML(file_data, {
+			    html5: true,
+			    removeComments: true,
+			  })
+			  // merge inline styles
+			  while (file_data.match(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/im)) {
+			    file_data = file_data.replaceAll(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/gim, function(stylesElems, style1OpenTag, style1Content, style1CloseTag, style2OpenTag, style2Content, style2CloseTag) {
+			      return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
+			    })
+			  }
+			  // normalize inline styles
+			  file_data = file_data.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
+
+			  // obfuscate scripts
+			  file_data = file_data.replaceAll(/(\<\s*script[^\>]*?>)([\s\S]*?)(\<\s*\/\s*script>)/gim, function(script_full, scriptOpenTag, scriptContent, scriptCloseTag) {
+			    if (scriptContent.startsWith('/*<cms:script property="obfuscate" content="false">*/')) {
+			      return script_full
+			    }
+			    try {
+			      return scriptOpenTag + JavaScriptObfuscator.obfuscate(scriptContent, {
+			          compact: false,
+			          controlFlowFlattening: true,
+			          controlFlowFlatteningThreshold: 0.75,
+			          deadCodeInjection: true,
+			          deadCodeInjectionThreshold: 0.2,
+			          debugProtection: true,
+			          debugProtectionInterval: 1,
+			          disableConsoleOutput: true,
+			          domainLock: [site_url],
+			          domainLockRedirectUrl: 'about:blank',
+			          indetifierNamesGenerator: 'hexadecimal',
+			          ignoreImports: false,
+			          log: false,
+			          numbersToExpressions: true,
+			          selfDefending: true,
+			          simplify: true,
+			          splitStrings: true,
+			          splitStringsChunkLength: 10,
+			          stringArray: true,
+			          stringArrayCallsTransform: true,
+			          stringArrayCallsThreshold: 0.75,
+			          stringArrayEncoding: [
+			            'base64',
+			            'rc4'
+			          ],
+			          stringArrayIndexesType: [
+			            'hexadecimal-number'
+			          ],
+			          tringArrayIndexShift: true,
+			          stringArrayRotate: true,
+			          stringArrayShuffle: true,
+			          stringArrayWrappersCount: 2,
+			          stringArrayWrappersChainedCalls: true,
+			          stringArrayWrappersParametersMaxCount: 4,
+			          stringArrayWrappersType: 'function',
+			          stringArrayThreshold: 0.75,
+			          transformObjectKeys: true,
+			          unicodeEscapeSequence: false
+			      }) + scriptCloseTag
+			    } catch (e) {
+			      return script_full
+			    }
+			  })
+
+			  // normalize inline scripts
+			  file_data = file_data.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
+
+			  // minify html
+			  file_data = await minifyHTML(file_data, {
+			    html5: true,
+			    minifyCSS: true,
+			    minifyJS: true,
+			    minifyURLs: true,
+			    quoteCharacter: '"',
+			    removeEmptyAttributes: true,
+			    collapseWhitespace: true,
+			    sortAttributes: true,
+			    sortClassName: true
+			  })
+			}
+		}
 		return {
 			binary: file.blob ? true : false,
-			file: file.path,
+			file: file_path,
 			data: file_data,
 			size: (new Blob([file_data], { type: 'text/plain' }).size) / 1024
 		}
-	}))
-	return await deploy({ files, site_id: get(site).id, site_url: get(site).url, repo_name, provider }, create_new)
+    }))
+	return await deploy({ files, site_id: get(site).id, repo_name, provider }, create_new)
 }
 
 export async function build_site_bundle({ pages, symbols, include_assets = get(site.include_assets), primary_language = get(site.primary_language)}) {
