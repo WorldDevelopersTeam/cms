@@ -101,6 +101,10 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		let common_tags = ''
 		common_tags = common_tags + `<meta charset="utf-8">`
 		common_tags = common_tags + `<meta http-equiv="X-UA-Compatible" content="IE=edge">`
+		if (is_redirect)
+		{
+			common_tags = common_tags + `<noscript><meta http-equiv="refresh" content="0;URL='https://${base}/${curr_lang}/${rel_path}'"></noscript>`
+		}
 		common_tags = common_tags + `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
 		html = html.replace('<cms:head property="tags" content="common">', common_tags)
 
@@ -125,7 +129,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 		} else {
 			for (var lang of languages)
 			{
-				links_tags = links_tags + `<link rel="canonical" href="https://${base}/${lang}/${path}">`
+				links_tags = links_tags + `<link rel="canonical" href="https://${base}/${lang}/${rel_path}">`
 			}
 		}
 		html = html.replace('<cms:head property="tags" content="links">', links_tags)
@@ -142,6 +146,11 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			page_title = 'An unnamed page'
 		}
 		seo_tags = seo_tags + `<title>${page_title}</title>`
+		if (is_redirect) {
+			seo_tags = seo_tags + `<meta name="url" content="https://${base}/${rel_path}">`
+		} else {
+			seo_tags = seo_tags + `<meta name="url" content="https://${base}/${curr_lang}/${rel_path}">`
+		}
 		if ('description' in page.content[curr_lang]) {
 			seo_tags = seo_tags + `<meta name="description" content="${page.content[curr_lang]['description']}">`
 		}
@@ -158,7 +167,11 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 
 		let og_tags = ''
 		og_tags = og_tags + `<meta property="og:type" content="website">`
-		og_tags = og_tags + `<meta property="og:url" content="https://${base}/${curr_lang}/${rel_path}">`
+		if (is_redirect) {
+			og_tags = og_tags + `<meta property="og:url" content="https://${base}/${rel_path}">`
+		} else {
+			og_tags = og_tags + `<meta property="og:url" content="https://${base}/${curr_lang}/${rel_path}">`
+		}
 		og_tags = og_tags + `<meta property="og:locale" content="${curr_lang}">`
 		for (var lang of languages)
 		{
@@ -182,7 +195,7 @@ export async function build_site_bundle({ pages, symbols, include_assets = get(s
 			html = html.replaceAll(/\<\s*script[^\>]*?>[\s\S]*?\<\s*\/\s*script>/gim, '')
 			html = html.replaceAll(/\<\s*style[^\>]*?>[\s\S]*?\<\s*\/\s*style>/gim, '')
 			html = html.replace(/\<\s*\/\s*head[^\>]*?>/gim, function(match) {
-				return `<script type="text/javascript">!function(){var e,t=document.documentElement.lang,n=(e=document.cookie.match(RegExp("(?:^|; )"+"__wdt_userLocale".replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g,"\\\\$1")+"=([^;]*)")))?decodeURIComponent(e[1]):void 0;if("string"!=typeof n&&(n="object"==typeof navigator&&("string"==typeof navigator.language&&"ru"===navigator.language.substring(0,2)||"object"==typeof navigator.languages&&"function"==typeof navigator.languages.find&&navigator.languages.find(function(e){return"string"==typeof e&&"ru"===e.substring(0,2)}))?"ru":"en"),"string"==typeof n){!function(e,t,n){var o=(n=n||{}).expires;if("number"==typeof o&&o){var a=new Date;a.setTime(a.getTime()+1e3*o),o=n.expires=a}o&&o.toUTCString&&(n.expires=o.toUTCString());var r=e+"="+(t=encodeURIComponent(t));for(var i in n){r+="; "+i;var c=n[i];!0!==c&&(r+="="+c)}document.cookie=r}("__wdt_userLocale",n,{expires:2592e3,secure:!0});var o="/"+n+window.location.pathname+window.location.search+window.location.hash;n!==t?window.location.replace(window.location.origin+o):"object"==typeof history&&"function"==typeof history.replaceState&&history.replaceState(null,null,o)}}();</script>` + match
+				return `<script type="text/javascript">!function(){var e,t=document.documentElement.lang,n=(e=document.cookie.match(RegExp("(?:^|; )"+"__wdt_userLocale".replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g,"\\\\$1")+"=([^;]*)")))?decodeURIComponent(e[1]):void 0;if("string"!=typeof n&&(n="object"==typeof navigator&&("string"==typeof navigator.language&&"ru"===navigator.language.substring(0,2)||"object"==typeof navigator.languages&&"function"==typeof navigator.languages.find&&navigator.languages.find(function(e){return"string"==typeof e&&"ru"===e.substring(0,2)}))?"ru":"en"),"string"==typeof n){!function(e,t,n){var o=(n=n||{}).expires;if("number"==typeof o&&o){var a=new Date;a.setTime(a.getTime()+1e3*o),o=n.expires=a}o&&o.toUTCString&&(n.expires=o.toUTCString());var r=e+"="+(t=encodeURIComponent(t));for(var i in n){r+="; "+i;var c=n[i];!0!==c&&(r+="="+c)}document.cookie=r}("__wdt_userLocale",n,{expires:2592e3,secure:!0});var o="/"+n+window.location.pathname+window.location.search+window.location.hash;window.location.replace(window.location.origin+o)}}()</script>` + match
 			})
 		}
 
