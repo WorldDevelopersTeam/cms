@@ -23,7 +23,7 @@ const config = {
 
   ],
   optimizeDeps: {
-    include: ["@worlddev/cms-builder"]
+    include: ["@worlddev/cms-builder", "html-minifier-terser", "clean-css"]
   },
   build: {
     sourcemap: true
@@ -45,6 +45,8 @@ const config = {
   },
   define: {
     '__SERVER_VERSION__': JSON.stringify(process.env.npm_package_version),
+    'process.env': {},
+    'process.platform': JSON.stringify(process.platform)
   }
 };
 
