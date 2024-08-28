@@ -1,5 +1,6 @@
-import { minify_sync as minifyJS } from 'terser';
-import { minify as minifyHTML } from 'html-minifier-terser';
+import { minify_sync as minifyJS } from 'terser'
+import { minify as minifyHTML } from 'html-minifier-terser'
+import * as JavaScriptObfuscator from 'javascript-obfuscator'
 import { json, error as server_error } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import axios from 'axios'
@@ -11,7 +12,7 @@ export async function POST({ request, locals }) {
     throw server_error(401, { message: 'Unauthorized' })
   }
 
-  let { repo_name, files, provider } = await request.json()
+  let { repo_name, files, provider, site_url } = await request.json()
 
   const { data: token } = await supabase_admin
     .from('config')
@@ -46,8 +47,52 @@ export async function POST({ request, locals }) {
               return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
             })
           }
-          // normalize sinline styles
+          // normalize inline styles
           content = content.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
+          // obfuscate scripts
+          content = content.replaceAll(/(\<\s*script[^\>]*?>)([\s\S]*?)(\<\s*\/\s*script>)/gim, function(script_full, scriptOpenTag, scriptContent, scriptCloseTag) {
+            let obfScript = JavaScriptObfuscator.obfuscate(scriptContent, {
+                compact: false,
+                controlFlowFlattening: true,
+                controlFlowFlatteningThreshold: 0.75,
+                deadCodeInjection: true,
+                deadCodeInjectionThreshold: 0.2,
+                debugProtection: true,
+                debugProtectionInterval: 1,
+                disableConsoleOutput: true,
+                domainLock: [site_url],
+                domainLockRedirectUrl: 'about:blank',
+                indetifierNamesGenerator: 'hexadecimal',
+                ignoreImports: false,
+                log: false,
+                numbersToExpressions: true,
+                selfDefending: true,
+                simplify: true,
+                splitStrings: true,
+                splitStringsChunkLength: 10,
+                stringArray: true,
+                stringArrayCallsTransform: true,
+                stringArrayCallsThreshold: 0.75,
+                stringArrayEncoding: [
+                  'base64',
+                  'rc4'
+                ],
+                stringArrayIndexesType: [
+                  'hexadecimal-number'
+                ],
+                tringArrayIndexShift: true,
+                stringArrayRotate: true,
+                stringArrayShuffle: true,
+                stringArrayWrappersCount: 2,
+                stringArrayWrappersChainedCalls: true,
+                stringArrayWrappersParametersMaxCount: 4,
+                stringArrayWrappersType: 'function',
+                stringArrayThreshold: 0.75,
+                transformObjectKeys: true,
+                unicodeEscapeSequence: false
+            })
+            return scriptOpenTag + obfScript + scriptCloseTag
+          })
           // normalize inline scripts
           content = content.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
           // minify html

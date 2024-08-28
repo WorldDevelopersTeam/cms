@@ -42,7 +42,7 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 			size: (new Blob([file_data], { type: 'text/plain' }).size) / 1024
 		}
 	}))
-	return await deploy({ files, site_id: get(site).id, repo_name, provider }, create_new)
+	return await deploy({ files, site_id: get(site).id, site_url: get(site).url, repo_name, provider }, create_new)
 }
 
 export async function build_site_bundle({ pages, symbols, include_assets = get(site.include_assets), primary_language = get(site.primary_language)}) {

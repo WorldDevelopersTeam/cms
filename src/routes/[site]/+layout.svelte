@@ -50,19 +50,19 @@
 			function calc_file_complexity(file) {
 				let complexity = file.size
 				if (is_minifiable_file(file)) {
-					complexity = complexity * Math.max(16, 16 + (file.size / 16))
+					complexity = complexity * Math.max(8, 8 + (file.size / 8))
 				}
 				return complexity
 			}
 
-			function chunk_payload(payload, max_complexity, max_chunk_length) {
+			function chunk_payload(payload, max_chunk_complexity, max_chunk_length) {
 				const chunks = []
 				payload.files.forEach((file) => {
 					const current_chunk = chunks[chunks.length - 1]
-					const current_chunk_size = current_chunk
+					const current_chunk_complexity = current_chunk
 						? current_chunk.files.reduce((acc, payload) => acc + calc_file_complexity(file), 0)
 						: 0
-					if (current_chunk && current_chunk_size + calc_file_complexity(file) < max_complexity && current_chunk.length < max_chunk_length) {
+					if (current_chunk && current_chunk_complexity + calc_file_complexity(file) < max_chunk_complexity && current_chunk.files.length < max_chunk_length) {
 						// current chunk below limit
 						current_chunk.files.push(file)
 					} else {

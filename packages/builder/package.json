@@ -56,6 +56,7 @@
 		"file-saver": "^2.0.5",
 		"idb-keyval": "^6.1.0",
 		"install": "^0.13.0",
+		"javascript-obfuscator": "^4.1.1",
 		"jshashes": "^1.0.8",
 		"jszip": "^3.7.1",
 		"lodash-es": "^4.17.21",
