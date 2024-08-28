@@ -1,6 +1,6 @@
 import { minify_sync as minifyJS } from 'terser'
 import { minify as minifyHTML } from 'html-minifier-terser'
-import * as JavaScriptObfuscator from 'javascript-obfuscator'
+import { JavaScriptObfuscator as obfuscator } from 'javascript-obfuscator'
 import { json, error as server_error } from '@sveltejs/kit'
 import supabase_admin from '$lib/supabase/admin'
 import axios from 'axios'
@@ -51,7 +51,10 @@ export async function POST({ request, locals }) {
           content = content.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
           // obfuscate scripts
           content = content.replaceAll(/(\<\s*script[^\>]*?>)([\s\S]*?)(\<\s*\/\s*script>)/gim, function(script_full, scriptOpenTag, scriptContent, scriptCloseTag) {
-            let obfScript = JavaScriptObfuscator.obfuscate(scriptContent, {
+            if (scriptContent.startsWith('/*<cms:script property="obfuscate" content="false">*/')) {
+              return scriptOpenTag + scriptContent + scriptCloseTag
+            }
+            let obfScript = obfuscator.obfuscate(scriptContent, {
                 compact: false,
                 controlFlowFlattening: true,
                 controlFlowFlatteningThreshold: 0.75,
