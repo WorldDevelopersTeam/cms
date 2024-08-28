@@ -31,6 +31,7 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 	if (!site_bundle) {
 		return null
 	}
+	let site_url = get(site).url
 	// minify html and js
   	let files = await Promise.all(site_bundle.map(async (file) => {
   		let file_binary = false
@@ -57,7 +58,9 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 					debugProtection: true,
 					debugProtectionInterval: 1,
 					disableConsoleOutput: true,
-					domainLock: [site_url],
+					domainLock: [
+						site_url
+					],
 					domainLockRedirectUrl: 'about:blank',
 					indetifierNamesGenerator: 'hexadecimal',
 					ignoreImports: false,
@@ -71,11 +74,11 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 					stringArrayCallsTransform: true,
 					stringArrayCallsThreshold: 0.75,
 					stringArrayEncoding: [
-					'base64',
-					'rc4'
+						'base64',
+						'rc4'
 					],
 					stringArrayIndexesType: [
-					'hexadecimal-number'
+						'hexadecimal-number'
 					],
 					tringArrayIndexShift: true,
 					stringArrayRotate: true,
