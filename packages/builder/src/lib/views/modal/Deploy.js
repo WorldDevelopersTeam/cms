@@ -91,19 +91,21 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 					unicodeEscapeSequence: false
 				})
 			}
-			else if (path.endsWith('.html'))
+			else if (file_path.endsWith('.html'))
 			{
 			  // strip comments
 			  file_data = await minifyHTML(file_data, {
 			    html5: true,
 			    removeComments: true,
 			  })
+
 			  // merge inline styles
 			  while (file_data.match(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/im)) {
 			    file_data = file_data.replaceAll(/(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)\s*(\<\s*style[^\>]*?\>)([\s\S]+?)(\<\s*\/\s*style\s*\>)/gim, function(stylesElems, style1OpenTag, style1Content, style1CloseTag, style2OpenTag, style2Content, style2CloseTag) {
 			      return style1OpenTag + style1Content + '\n' + style2Content + style2CloseTag;
 			    })
 			  }
+
 			  // normalize inline styles
 			  file_data = file_data.replaceAll(/\<\s*style\s*\>/gim, '<style type="text/css">')
 
@@ -175,6 +177,7 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 			  })
 			}
 		}
+
 		return {
 			binary: file.blob ? true : false,
 			file: file_path,
