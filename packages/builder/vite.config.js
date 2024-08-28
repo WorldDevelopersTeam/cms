@@ -10,7 +10,7 @@ export default defineConfig({
  	define: {
 		'process.env': {},
 		'process.platform': JSON.stringify(process.platform)
-	}
+	},
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']
 	}
