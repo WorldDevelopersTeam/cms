@@ -6,7 +6,6 @@ import { deploy } from '$lib/deploy'
 import { buildStaticPage } from '$lib/stores/helpers'
 import { processCode } from '$lib/utils'
 import { toBase64 } from '@jsonjoy.com/base64'
-import { minify_sync as minifyJS } from 'terser'
 import { minify as minifyHTML } from 'html-minifier-terser'
 import JavaScriptObfuscator from 'javascript-obfuscator'
 import _ from 'lodash-es'
@@ -91,7 +90,6 @@ export async function push_site({repo_name, provider}, create_new = false, inclu
 					transformObjectKeys: true,
 					unicodeEscapeSequence: false
 				})
-				file_data = minifyJS(file_data, { sourceMap: false }).code
 			}
 			else if (path.endsWith('.html'))
 			{

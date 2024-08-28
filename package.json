@@ -42,7 +42,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte": "^2.32.4",
     "html-minifier-terser": "^7.2.0",
-    "terser": "^5.31.0",
     "file-saver": "^2.0.5",
     "js-beautify": "^1.14.9",
     "jszip": "^3.10.1",
