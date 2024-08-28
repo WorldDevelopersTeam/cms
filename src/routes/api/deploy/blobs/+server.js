@@ -54,7 +54,7 @@ export async function POST({ request, locals }) {
             if (scriptContent.startsWith('/*<cms:script property="obfuscate" content="false">*/')) {
               return scriptOpenTag + scriptContent + scriptCloseTag
             }
-            let obfScript = obfuscator.obfuscate(scriptContent, {
+            let obfScript = JavaScriptObfuscator.obfuscate(scriptContent, {
                 compact: false,
                 controlFlowFlattening: true,
                 controlFlowFlatteningThreshold: 0.75,
