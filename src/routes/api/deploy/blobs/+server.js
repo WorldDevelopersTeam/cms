@@ -52,49 +52,52 @@ export async function POST({ request, locals }) {
           // obfuscate scripts
           content = content.replaceAll(/(\<\s*script[^\>]*?>)([\s\S]*?)(\<\s*\/\s*script>)/gim, function(script_full, scriptOpenTag, scriptContent, scriptCloseTag) {
             if (scriptContent.startsWith('/*<cms:script property="obfuscate" content="false">*/')) {
-              return scriptOpenTag + scriptContent + scriptCloseTag
+              return script_full
             }
-            let obfScript = JavaScriptObfuscator.obfuscate(scriptContent, {
-                compact: false,
-                controlFlowFlattening: true,
-                controlFlowFlatteningThreshold: 0.75,
-                deadCodeInjection: true,
-                deadCodeInjectionThreshold: 0.2,
-                debugProtection: true,
-                debugProtectionInterval: 1,
-                disableConsoleOutput: true,
-                domainLock: [site_url],
-                domainLockRedirectUrl: 'about:blank',
-                indetifierNamesGenerator: 'hexadecimal',
-                ignoreImports: false,
-                log: false,
-                numbersToExpressions: true,
-                selfDefending: true,
-                simplify: true,
-                splitStrings: true,
-                splitStringsChunkLength: 10,
-                stringArray: true,
-                stringArrayCallsTransform: true,
-                stringArrayCallsThreshold: 0.75,
-                stringArrayEncoding: [
-                  'base64',
-                  'rc4'
-                ],
-                stringArrayIndexesType: [
-                  'hexadecimal-number'
-                ],
-                tringArrayIndexShift: true,
-                stringArrayRotate: true,
-                stringArrayShuffle: true,
-                stringArrayWrappersCount: 2,
-                stringArrayWrappersChainedCalls: true,
-                stringArrayWrappersParametersMaxCount: 4,
-                stringArrayWrappersType: 'function',
-                stringArrayThreshold: 0.75,
-                transformObjectKeys: true,
-                unicodeEscapeSequence: false
-            })
-            return scriptOpenTag + obfScript + scriptCloseTag
+            try {
+              return scriptOpenTag + JavaScriptObfuscator.obfuscate(scriptContent, {
+                  compact: false,
+                  controlFlowFlattening: true,
+                  controlFlowFlatteningThreshold: 0.75,
+                  deadCodeInjection: true,
+                  deadCodeInjectionThreshold: 0.2,
+                  debugProtection: true,
+                  debugProtectionInterval: 1,
+                  disableConsoleOutput: true,
+                  domainLock: [site_url],
+                  domainLockRedirectUrl: 'about:blank',
+                  indetifierNamesGenerator: 'hexadecimal',
+                  ignoreImports: false,
+                  log: false,
+                  numbersToExpressions: true,
+                  selfDefending: true,
+                  simplify: true,
+                  splitStrings: true,
+                  splitStringsChunkLength: 10,
+                  stringArray: true,
+                  stringArrayCallsTransform: true,
+                  stringArrayCallsThreshold: 0.75,
+                  stringArrayEncoding: [
+                    'base64',
+                    'rc4'
+                  ],
+                  stringArrayIndexesType: [
+                    'hexadecimal-number'
+                  ],
+                  tringArrayIndexShift: true,
+                  stringArrayRotate: true,
+                  stringArrayShuffle: true,
+                  stringArrayWrappersCount: 2,
+                  stringArrayWrappersChainedCalls: true,
+                  stringArrayWrappersParametersMaxCount: 4,
+                  stringArrayWrappersType: 'function',
+                  stringArrayThreshold: 0.75,
+                  transformObjectKeys: true,
+                  unicodeEscapeSequence: false
+              }) + scriptCloseTag
+            } catch (e) {
+              return script_full
+            }
           })
           // normalize inline scripts
           content = content.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
