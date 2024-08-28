@@ -4,6 +4,10 @@ import { defineConfig } from 'vitest/config';
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
 	plugins: [sveltekit()],
+	define: {
+    'process.env': {},
+    'process.platform': JSON.stringify(process.platform)
+  },
 	test: {
 		include: ['./src/**/*.{test,spec}.{js,ts}']
 	}
