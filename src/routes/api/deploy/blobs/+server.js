@@ -32,6 +32,9 @@ export async function POST({ request, locals }) {
         {
           // minify class names
           content = content.replaceAll(/svelte-/gm, 'sc-')
+          // rename svelte classes
+          content = content.replaceAll(/svelte/gm, 'framework')
+          content = content.replaceAll(/Svelte/gm, 'Framework')
           // minify js
           content = minifyJS(content, { sourceMap: false }).code
         }
@@ -54,6 +57,9 @@ export async function POST({ request, locals }) {
           content = content.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
           // minify class names
           content = content.replaceAll(/svelte-/gm, 'sc-')
+          // rename svelte classes
+          content = content.replaceAll(/svelte/gm, 'framework')
+          content = content.replaceAll(/Svelte/gm, 'Framework')
           // minify html
           content = await minifyHTML(content, {
             html5: true,
