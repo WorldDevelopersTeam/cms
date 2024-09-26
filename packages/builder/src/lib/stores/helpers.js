@@ -119,9 +119,13 @@ export async function buildStaticPage({
 				})
 				const { css, error } = await processors.css(postcss || '')
 				const section_id = section.id.split('-')[0]
+				if ('id' in section.content && typeof section.content.id == 'string')
+          {
+            section_id = section.content.id
+          }
 				return {
 					html: `
-          <div class="section" id="section-${section_id}">
+          <div class="section" id="${section_id}">
             ${html}
           </div>`,
 					js,
