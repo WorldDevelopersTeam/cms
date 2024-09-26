@@ -332,7 +332,7 @@
 		<div
 			in:fade={{ duration: 100 }}
 			class="section"
-			id="{('id' in block.content && typeof block.content.id === 'string') ? block.content.id : block.id.split('-')[0]}"
+			id="{('id' in block.content[locale] && typeof block.content[locale].id === 'string') ? block.content[locale].id : block.id.split('-')[0]}"
 			class:locked
 			data-block={block.symbol}
 			on:mousemove={() => {

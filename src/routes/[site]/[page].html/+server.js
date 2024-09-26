@@ -72,7 +72,7 @@ export const GET = async (event) => {
             loc: locale,
           })
           const css = await postcss(rawcss || '')
-          const section_id = ('id' in section.content && typeof section.content.id === 'string') ? section.content.id : section.id.split('-')[0]
+          const section_id = ('id' in section.content[locale] && typeof section.content[locale].id === 'string' && section.content[locale].id.length > 0) ? section.content[locale].id : section.id.split('-')[0]
           return {
             html: `
 		        <div class="section" id="${section_id}">
