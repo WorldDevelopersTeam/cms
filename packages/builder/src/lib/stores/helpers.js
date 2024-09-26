@@ -178,7 +178,7 @@ export async function buildStaticPage({
         ${page_sections
 					.filter((section) => section.symbol === symbol.id)
 					.map((section) => {
-						const section_id = section.id.split('-')[0]
+						const section_id = ('id' in section.content && typeof section.content.id === 'string') ? section.content.id : section.id.split('-')[0]
 						const instance_content = get_content_with_static({
 							component: section,
 							symbol,
@@ -186,7 +186,7 @@ export async function buildStaticPage({
 						})
 						return `
             new App({
-              target: document.querySelector('#section-${section_id}'),
+              target: document.querySelector('#${section_id}'),
               hydrate: true,
               props: ${JSON.stringify(instance_content)}
             })
