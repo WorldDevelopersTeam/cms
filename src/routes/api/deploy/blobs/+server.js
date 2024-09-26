@@ -31,7 +31,7 @@ export async function POST({ request, locals }) {
         if (path.endsWith('.js'))
         {
           // minify class names
-          content = content.replaceAll(/svelte-/gm, '')
+          content = content.replaceAll(/svelte-/gm, 'sc-')
           // minify js
           content = minifyJS(content, { sourceMap: false }).code
         }
@@ -53,7 +53,7 @@ export async function POST({ request, locals }) {
           // normalize inline scripts
           content = content.replaceAll(/\<\s*script\s*\>/gim, '<script type="text/javascript">')
           // minify class names
-          content = content.replaceAll(/svelte-/gm, '')
+          content = content.replaceAll(/svelte-/gm, 'sc-')
           // minify html
           content = await minifyHTML(content, {
             html5: true,
