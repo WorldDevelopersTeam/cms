@@ -118,7 +118,7 @@ export async function buildStaticPage({
 					loc: locale
 				})
 				const { css, error } = await processors.css(postcss || '')
-				const section_id = ('id' in section.content[locale] && typeof section.content[locale].id === 'string' && section.content[locale].id.length > 0) ? section.content[locale].id : section.id.split('-')[0]
+				const section_id = (typeof section.content[locale] === 'object' && 'id' in section.content[locale] && typeof section.content[locale].id === 'string' && section.content[locale].id.length > 0) ? section.content[locale].id : section.id.split('-')[0]
 				return {
 					html: `
           <div class="section" id="${section_id}">
