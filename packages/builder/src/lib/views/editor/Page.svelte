@@ -407,7 +407,7 @@
 		transition: 0.2s opacity;
 		opacity: 0;
 		border-top: 0;
-		height: calc(100vh - 54px);
+		height: calc(100vh - 57px);
 		overflow: auto;
 	}
 	#page.fadein {
