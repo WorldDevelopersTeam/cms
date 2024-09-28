@@ -98,7 +98,7 @@
 	enableCache('local')
 </script>
 
-<HSplitPane bind:leftPaneSize bind:rightPaneSize style="margin-top:54px">
+<HSplitPane bind:leftPaneSize bind:rightPaneSize style="margin-top:57px">
 	<div slot="left">
 		{#if showing_sidebar}
 			<Sidebar />
