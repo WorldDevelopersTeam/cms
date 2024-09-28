@@ -224,7 +224,7 @@
 		z-index: 9;
 		display: flex;
 		flex-direction: column;
-		height: calc(100vh - 54px);
+		height: calc(100vh - 57px);
 		gap: 1rem;
 		z-index: 9;
 		position: relative;
