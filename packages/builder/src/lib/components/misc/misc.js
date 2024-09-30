@@ -3,7 +3,7 @@ import { primary_language } from '../../stores/data/site.js'
 
 export const iframePreview = (locale = get(primary_language)) => `
   <!DOCTYPE html>
-  <html lang="${locale}" xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr">
+  <html lang="${locale}" xmlns="http://www.w3.org/1999/xhtml" style="color-scheme:${site.content[locale].color_scheme}">
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">

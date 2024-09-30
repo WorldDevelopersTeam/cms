@@ -148,7 +148,7 @@ export async function buildStaticPage({
 
 	const final = `\
   <!DOCTYPE html>
-  <html lang="${locale}" xmlns="http://www.w3.org/1999/xhtml" xmlns:b="http://www.google.com/2005/gml/b" xmlns:data="http://www.google.com/2005/gml/data" xmlns:expr="http://www.google.com/2005/gml/expr">
+  <html lang="${locale}" xmlns="http://www.w3.org/1999/xhtml" style="color-scheme:${site.content[locale].color_scheme}">
     <head>
       ${res.head}
       <style>${res.css}</style>
