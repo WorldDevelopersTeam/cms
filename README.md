@@ -20,4 +20,4 @@
 
 master
 :------------:
-[![master Deploy Status](https://api.netlify.com/api/v1/badges/ea564325-a977-41c7-b1d4-079bc796b99f/deploy-status)](https://app.netlify.com/sites/akaitcms/deploys)
+[![master Deploy Status](https://api.netlify.com/api/v1/badges/ea564325-a977-41c7-b1d4-079bc796b99f/deploy-status)](https://app.netlify.com/sites/worlddev-cms/deploys)
